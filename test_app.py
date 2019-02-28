@@ -24,10 +24,10 @@ def client():
 def login(client, username, password):
   return client.post('/login', data=dict(username=username, password=password), follow_redirects=True)
 
-def test_db(client):
+def test_db(client, numSubjects):
   with app.app_context():
     subjects = Subjects.query.all()
-  assert len(subjects) == 6
+  assert len(subjects) == int(numSubjects)
 
 
 
