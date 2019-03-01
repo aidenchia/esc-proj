@@ -31,19 +31,6 @@ class Subjects(db.Model):
     else:
       return "TODO"
 
-  # only works on localhost, because on heroku each dyno has its own ephermeral filesystem, where any files written will be discarded
-  @staticmethod
-  def export(app):
-    import psycopg2
-    conn = psycopg2.connect(app.config['SQLALCHEMY_DATABASE_URI'], sslmode='require')
-    cur = conn.cursor()
-    excel = open('course_details.csv', 'w+')
-    cur.copy_to(excel, table="Subjects", sep=",")
-    excel.close()
-
-    return "Data written to 'course_details.csv'"
-
-
   @staticmethod
   def insert(subjectCode, term, subjectType, subjectName):
     if None in (subjectCode, term, subjectType, subjectName):
@@ -64,7 +51,6 @@ class Users(db.Model):
   username = db.Column(db.String, primary_key=True)
   fullname = db.Column(db.String)
   email = db.Column(db.String)
-  #password = db.Column(db.String)
   department = db.Column(db.String)
   authenticated = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.String(128))
@@ -99,6 +85,15 @@ class Users(db.Model):
 
   def check_password(self, password):
     return check_password_hash(self.password_hash, password)
+
+  @staticmethod
+  def insert(username, fullname, email, password, department):
+    query = Users.query.filter_by(username=username).first()
+    if query is None:
+      user = Users(username, fullname, email, password, department, False)
+      db.session.add(user)
+      db.session.commit()
+    return None
 
 
 

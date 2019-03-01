@@ -42,6 +42,12 @@ def test_new_user(client):
   assert user.authenticated == False
   assert user.check_password('password')
 
+def test_insert_user(client):
+  with app.app_context():
+    Users.insert('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password', 'student')
+    query = Users.query.filter_by(username='aidenchia').all()
+  assert len(query) == 1
+
 
 
 
