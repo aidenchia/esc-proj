@@ -69,6 +69,15 @@ class Users(db.Model):
   authenticated = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.String(128))
 
+  def __init__(self, username, fullname, email, password, department, authenticated):
+    self.username = username
+    self.fullname = fullname
+    self.email = email
+    self.password = password
+    self.department = department
+    self.authenticated = authenticated
+    self.password_hash = generate_password_hash(password)
+
   def __repr__(self):
     return self.fullname
 
@@ -89,7 +98,6 @@ class Users(db.Model):
     return Users.query.get(username)
 
   def check_password(self, password):
-    self.password_hash = generate_password_hash(self.password)
     return check_password_hash(self.password_hash, password)
 
 
