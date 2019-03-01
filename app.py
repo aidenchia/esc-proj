@@ -15,6 +15,9 @@ with app.app_context():
   db.init_app(app)
   db.create_all()
   login_manager.init_app(app)
+  #user = Users('felicePeck', 'Felice Peck', 'felice_peck@mymail.sutd.edu.sg', 'password', 'staff', False)
+  #db.session.add(user)
+  #db.session.commit()
  
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET','POST'])
