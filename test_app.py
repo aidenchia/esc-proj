@@ -48,6 +48,11 @@ def test_insert_user(client):
     query = Users.query.filter_by(username='aidenchia').all()
   assert len(query) == 1
 
+def test_remove_user(client):
+  with app.app_context():
+    Users.remove('aidenchia')
+    query = Users.query.filter_by(username='aidenchia').all()
+  assert len(query) == 0
 
 
 

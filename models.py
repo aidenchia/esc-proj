@@ -95,6 +95,14 @@ class Users(db.Model):
       db.session.commit()
     return None
 
+  @staticmethod
+  def remove(username):
+    user = Users.query.filter_by(username=username).first()
+    if user is not None:
+      db.session.delete(user)
+      db.session.commit()
+    return None
+
 
 
 
