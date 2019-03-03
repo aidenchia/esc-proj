@@ -101,14 +101,13 @@ class Users(db.Model):
       db.session.commit()
     return None
 
-'''
-class Students(db.Model, Users):
+class Students(Users):
   term = db.Column(db.Integer)
 
   def __init__(self, username, fullname, email, password, authenticated, term):
     super().__init__(self, username, fullname, email, password, authenticated)
     self.term = term
 
-'''
+
 
 
