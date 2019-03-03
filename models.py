@@ -53,7 +53,6 @@ class Users(db.Model):
   email = db.Column(db.String)
   authenticated = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.String(128))
-  test = db.Column(db.String)
 
   def __init__(self, username, fullname, email, password, authenticated):
     self.username = username
