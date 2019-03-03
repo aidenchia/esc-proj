@@ -54,7 +54,7 @@ def display():
   except:
     print("Empty fields")
     
-  result = Subjects.select(all=True)
+  result = db.session.query(Subjects).order_by(Subjects.subjectName).all()
   return render_template("database.html", result = result)
 
 

@@ -55,12 +55,11 @@ class Users(db.Model):
   authenticated = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.String(128))
 
-  def __init__(self, username, fullname, email, password, department, authenticated):
+  def __init__(self, username, fullname, email, password, authenticated):
     self.username = username
     self.fullname = fullname
     self.email = email
     self.password = password
-    self.department = department
     self.authenticated = authenticated
     self.password_hash = generate_password_hash(password)
 
@@ -87,10 +86,10 @@ class Users(db.Model):
     return check_password_hash(self.password_hash, password)
 
   @staticmethod
-  def insert(username, fullname, email, password, department):
+  def insert(username, fullname, email, password):
     query = Users.query.filter_by(username=username).first()
     if query is None:
-      user = Users(username, fullname, email, password, department, False)
+      user = Users(username, fullname, email, password, False)
       db.session.add(user)
       db.session.commit()
     return None

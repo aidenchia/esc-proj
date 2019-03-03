@@ -1,6 +1,7 @@
 <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
 <link rel="stylesheet" href="/static/style.css" type="text/css">
 {% block content %}
+    
     <form action="" method="POST">
         {{form.csrf_token}}
         <div class="login">
@@ -8,14 +9,7 @@
         <div class="app-title">
 
         <h1>Login</h1>
-        </div> 
-        <p>
-            {{form.username.label}}
-            {{form.username}}
-        </p>
-        <p>
-            {{form.password.label}}
-            {{form.password}}
+        </div>
         </p>
         <p>{{form.remember_me}} {{form.remember_me.label}} </p>
         <p><input type=submit value="Sign In"></p>

@@ -1,5 +1,4 @@
 import os
-import tempfile
 import pytest
 
 from app import app
@@ -34,7 +33,7 @@ def test_login(client):
 
 def test_new_user(client):
   from werkzeug.security import generate_password_hash, check_password_hash
-  user = Users('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password', 'student', False)
+  user = Users('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password', False)
   assert user.username == 'aidenchia'
   assert user.fullname == 'Aiden Chia'
   assert user.email == 'aiden_chia@mymail.sutd.edu.sg'
@@ -44,7 +43,7 @@ def test_new_user(client):
 
 def test_insert_user(client):
   with app.app_context():
-    Users.insert('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password', 'student')
+    Users.insert('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password')
     query = Users.query.filter_by(username='aidenchia').all()
   assert len(query) == 1
 
