@@ -101,6 +101,7 @@ class Users(db.Model):
       db.session.commit()
     return None
 
+'''
 class Students(db.Model, Users):
   term = db.Column(db.Integer)
 
@@ -108,6 +109,6 @@ class Students(db.Model, Users):
     super().__init__(self, username, fullname, email, password, authenticated)
     self.term = term
 
-
+'''
 
 
