@@ -14,7 +14,7 @@ manager.add_command('db', MigrateCommand)
 # allows us to run commands in terminal such as 
 # python3 manage.py db init, 
 # python3 manage.py db migrate
-# pyhton3 manage.py db upgrade
+# python3 manage.py db upgrade
 # If migrating to remote server on heroku,
 # prepend 'heroku run' before the above commands
 

@@ -51,7 +51,6 @@ class Users(db.Model):
   username = db.Column(db.String, primary_key=True)
   fullname = db.Column(db.String)
   email = db.Column(db.String)
-  department = db.Column(db.String)
   authenticated = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.String(128))
 
