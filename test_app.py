@@ -31,19 +31,20 @@ def test_login(client):
   assert b'You were logged in' in rv.data
 '''
 
-def test_new_user(client):
+def test_init_user(client): # check if all fields are initialized properly
   from werkzeug.security import generate_password_hash, check_password_hash
-  user = Users('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password', False)
+  user = Users('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password', 'Student', False)
   assert user.username == 'aidenchia'
   assert user.fullname == 'Aiden Chia'
   assert user.email == 'aiden_chia@mymail.sutd.edu.sg'
   assert user.password == 'password'
+  assert user.userGroup == 'Student'
   assert user.authenticated == False
   assert user.check_password('password')
 
-def test_insert_user(client):
+def test_insert_user(client): 
   with app.app_context():
-    Users.insert('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password')
+    Users.insert('aidenchia', 'Aiden Chia', 'aiden_chia@mymail.sutd.edu.sg', 'password', 'Student')
     query = Users.query.filter_by(username='aidenchia').all()
   assert len(query) == 1
 

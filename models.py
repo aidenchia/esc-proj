@@ -53,12 +53,14 @@ class Users(db.Model):
   email = db.Column(db.String)
   authenticated = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.String(128))
+  userGroup = db.Column(db.String(128))
 
-  def __init__(self, username, fullname, email, password, authenticated):
+  def __init__(self, username, fullname, email, password, userGroup, authenticated):
     self.username = username
     self.fullname = fullname
     self.email = email
     self.password = password
+    self.userGroup = userGroup
     self.authenticated = authenticated
     self.password_hash = generate_password_hash(password)
 
@@ -85,10 +87,10 @@ class Users(db.Model):
     return check_password_hash(self.password_hash, password)
 
   @staticmethod
-  def insert(username, fullname, email, password):
+  def insert(username, fullname, email, password, userGroup):
     query = Users.query.filter_by(username=username).first()
     if query is None:
-      user = Users(username, fullname, email, password, False)
+      user = Users(username, fullname, email, password, userGroup, False)
       db.session.add(user)
       db.session.commit()
     return None
@@ -100,14 +102,6 @@ class Users(db.Model):
       db.session.delete(user)
       db.session.commit()
     return None
-
-class Students(Users):
-  term = db.Column(db.Integer)
-
-  def __init__(self, username, fullname, email, password, authenticated, term):
-    super().__init__(self, username, fullname, email, password, authenticated)
-    self.term = term
-
 
 
 
