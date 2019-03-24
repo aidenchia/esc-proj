@@ -16,6 +16,7 @@ with app.app_context():
   db.create_all()
   login_manager.init_app(app)
  
+########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET','POST'])
 def login():
@@ -32,28 +33,18 @@ def login():
     #return redirect(url_for('courseInput'))
     return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
- 
-@app.route('/courseInput', methods=['GET','POST'])
-@login_required
-def courseInput():
-    return render_template('index.html')
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-  form = RegisterForm()
-  if form.validate_on_submit():
-    return render_template(url_for('displayUsers'))
-  return render_template('register.html')
 
 @app.route("/logout")
 def logout():
   logout_user()
   return redirect(url_for('login'))
 
-@app.route("/usersTable", methods=['GET', 'POST'])
-def displayUsers():
-  allUsers = db.session.query(Users).order_by(Users.fullname).all()
-  return render_template("usersTable.html", allUsers = allUsers)
+########################################## COURSE LEAD ##########################
+@app.route('/courseInput', methods=['GET','POST'])
+@login_required
+def courseInput():
+    return render_template('index.html')
 
 @app.route("/database", methods=['GET','POST'])
 @login_required
@@ -69,6 +60,25 @@ def displaySubjects():
     
   result = db.session.query(Subjects).order_by(Subjects.subjectName).all()
   return render_template("database.html", result = result)
+
+########################################## ADMIN ##########################
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+  form = RegisterForm()
+  if form.validate_on_submit():
+    user = Users.query.filter_by(username=form.username.data).all()
+    if (len(user) == 0): # new user
+      Users.insert(form.username.data, form.fullname.data, form.email.data, form.password.data, form.user_group.data)
+    return render_template(url_for('displayUsers'))
+  return render_template('register.html')
+
+@app.route("/usersTable", methods=['GET', 'POST'])
+def displayUsers():
+  allUsers = db.session.query(Users).order_by(Users.fullname).all()
+  return render_template("usersTable.html", allUsers = allUsers)
+
+
+
 
 
   
