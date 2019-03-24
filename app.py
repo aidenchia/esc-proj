@@ -2,8 +2,9 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm
-import os
 from models import Users, Subjects
+import os
+import sys
 
 
 app = Flask(__name__)
@@ -66,14 +67,18 @@ def displaySubjects():
 def register():
   form = RegisterForm()
   if form.validate_on_submit():
-    user = Users.query.filter_by(username=form.username.data).all()
-    if (len(user) == 0): # new user
-      Users.insert(form.username.data, form.fullname.data, form.email.data, form.password.data, form.user_group.data)
-    return render_template(url_for('displayUsers'))
-  return render_template('register.html')
+    return form.username.data
+  return render_template('register.html', form=form)
 
 @app.route("/usersTable", methods=['GET', 'POST'])
 def displayUsers():
+  inserted = Users.insert(
+                    request.form['username'],
+                    request.form['fullname'],
+                    request.form['email'],
+                    request.form['password'],
+                    request.form['user_group'])
+
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
 
