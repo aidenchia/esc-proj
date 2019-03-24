@@ -47,9 +47,14 @@ def logout():
   logout_user()
   return redirect(url_for('login'))
 
+@app.route("/usersTable")
+def displayUsers():
+  allUsers = db.session.query(Users).order_by(Users.fullname).all()
+  return render_template("usersTable.html", allUsers = allUsers)
+
 @app.route("/database", methods=['GET','POST'])
 @login_required
-def display():
+def displaySubjects():
   try:
     inserted = Subjects.insert( 
       request.form['subjectCode'],
