@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import flash, redirect, render_template, url_for, request, session, abort
+from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm
 import os
@@ -29,13 +29,18 @@ def login():
       flash('Invalid username / password')
       return redirect(url_for('login'))
     login_user(user, remember=form.remember_me.data)
-    return redirect(url_for('courseInput'))
+    #return redirect(url_for('courseInput'))
+    return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
  
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
 def courseInput():
     return render_template('index.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+  return render_template('register.html')
 
 @app.route("/logout")
 def logout():
