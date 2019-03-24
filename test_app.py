@@ -38,7 +38,7 @@ def test_init_user(client): # check if all fields are initialized properly
   assert user.fullname == 'Aiden Chia'
   assert user.email == 'aiden_chia@mymail.sutd.edu.sg'
   assert user.password == 'password'
-  assert user.userGroup == 'Student'
+  assert user.user_group == 'Student'
   assert user.authenticated == False
   assert user.check_password('password')
 

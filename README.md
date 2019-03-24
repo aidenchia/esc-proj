@@ -23,6 +23,11 @@ $ source venv/bin/activate
 $ pip3 install -r requirements.txt
 ```
 
+__Set environmet variables:__
+```bash
+source set_env_vars.sh
+```
+
 __Check environment variables:__
 ```bash
 $ source check_env_vars.sh
@@ -31,9 +36,8 @@ You should see the output:
 ```bash
 $ declare -x APP_SETTINGS="config.ProductionConfig"
 $ declare -x DATABASE_URL="postgres://..."
-$ declare -x DATABASE_NAME="..."
 ```
-where `DATABASE_URL` and `DATABASE_NAME` should be the URL of your provisioned Heroku database and the database name respectively.
+where `DATABASE_URL` should be the URL of the provisioned Heroku database.
 
 __Check heroku configuration vars:__
 ```bash
@@ -41,18 +45,19 @@ $ heroku config
 ```
 
 ### Database
+Follow Heroku documetation to install the necessary tools to use Postgres with Heroku. Then, you can inspect the database as follows.
 ---
 __Inspect database:__
 ```bash
 $ heroku pg:psql
 ```
-You'll connect to the remote database from your command line and you can then view the tables and their content via PostgreSQL commands.
+You'll connect to the remote database from your command line and you can then view the tables and their content via PostgreSQL commands. 
 
 __Pull remote database:__  
 ```bash
-heroku pg:pull mylocaldb
+source pullDatabase.sh
 ```
-You can name `mylocaldb` to whatever you want the name of your local database to be.
+A local database called 'mylocaldb' will be created. If an error is thrown, you most likely already have another local database called 'mylocaldb'. You need to delete that before running this script. 
 
 __Update database:__  
 
@@ -69,6 +74,6 @@ We used the __Pytest__ framework in order to run automated testing of our web ap
 ```bash
 pytest --numSubjects=x
 ```
-where x can be any value you want. 
+where x can be any value you want. To get a successful test result, you should pass x equal to the number of subjects in the database.
 
 

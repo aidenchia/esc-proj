@@ -53,14 +53,14 @@ class Users(db.Model):
   email = db.Column(db.String)
   authenticated = db.Column(db.Boolean, default=False)
   password_hash = db.Column(db.String(128))
-  userGroup = db.Column(db.String(128))
+  user_group = db.Column(db.String(128))
 
-  def __init__(self, username, fullname, email, password, userGroup, authenticated):
+  def __init__(self, username, fullname, email, password, user_group, authenticated):
     self.username = username
     self.fullname = fullname
     self.email = email
     self.password = password
-    self.userGroup = userGroup
+    self.user_group = user_group
     self.authenticated = authenticated
     self.password_hash = generate_password_hash(password)
 
@@ -87,10 +87,10 @@ class Users(db.Model):
     return check_password_hash(self.password_hash, password)
 
   @staticmethod
-  def insert(username, fullname, email, password, userGroup):
+  def insert(username, fullname, email, password, user_group):
     query = Users.query.filter_by(username=username).first()
     if query is None:
-      user = Users(username, fullname, email, password, userGroup, False)
+      user = Users(username, fullname, email, password, user_group, False)
       db.session.add(user)
       db.session.commit()
     return None

@@ -1,1 +1,1 @@
-heroku pg:pull postgresql-polished-71084 mylocaldb --app evening-forest-28744
+heroku pg:pull postgresql-polished-71084 mylocaldb --app sutd-scheduler

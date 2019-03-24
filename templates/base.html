@@ -1,0 +1,34 @@
+<!doctype html>
+<title>{% block title %}{% endblock %} - SUTD Scheduler</title>
+<link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<nav>
+  <h1>SUTD Scheduler</h1>
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+      <li><a href="{{ url_for('auth.logout') }}">Log Out</a>
+      {% if g.user['user_group'] == "student" %}
+          <li><a href="{{ url_for('scheduler.view_schedule') }}">View Schedule</a>
+          <li><a href="{{ url_for('auth.logout') }}">Choose HASS</a>
+      {% elif g.user['user_group'] == "professor" %}
+          <li><a href="{{ url_for('scheduler.view_schedule') }}">View Schedule</a>
+      {% elif g.user['user_group'] == "course_lead" %}
+          <li><a href="{{ url_for('scheduler.view_schedule') }}">View Schedule</a>
+          <li><a href="{{ url_for('scheduler.add_subject') }}">Add Subject</a>
+      {% endif %}
+    {% else %}
+      <li><a href="{{ url_for('auth.register') }}">Register</a>
+      <li><a href="{{ url_for('auth.login') }}">Log In</a>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>
