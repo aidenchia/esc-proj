@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask_login import login_required, current_user, login_user,logout_user
-from forms import LoginForm
+from forms import LoginForm, RegisterForm
 import os
 from models import Users, Subjects
 
@@ -40,6 +40,9 @@ def courseInput():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+  form = RegisterForm()
+  if form.validate_on_submit():
+    return render_template(url_for('displayUsers'))
   return render_template('register.html')
 
 @app.route("/logout")
