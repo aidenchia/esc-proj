@@ -50,7 +50,7 @@ def logout():
   logout_user()
   return redirect(url_for('login'))
 
-@app.route("/usersTable")
+@app.route("/usersTable", methods=['GET', 'POST'])
 def displayUsers():
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
