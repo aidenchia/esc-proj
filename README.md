@@ -45,6 +45,7 @@ $ heroku config
 ```
 
 ### Database
+
 Follow Heroku documetation to install the necessary tools to use Postgres with Heroku. Then, you can inspect the database as follows.
 ---
 __Inspect database:__
