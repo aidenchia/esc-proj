@@ -31,8 +31,8 @@ def login():
       flash('Invalid username / password')
       return redirect(url_for('login'))
     login_user(user, remember=form.remember_me.data)
-    #return redirect(url_for('courseInput'))
-    return redirect(url_for('register'))
+    return redirect(url_for('courseInput'))
+    #return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
 
 
