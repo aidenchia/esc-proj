@@ -1,0 +1,846 @@
+commit 4ac18d993cc3f85942f0a9b5b3adda6035de41d6
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 14:52:25 2019 +0800
+
+    added functionality: can add new users through register page
+
+commit 5cca7e254ada5d1389d895064da82c32e04c9cae
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 14:15:58 2019 +0800
+
+    trying to add functionality for adding new user
+
+commit 7db78f7cd8a13118c83497b4b4539538575188f9
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 14:01:28 2019 +0800
+
+    add get and post for usersTable
+
+commit ed285988df4063b5688ee5aa786351a8690de645
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 13:57:20 2019 +0800
+
+    linking register to displayUsers
+
+commit 657328483fe93f4668ac038088dae9e930310144
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 13:49:14 2019 +0800
+
+    add usersTable
+
+commit 295bfb580483b2a2e0e2cb44fea42898f41f637a
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 13:25:48 2019 +0800
+
+    added missing fields in register.html
+
+commit 5980c3a139b06f5fdac7497c161e185cb8714297
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 13:21:25 2019 +0800
+
+    adding register page
+
+commit 447601a986bd486b1373b6ac90207cac5c2ee49c
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 24 12:26:54 2019 +0800
+
+    changed to user_group
+
+commit 467954c4aed856a50040f15a7cd1b3fe3047e770
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Mon Mar 18 17:11:31 2019 +0800
+
+    efewfef
+
+commit d992de37f3e5c4ce0073a99bc1d508bf856fd596
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Mon Mar 18 17:05:58 2019 +0800
+
+    set_env_vars
+
+commit ba4786517af179bab066dfcedc47ce1ab266513c
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Mon Mar 18 16:40:25 2019 +0800
+
+    fix bugs
+
+commit 5d73be9c00af9282835b60c6e0d3ef374b2c7a15
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 21:09:19 2019 +0800
+
+    fix bugs
+
+commit 9145147f9f20a0256ace747feb02bec43422b1eb
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 21:04:26 2019 +0800
+
+    fix bugs
+
+commit 5635f8fb0266675612bcc0bfef6494871dd50602
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 20:06:59 2019 +0800
+
+    fix bugs
+
+commit 2a6560a8716f4573c12abbfe95e89816c44f49f1
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 20:01:55 2019 +0800
+
+    fix bugs
+
+commit 1aaa9f512721b976db07d7a0e1ad59569bae63c7
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 19:59:12 2019 +0800
+
+    fix bugs
+
+commit b9a21f1400a553fcd4ddccfb8733dccf82017837
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 19:56:53 2019 +0800
+
+    fix bugs
+
+commit 40ed3aaaa43de30b46f3ed0cf553fea14e7fecbf
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 19:47:12 2019 +0800
+
+    fix bugs
+
+commit 241cf301bfb713e4cb44f7c4b28842424c744b1b
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 19:45:39 2019 +0800
+
+    fix bugs
+
+commit aec378b5c5a5315fcfa697e7df03d58a99336b9b
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 14:23:45 2019 +0800
+
+    fix bugs
+
+commit d2ba2ec23d04f11d19136fd208c176cfb1b23318
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 14:07:52 2019 +0800
+
+    getting alembic to do migration
+
+commit 40cb3f4d9d158f977f3a50363870e15fabab762e
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 13:53:00 2019 +0800
+
+    fix os.environ keyerror
+
+commit a0e3266043d02e2c7393e29837e71f0daaa2195f
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Mar 3 13:48:23 2019 +0800
+
+    removing department from table
+
+commit 9f3649f90a1db8c36bf51a5bf6fa80658dc971aa
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Mar 1 15:14:06 2019 +0800
+
+    remove user works
+
+commit 2acbf309931e08fc7719e16e8cbd063dfd0dd233
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Mar 1 15:06:20 2019 +0800
+
+    test new user works
+
+commit 1f80d327e5b5aea4541c423d398881b184f1f3e7
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Mar 1 13:42:49 2019 +0800
+
+    password hash now working
+
+commit 17a73e244613d5675d7bbdff7117a417d33c5789
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Mar 1 13:21:51 2019 +0800
+
+    drop password column
+
+commit 17d4f3d9c1ff0ddf9815a0dfbc14f4b9ca1bb769
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Mar 1 13:14:45 2019 +0800
+
+    Test cases working now
+
+commit 16b3d7aedb0af82c45869abf169ace1f8b8ac455
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 28 08:30:29 2019 +0800
+
+    pytest command line testing works
+
+commit 1670d6e18808fca3b484869f31d721a64b826511
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 28 00:32:54 2019 +0800
+
+    simple test via pytest is working
+
+commit 0d5dc2562f8a6d6d4ed05f3cc6d41664e9c3ac0a
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Mon Feb 25 17:42:14 2019 +0800
+
+    sfefe
+
+commit 237642b950cd1382dcadc8530c5224a5326630b0
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Mon Feb 25 00:47:45 2019 +0800
+
+    sfewf
+
+commit 4b2c0b1e442209ca7f9b6bbdee6c701e396560d4
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 24 23:33:43 2019 +0800
+
+    efwf
+
+commit 271858269b1cdbf2b775a461bd73d7d85f7a4994
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 17:45:12 2019 +0800
+
+    wefwfrg
+
+commit 999f2e6f354334d62350f601064d50ee6b8dc8dd
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 16:38:06 2019 +0800
+
+    ewfwf
+
+commit 982742d33cc52a0887597e5c934e99b583922a9c
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 15:28:42 2019 +0800
+
+    fewfer
+
+commit 16ff77e56650a9a1bdf4e11c507b35c06b925497
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 15:26:16 2019 +0800
+
+    fefef
+
+commit 93c0bb0c4c2a3d9bfba69486b56afdf2cb1af17a
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 15:23:27 2019 +0800
+
+    fwfefe
+
+commit 2e5c839a3d3ded19d6585a150de241912815bbdc
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 15:21:40 2019 +0800
+
+    fweffE
+
+commit dbe3056578d3440d6a551faca61e67d47e4b6ee3
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 15:18:35 2019 +0800
+
+    fewfef
+
+commit 9e125bcdad9827736ea0a6b6dc2d935d4f2c600b
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 14:55:52 2019 +0800
+
+    feg
+
+commit 6b070985f37e9f78e9afe164e330b20f0611697b
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 14:48:40 2019 +0800
+
+    sfew
+
+commit e13bfecabedee1caa995c4548637f7c388426251
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 14:05:00 2019 +0800
+
+    fewfwe
+
+commit 624fdfe3b610bf98fb14837efa19b3bbcc1897ae
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:46:31 2019 +0800
+
+    sfewf
+
+commit 7deabab0e51941d0a748d81ca7cce9958193afcc
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:43:52 2019 +0800
+
+    rfwef
+
+commit 5446c6a702d791e3b2cbd2be039452d9f633ab99
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:40:44 2019 +0800
+
+    GEWFDF
+
+commit 0b496c5ff413d52d4cc97c5b8744cbf6df31fc87
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:38:07 2019 +0800
+
+    wefwf
+
+commit 2ed0f7ae5d7a4c0170f4e638e6269304606eebb9
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:30:55 2019 +0800
+
+    wefwf
+
+commit 39aded89da12554e99996cac3acc69eaa5634cfe
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:28:37 2019 +0800
+
+    wfwef
+
+commit 7a45b0a6965d6ebf999633e19dc791210840029d
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:27:36 2019 +0800
+
+    wfwef
+
+commit 3bb11a398c0bb8b14db50f90deae6cd23ca70090
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:25:07 2019 +0800
+
+    wfwef
+
+commit b86e8740c692c0c121234837092e3cbbf29f1a23
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 13:23:03 2019 +0800
+
+    efwg
+
+commit eee833481025871a4f5cf178b3abc25b5498c739
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 12:26:21 2019 +0800
+
+    sfewweg
+
+commit 42be7bffea438dd0b19029a72d782b92c399e904
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 12:24:54 2019 +0800
+
+    fewffwgr
+
+commit 854380b151c94cbac74feb80df92af3ad3ee79a1
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 12:17:28 2019 +0800
+
+    fefwef'
+
+commit bdf95ed069bd27b32714eaf5334ff69d64cd2166
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 12:14:50 2019 +0800
+
+    fewfw
+
+commit dad4a8de0596021d89a0c87c8464a05a6e942134
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 12:11:29 2019 +0800
+
+    fewfew
+
+commit 213310e350bfb8373c92f778c42133d5b8cacb24
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 11:41:31 2019 +0800
+
+    Afewef
+
+commit 58122208a246c95a1869fa3dbcb5bf3f3ae7de82
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 11:12:48 2019 +0800
+
+    fweie
+
+commit 492a5f49dc1b0d9a55b6a7626ac66ee8b76be959
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 11:06:59 2019 +0800
+
+    cleaning up database
+
+commit b841d67399f6973d91c23a8c862845fdf0ed77f9
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 02:53:46 2019 +0800
+
+    dfd
+
+commit 6d5e77c274d0023d746954eed1a3acf18e60e96b
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 02:27:10 2019 +0800
+
+    sfewf
+
+commit 510d544f07dd6256fb6e724876fa09090112d4ee
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 02:07:49 2019 +0800
+
+    gfwefew
+
+commit 0f54db8f24fa8fb1fc6bb12303733564443dec7e
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 02:01:47 2019 +0800
+
+    fewvf
+
+commit 26e7c555bdd3d772617f84237d503fe38163f91d
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 01:57:13 2019 +0800
+
+    efwefe
+
+commit 077e10f41b1f63e92ba9b8fc6bac8c1d45b8db9d
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 01:48:29 2019 +0800
+
+    adsf
+
+commit 9475b1f60aaa6323864774f726eb7460dc562e51
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 01:46:26 2019 +0800
+
+    fwf
+
+commit cab38770a0dc721bbe8f34375dfa0e3962c7e546
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 01:43:03 2019 +0800
+
+    fvds'
+    :
+
+commit cf98def9add02de7846debb07eaed2d95d34b080
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 01:24:39 2019 +0800
+
+    wefew
+
+commit f82a2942a22a0e90432164b6211d8f5f0afc935e
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 01:20:43 2019 +0800
+
+    fwefe
+
+commit 9cb0b7178f52292e8e48f4815a177a5655663bff
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 01:02:05 2019 +0800
+
+    changing favicon
+
+commit ff995e0f70e4a455f1e20d7519a595616aa1a751
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 00:55:08 2019 +0800
+
+    WFW
+
+commit 58241e98877003532e837b0d915ffcbf6beafe63
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 00:47:19 2019 +0800
+
+    Fvwed
+
+commit e3d90a0c4569138071ba6b9487ce56e931efd816
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 00:39:58 2019 +0800
+
+    wefw
+
+commit a14d7468c608fa6323fe49d48f82f3d430a803e6
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 00:36:02 2019 +0800
+
+    fds
+
+commit d8b0419c1db608277a3b6aa7fe24ffbe73f7967e
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 00:27:04 2019 +0800
+
+    fewd
+
+commit 2ef33ff2aa2ff9029ec312d077366dd73bebe3b8
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 00:19:45 2019 +0800
+
+    afewvd
+
+commit c343206eded96c77d3a2a8f524654b339b246aad
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Thu Feb 21 00:17:31 2019 +0800
+
+    afewvd
+
+commit 0dd64424049547f879bd5120db142e9e47440bfb
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:54:31 2019 +0800
+
+    wfew
+
+commit 1cdce06289df2cfaa77c1364f6942f100939dd6a
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:50:31 2019 +0800
+
+    blah
+
+commit 0e00575b79f00edc31809e00cf0d53698a44921a
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:48:20 2019 +0800
+
+    blah
+
+commit 2c209e05e24e7fb294cb60a4ac7e2c6cc2cccffe
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:30:46 2019 +0800
+
+    flask-sqlalchemy
+
+commit 21acf218c28c989b8482d1fdd6f5bc7cf410fd17
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:29:52 2019 +0800
+
+    flask-sqlalchemy
+
+commit 89a2a13f96062b83afb5c17a5ed69472b9120382
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:15:51 2019 +0800
+
+    adding if else
+
+commit 2f9223a6dcee5df3f55b19065b7a5613c62f12d1
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:11:34 2019 +0800
+
+    bug
+
+commit 33698d5adf5d96f5fa26c73b73bd8b37ee999b36
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:07:58 2019 +0800
+
+    bugs
+
+commit c45981df8497de0586bdb9d3d5b3efec62fd4c73
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 23:05:10 2019 +0800
+
+    bug
+
+commit ddf17736f6e6f5e97f0dc3d14351cd300dadb0ce
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 22:58:49 2019 +0800
+
+    db Subjects
+
+commit 8611935d6ac93e3d30beaa951e790e936ca6742f
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 22:49:45 2019 +0800
+
+    figuring out flask sqlalchemy
+
+commit 2120a4b92b003da9dcb518259b7b79ce8596e520
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 22:44:13 2019 +0800
+
+    fuck psycopg2, use flask-sqlalchemy instead
+
+commit e9fd5aacfbdf3aad5541badae2a5881a9063bd7c
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 21:33:24 2019 +0800
+
+    fuck psycopg2
+
+commit 2e95d49f7211c5923906b04fb6f58b904d27df62
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 21:30:23 2019 +0800
+
+    trying out the damn psycopg2
+
+commit 137bbc2e338b0840190df3098f02fdd514245449
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 17:47:30 2019 +0800
+
+    adding parentheses
+
+commit a73b6a5455fe33cb7a30a20693b755cdf22f7b00
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 17:44:14 2019 +0800
+
+    follow psycopg2 best practice
+
+commit 9152a646fb273dfdfd257b8f9878869a877193ab
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 17:39:19 2019 +0800
+
+    using psycopg best practice
+
+commit 061e3fc49a2a07b68f2458e6e5f63a2bd99627d6
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 17:34:31 2019 +0800
+
+    adding subjectCode
+
+commit c0fe722c45766b8dd5caea338c8d2d73549c50c6
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 17:24:07 2019 +0800
+
+    formatting
+
+commit 252471ef1d02a1b3b7eea624ebe3ec71077b8abe
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 17:22:17 2019 +0800
+
+    wrong formatting
+
+commit fa4f12696645b53da2cfd3ef0523442375ca2b86
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 17:17:54 2019 +0800
+
+    util
+
+commit 9ef52ce1de27b9048c264d81372d324ff5c65057
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 15:15:38 2019 +0800
+
+    silly mistake
+
+commit 51579dd0967e31dff650b05738005a9391f3c020
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 15:13:36 2019 +0800
+
+    making util functions for database commands
+
+commit 31ab918f7842a5e9c0b7a4395d4a755efa4fcf5f
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 14:49:02 2019 +0800
+
+    see if can get term data
+
+commit 34005080fdaaa21cb240dabe332a10bd07678c17
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 14:46:31 2019 +0800
+
+    seeing if i can get the request form data
+
+commit 57fd9e6aa5adbdf34f4f1d493421d564ade8a014
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 20 14:41:09 2019 +0800
+
+    adding form action POST request
+
+commit d352a622a1578c073d6ab832b5e56ff3ca0f22e2
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:41:13 2019 +0800
+
+    making syntax change in create table
+
+commit 2bdb9d24a2b1c4a9514fd620128bdf1a3a75b9d7
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:35:02 2019 +0800
+
+    create table without if not exists
+
+commit 687d7a0c14501127aa88f37e6bb1bf64b57746af
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:29:26 2019 +0800
+
+    adding semicolon
+
+commit 4755064ded0e8f820f9fd1e19c9c317137b963af
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:25:29 2019 +0800
+
+    create table if not exists
+
+commit 423cea6b9da03d4a82c917b08dfb1d93f7848a0c
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:24:10 2019 +0800
+
+    create table directly
+
+commit 083c8cc9c7cbfacf29094d2b1307b5db399345c4
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:19:15 2019 +0800
+
+    making relase db upgrade command in Procfile
+
+commit b3a7789ee886514fd7013d887debcb54172949be
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:11:02 2019 +0800
+
+    trying create_all() with heroku now
+
+commit 96f53ac1ce4de8f14023cffc69a298c56ae37421
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 11:03:54 2019 +0800
+
+    testing out database
+
+commit 64739614fe1e54ea7e0e6b446da259dde3e71017
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 09:21:13 2019 +0800
+
+    adding the right database url
+
+commit 28718b0efa4a4fe190728778762716a9e11005f0
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 09:14:48 2019 +0800
+
+    trying to connect to database
+
+commit f270246e70ce7cb303c05e611f654198904ab727
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 02:54:19 2019 +0800
+
+    adding toy display database data
+
+commit 1fdacc33d50b540861349a17de1f49b2bdf5cd56
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 02:01:54 2019 +0800
+
+    integrating postgreSQL database with alembic as migrator
+
+commit b5991afcac017059aa96246ff9a827eef23ef39c
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 00:37:09 2019 +0800
+
+    adding .env file
+
+commit ce73e1f08d69b2c07a0e504b72cfae4e1a9c30ce
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sun Feb 17 00:26:18 2019 +0800
+
+    changed name to app.py to follow convention
+
+commit a710d0f3c99ac2753910287baa05877a4238e6be
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 23:12:01 2019 +0800
+
+    removed ContactForm dir and create proper config.py
+
+commit e1e85caeefd8d6fe6568a5f65c6928f30ce01681
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 18:13:37 2019 +0800
+
+    adding in all inputs
+
+commit c9c654512a7e5d40f888aed4ffa5634133cefda4
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 17:57:06 2019 +0800
+
+    change favicon
+
+commit 88e1c5fd100b003df125df0710f9d04feb0e7450
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 17:50:25 2019 +0800
+
+    making changes to input types
+
+commit 001bb6651bdeea18088f171597370d7b086cd7dd
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 17:44:49 2019 +0800
+
+    filling up 2/3 of the inputs
+
+commit 2ffb93bb5097b256ac3c764c5a45e69ef6fea824
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 17:35:31 2019 +0800
+
+    fixing inputs
+
+commit 1be0317199c66474eed961ea9a2233d60612ae1c
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 17:27:08 2019 +0800
+
+    making changes to input fields
+
+commit 81fe146cb981b98edddb1e3e09877b077fbb6e43
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 17:01:01 2019 +0800
+
+    fixing css
+
+commit 130288b1033afb84fde64e82a4de25412391c61a
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 16:58:09 2019 +0800
+
+    fixing css error
+
+commit 105f5142639d4cdb652831c03583bc9f7a6ad656
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 16:51:00 2019 +0800
+
+    trying to get the css to work
+
+commit 1d24d39d998c0d1001d3e7b3610ca545f4bc0592
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 16:46:47 2019 +0800
+
+    made a silly syntax error, fixing relative path to img
+
+commit 7106e252cf6eec6b988a65af8858accf5b34060f
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 16:44:44 2019 +0800
+
+    fixing path problem
+
+commit 97b182f6647597e65bc29c5e45aa75ab52e41ae4
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Sat Feb 16 16:38:02 2019 +0800
+
+    adding some template
+
+commit a3f85c7dec3837c6ad3a4029f8ebcac2dae3548f
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Feb 15 12:54:54 2019 +0800
+
+    adding W3 schools form template
+
+commit 49b65bad173f2c810ece35e6145038b23979923a
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Feb 15 12:12:40 2019 +0800
+
+    adding more fields
+
+commit 619bc18cf3f9fedc7d7d42f870e6ad5358225bb4
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Feb 15 10:27:32 2019 +0800
+
+    making small changes to fields in course details
+
+commit 1916aa0d1d3961da7bc8d277c2d8b06001700f5f
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Feb 15 09:56:31 2019 +0800
+
+    moving secret key outside of name main block
+
+commit d7c8cc9a94dc8094f6abcfd55f4402796701952f
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Feb 15 09:53:07 2019 +0800
+
+    adding secret key
+
+commit 91d463d3f7445a82f598030ba52c55e8f784ae13
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Fri Feb 15 09:37:20 2019 +0800
+
+    adding example input page
+
+commit 4cb539284acbf08d7b96fc325d1b628ff4692286
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 13 17:45:00 2019 +0800
+
+    changed Procfile again
+
+commit 0073b29b9247d7d7ebd9cbfd7a233a37c8565f96
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 13 17:41:25 2019 +0800
+
+    changed Procfile to app instead
+
+commit 781ff495324b536486b33715314159aa2ef531fd
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 13 17:39:29 2019 +0800
+
+    made change to Procfile
+
+commit beeea8eb2388cd04226bee9e0863bc284d9c1599
+Author: Aiden Chia <aidenchia95@gmail.com>
+Date:   Wed Feb 13 17:35:14 2019 +0800
+
+    demo

@@ -65,10 +65,8 @@ def displaySubjects():
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-  form = RegisterForm()
-  if form.validate_on_submit():
-    return form.username.data
-  return render_template('register.html', form=form)
+  #form = RegisterForm()
+  return render_template('register.html')
 
 @app.route("/usersTable", methods=['GET', 'POST'])
 def displayUsers():
