@@ -1,5 +1,7 @@
-<link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
-<link rel="stylesheet" href="/static/style.css" type="text/css">
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Login{% endblock %}</h1>
+{% endblock %}
 {% block content %}
     <form action="" method="POST">
         {{form.csrf_token}}

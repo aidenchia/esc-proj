@@ -1,15 +1,34 @@
-<!DOCTYPE html>
-<body>
-<html>
-
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Resgister{% endblock %}</h1>
+{% endblock %}
+{% block content %}
 <form id='register-users' action="/usersTable", method="POST">
-Username: <input type="text" name="username"><br>
-Full Name: <input type="text" name="fullname"><br>
-Email: <input type="text" name="email"><br>
-Password: <input type="text" name="password"><br>
-User Group: <input type="text" name="user_group"><br>
-<input type="submit" value="Confirm">
-</form>
-
-</body>
-</html>
+    <label for="username">Username: </label>
+    <input name="username" id="username"><br/><br/>
+    
+    <label for="fullname">Full Name: </label>
+    <input name="fullname" id="fullname"><br/><br/>
+    
+    <label for="password">Password: </label>
+    <input type="password" name="password" id="password"><br/><br/>
+    
+    <label for="confirmPassword">Password: </label>
+    <input type="password" name="confirmPassword" id="confirmPassword"><br/><br/>
+    
+    <label for="email">Email: </label>
+    <input name="email" id="email"><br/><br/>
+    
+    <label for="user_group">User_Group: </label>
+    <select name="user_group" id="user_group">
+      <option value="nothing"></option>
+      <option value="admin">Admin</option>
+      <option value="pillar_head">Pillar Head</option>
+      <option value="course_lead">Subject Lead</option>
+      <option value="professor">Professor</option>
+      <option value="student">Student</option>
+    </select><br/><br/>
+    
+    <input type="submit" value="Confirm">
+  </form>
+{% endblock %}

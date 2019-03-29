@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" >
-
+{% extends 'base.html' %}
+{% block header %}
 <head>
   <meta charset="UTF-8">
-  <title>Table of Subjects</title>
+  <title>{% block title %}Table of Subjects{% endblock %}</title>
     <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 
@@ -12,9 +11,9 @@
 
   
 </head>
-
+{% endblock %}
+{% block content %}
 <body>
-
   <section>
   <!--for demo wrap-->
   <h1>Subject Details</h1>
@@ -33,35 +32,12 @@
   <div class="tbl-content">
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
+      {% for eachresult in result %}
         <tr>
-          <td>{{result[0].subjectCode}}</td>
-          <td>{{result[0].subjectName}} </td>
-          <td>{{result[0].subjectType}}</td>
-          <td>{{result[0].term}}</td>
-        </tr>
-        <tr>
-          <td>{{result[1].subjectCode}}</td>
-          <td>{{result[1].subjectName}}</td>
-          <td>{{result[1].subjectType}}</td>
-          <td>{{result[1].term}}</td>
-        </tr>
-        <tr>
-          <td>{{result[2].subjectCode}}</td>
-          <td>{{result[2].subjectName}}</td>
-          <td>{{result[2].subjectType}}</td>
-          <td>{{result[2].term}}</td>
-        </tr>
-        <tr>
-          <td>{{result[3].subjectCode}}</td>
-          <td>{{result[3].subjectName}}</td>
-          <td>{{result[3].subjectType}}</td>
-          <td>{{result[3].term}}</td>
-        </tr>
-        <tr>
-          <td>{{result[4].subjectCode}}</td>
-          <td>{{result[4].subjectName}}</td>
-          <td>{{result[4].subjectType}}</td>
-          <td>{{result[4].term}}</td>
+          <td>{{eachresult.subjectCode}}</td>
+          <td>{{eachresult.subjectName}} </td>
+          <td>{{eachresult.subjectType}}</td>
+          <td>{{eachresult.term}}</td>
         </tr>
       </tbody>
     </table>
@@ -85,5 +61,5 @@
 
 
 </body>
-
+{% endblock %}
 </html>

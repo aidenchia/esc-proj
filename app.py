@@ -3,6 +3,7 @@ from flask import flash, g, redirect, render_template, url_for, request, session
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm
 from models import Users, Subjects
+import functools
 import os
 import sys
 
@@ -16,6 +17,31 @@ with app.app_context():
   db.init_app(app)
   db.create_all()
   login_manager.init_app(app)
+  
+
+######################################## Wrapper for roles required #################
+def Roles(included=True, *role):
+    """
+    if included is true, means any roles that is typed must match the user's user_group.
+    
+    if included is true, means any roles that is typed must NOT match the user's user_group.
+    """
+    def decorater(view):
+        @functools.wraps(view)
+        def wrapped_view(*args,**kwargs):
+            if current_user.is_authenticated:
+                if included:
+                    if current_user.user_group not in role:
+                        return redirect(url_for('auth.login'))
+                else:
+                    if current_user.user_group in role:
+                        return redirect(url_for('auth.login'))
+            else:
+                return redirect(url_for('auth.login'))
+            return view(*args,**kwargs)
+        return wrapped_view
+    return decorater
+
  
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
@@ -64,6 +90,8 @@ def displaySubjects():
 
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
+@login_required
+@Roles("admin")
 def register():
   #form = RegisterForm()
   return render_template('register.html')
@@ -80,9 +108,10 @@ def displayUsers():
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
 
-
-
-
+@app.route("/home", methods=['GET','POST'])
+@login_required
+def index():
+    return render_template("base.html",)
 
   
 if __name__ == "__main__":
