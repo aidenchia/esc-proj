@@ -72,8 +72,9 @@ def logout():
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
-@Roles("student")
+#@Roles("student")
 def courseInput():
+    flash(str(current_user.user_group))
     return render_template('index.html')
 
 @app.route("/database", methods=['GET','POST'])
@@ -94,9 +95,10 @@ def displaySubjects():
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
 @login_required
-@Roles("admin")
+#@Roles("admin")
 def register():
   #form = RegisterForm()
+  flash(str(current_user.user_group))
   return render_template('register.html')
 
 @app.route("/usersTable", methods=['GET', 'POST'])
