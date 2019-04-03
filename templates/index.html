@@ -1,7 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>Contact V4</title>
+{% extends 'base.html' %}
+
+{% block header %}
+	<title>{% block title %}Contact V4{% endblock %}</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -24,8 +24,8 @@
 	<link rel="stylesheet" type="text/css" href="/static/css/util.css">
 	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
 <!--===============================================================================================-->
-</head>
-<body>
+{% endblock %}
+{% block content %}
 
 	<form action="/database" method="POST"> 
 		<div class="container-contact100">
@@ -223,5 +223,5 @@
   gtag('config', 'UA-23581568-13');
 </script>
 
-</body>
+{% endblock %}
 </html>
