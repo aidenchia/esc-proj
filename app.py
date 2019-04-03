@@ -29,10 +29,10 @@ def Roles(included=True, *role):
     def decorater(view):
         @functools.wraps(view)
         def wrapped_view(*args,**kwargs):
+            flash(str(current_user.user_group))
+            flash(str(role))
             if current_user.is_authenticated:
                 if included:
-                    flash(str(current_user.user_group))
-                    flash(str(role))
                     if current_user.user_group not in role:
                         return redirect(url_for('login'))
                 else:
