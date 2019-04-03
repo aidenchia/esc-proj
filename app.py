@@ -55,11 +55,10 @@ def login():
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
     flash(str(user))
-    if user is None or not user.check_password(form.password.data):
-      flash('Invalid username / password')
-      return redirect(url_for('login'))
-    login_user(user, remember=form.remember_me.data)
-    return redirect(url_for('courseInput'))
+    if user is not None and user.check_password(form.password.data):
+        login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('courseInput'))
+    flash('Invalid username / password')    
     #return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
 
@@ -67,6 +66,7 @@ def login():
 @app.route("/logout")
 def logout():
   logout_user()
+  session.clear()
   return redirect(url_for('login'))
 
 ########################################## COURSE LEAD ##########################
