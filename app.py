@@ -24,7 +24,7 @@ def Roles(included=True, *role):
     """
     if included is true, means any roles that is typed must match the user's user_group.
     
-    if included is true, means any roles that is typed must NOT match the user's user_group.
+    if included is false, means any roles that is typed must NOT match the user's user_group.
     """
     def decorater(view):
         @functools.wraps(view)
@@ -53,7 +53,7 @@ def login():
   form = LoginForm()
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
-    flash(user)
+    flash(str(user))
     if user is None or not user.check_password(form.password.data):
       flash('Invalid username / password')
       return redirect(url_for('login'))
