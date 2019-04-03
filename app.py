@@ -72,6 +72,7 @@ def logout():
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
+@Roles("student")
 def courseInput():
     return render_template('index.html')
 
