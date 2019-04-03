@@ -25,12 +25,12 @@
           <li><a href="{{ url_for('logout') }}">View Schedule</a>
       {% elif current_user.user_group == "course_lead" %}
           <li><a href="{{ url_for('logout') }}">View Schedule</a>
-          <li><a href="{{ url_for('logout') }}">Add Subject</a>
+          <li><a href="{{ url_for('courseInput') }}">Add Subject</a>
       {% elif current_user.user_group == "admin" %}
           <li><a href="{{ url_for('logout') }}">View All Schedules</a>
-          <li><a href="{{ url_for('logout') }}">Add new user</a>
+          <li><a href="{{ url_for('register') }}">Add new user</a>
           <li><a href="{{ url_for('logout') }}">Remove user</a>
-          <li><a href="{{ url_for('logout') }}">Add Subject</a>
+          <li><a href="{{ url_for('courseInput') }}">Add Subject</a>
       {% endif %}
     {% else %}
       <li><a href="{{ url_for('register') }}">Register</a>

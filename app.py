@@ -32,12 +32,12 @@ def Roles(included=True, *role):
             if current_user.is_authenticated:
                 if included:
                     if current_user.user_group not in role:
-                        return redirect(url_for('auth.login'))
+                        return redirect(url_for('login'))
                 else:
                     if current_user.user_group in role:
-                        return redirect(url_for('auth.login'))
+                        return redirect(url_for('login'))
             else:
-                return redirect(url_for('auth.login'))
+                return redirect(url_for('login'))
             return view(*args,**kwargs)
         return wrapped_view
     return decorater
@@ -45,7 +45,6 @@ def Roles(included=True, *role):
  
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/login', methods=['GET','POST'])
 def login():
   if current_user.is_authenticated:
     return redirect(url_for('courseInput'))
