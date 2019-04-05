@@ -54,8 +54,8 @@ def Roles(included=True, *role):
  
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
-generateSchedule()
 def login():
+  generateSchedule()
   if current_user.is_authenticated:
     return redirect(url_for('courseInput'))
 
