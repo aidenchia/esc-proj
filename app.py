@@ -18,10 +18,6 @@ with app.app_context():
   db.create_all()
   login_manager.init_app(app)
 
-def genSchedule():
-  import subprocess
-  subprocess.call(['javac', 'Scheduler.java'])
-  subprocess.call(['java', 'Scheduler'])
 
 ######################################## Wrapper for roles required #################
 def Roles(included=True, *role):
@@ -52,7 +48,6 @@ def Roles(included=True, *role):
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
 def login():
-  genSchedule()
   if current_user.is_authenticated:
     return redirect(url_for('courseInput'))
 
@@ -122,6 +117,12 @@ def displayUsers():
 @login_required
 def index():
     return render_template("base.html",)
+
+######################################## Scheduling algorithm #################
+def genSchedule():
+  import subprocess
+  subprocess.call(['javac', 'Scheduler.java'])
+  subprocess.call(['java', 'Scheduler'])
 
   
 if __name__ == "__main__":
