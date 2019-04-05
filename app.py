@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
+from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm
 from models import Users, Subjects
