@@ -47,8 +47,8 @@ def Roles(included=True, *role):
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
 def login():
-  #import subprocess
-  #subprocess.call(['java'], ['Scheduler'])
+  import subprocess
+  subprocess.call(['java', 'javaTest'])
 
   if current_user.is_authenticated:
     return redirect(url_for('courseInput'))
