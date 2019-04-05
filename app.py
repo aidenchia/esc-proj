@@ -19,6 +19,13 @@ with app.app_context():
   login_manager.init_app(app)
   
 
+######################################## Call Scheduling algo #################
+def generateSchedule():
+  import subprocess
+  subprocess.call(['java'], ['Scheduler'])
+
+
+
 ######################################## Wrapper for roles required #################
 def Roles(included=True, *role):
     """
@@ -47,6 +54,7 @@ def Roles(included=True, *role):
  
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
+generateSchedule()
 def login():
   if current_user.is_authenticated:
     return redirect(url_for('courseInput'))
