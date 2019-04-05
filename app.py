@@ -17,14 +17,6 @@ with app.app_context():
   db.init_app(app)
   db.create_all()
   login_manager.init_app(app)
-  
-
-######################################## Call Scheduling algo #################
-def generateSchedule():
-  import subprocess
-  subprocess.call(['java'], ['Scheduler'])
-
-
 
 ######################################## Wrapper for roles required #################
 def Roles(included=True, *role):
@@ -55,7 +47,8 @@ def Roles(included=True, *role):
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
 def login():
-  generateSchedule()
+  import subprocess
+  subprocess.call(['java'], ['Scheduler'])
   if current_user.is_authenticated:
     return redirect(url_for('courseInput'))
 
