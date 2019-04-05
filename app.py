@@ -48,6 +48,7 @@ def Roles(included=True, *role):
 @app.route('/', methods=['GET', 'POST'])
 def login():
   import subprocess
+  subprocess.call(['javac', 'Scheduler.java'])
   subprocess.call(['java', 'Scheduler'])
 
   if current_user.is_authenticated:
