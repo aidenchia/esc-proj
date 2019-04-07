@@ -49,16 +49,23 @@ def Roles(included=True, *role):
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
 def login():
-  #if current_user.is_authenticated:
-    #return redirect(url_for('courseInput'))
+  if current_user.is_authenticated:
+    return redirect(url_for('courseInput'))
 
   form = LoginForm()
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
     if user is not None and user.check_password(form.password.data):
         login_user(user)
-        next = request.args.get('next')
-        return redirect(next or url_for('courseInput'))
+        if user.user_group == 'student':
+          return redirect(url_for('viewSchedule'))
+        
+        elif user.user_group == 'admin':
+          return redirect(url_for('register'))
+
+        elif user.user_group == 'course_lead':
+          return redirect(url_for('courseInput'))
+
     flash('Invalid username / password')    
     #return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
