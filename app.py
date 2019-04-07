@@ -17,6 +17,7 @@ with app.app_context():
   db.init_app(app)
   db.create_all()
   login_manager.init_app(app)
+  login_manager.login_view = "login"
 
 
 ######################################## Wrapper for roles required #################
@@ -48,15 +49,16 @@ def Roles(included=True, *role):
 ########################################## ALL USERS ##########################
 @app.route('/', methods=['GET', 'POST'])
 def login():
-  if current_user.is_authenticated:
-    return redirect(url_for('courseInput'))
+  #if current_user.is_authenticated:
+    #return redirect(url_for('courseInput'))
 
   form = LoginForm()
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
     if user is not None and user.check_password(form.password.data):
         login_user(user)
-        return redirect(url_for('courseInput'))
+        next = request.args.get('next')
+        return redirect(next or url_for('courseInput'))
     flash('Invalid username / password')    
     #return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
