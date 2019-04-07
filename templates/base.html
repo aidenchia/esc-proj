@@ -15,30 +15,27 @@
     {% endif %}
   {% endwith %}
 
-  <ul>
     {% if current_user.is_authenticated %}
-      <li><span>{{ current_user.username }}</span>
-      <li><a href="{{ url_for('logout') }}">Log Out</a>
-      {% if current_user.user_group == "student" %}
-          <li><a href="{{ url_for('logout') }}">View Schedule</a>
-          <li><a href="{{ url_for('logout') }}">Choose HASS</a>
-      {% elif current_user.user_group == "Professor" %}
-          <li><a href="{{ url_for('logout') }}">View Schedule</a>
+      <span>{{ current_user.username }}</span>
+      <a href="{{ url_for('logout') }}">Log Out</a> |
+      {% if current_user.user_group == "student" %} 
+          <a href="{{ url_for('logout') }}">View Schedule</a> |
+          <a href="{{ url_for('logout') }}">Choose HASS</a> |
+      {% elif current_user.user_group == "professor" %}
+          <a href="{{ url_for('logout') }}">View Schedule</a> |
       {% elif current_user.user_group == "course_lead" %}
-          <li><a href="{{ url_for('logout') }}">View Schedule</a>
-          <li><a href="{{ url_for('courseInput') }}">Add Subject</a>
+          <a href="{{ url_for('logout') }}">View Schedule</a> | 
+          <a href="{{ url_for('courseInput') }}">Add Subject</a> |
       {% elif current_user.user_group == "admin" %}
-          <li><a href="{{ url_for('logout') }}">View All Schedules</a>
-          <li><a href="{{ url_for('register') }}">Add new user</a>
-          <li><a href="{{ url_for('logout') }}">Remove user</a>
-          <li><a href="{{ url_for('courseInput') }}">Add Subject</a>
+          <a href="{{ url_for('logout') }}">View All Schedules</a> |
+          <a href="{{ url_for('register') }}">Add new user</a> |
+          <a href="{{ url_for('logout') }}">Remove user</a> |
+          <a href="{{ url_for('courseInput') }}">Add Subject</a> |
       {% endif %}
     {% else %}
-      <li><a href="{{ url_for('register') }}">Register</a>
-      <li><a href="{{ url_for('login') }}">Log In</a>
+      <a href="{{ url_for('register') }}">Register</a>
+      <a href="{{ url_for('login') }}">Log In</a>
     {% endif %}
-  </ul>
-  
 </nav>
 <section class="content">
   <header>

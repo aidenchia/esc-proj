@@ -29,8 +29,8 @@ def Roles(included=True, *role):
     def decorater(view):
         @functools.wraps(view)
         def wrapped_view(*args,**kwargs):
-            flash(str(current_user.user_group))
-            flash(str(role))
+            #flash(str(current_user.user_group))
+            #flash(str(role))
             if current_user.is_authenticated:
                 if included:
                     if current_user.user_group not in role:
@@ -54,9 +54,8 @@ def login():
   form = LoginForm()
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
-    flash(str(user))
     if user is not None and user.check_password(form.password.data):
-        login_user(user, remember=form.remember_me.data)
+        login_user(user)
         return redirect(url_for('courseInput'))
     flash('Invalid username / password')    
     #return redirect(url_for('register'))
@@ -74,7 +73,7 @@ def logout():
 @login_required
 #@Roles("student")
 def courseInput():
-    flash(str(current_user.user_group))
+    #flash(str(current_user.user_group))
     return render_template('index.html')
 
 @app.route("/database", methods=['GET','POST'])
