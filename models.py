@@ -80,7 +80,7 @@ class Users(db.Model):
     return False
 
   @login_manager.user_loader
-  def user_loader(username):
+  def load_user(username):
     return Users.query.get(username)
 
   def check_password(self, password):

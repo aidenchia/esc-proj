@@ -2,6 +2,7 @@
 <title>{% block title %}{% endblock %} - SUTD Scheduler</title>
 <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
 <nav>
   <h1>SUTD Scheduler</h1>
   {% with messages = get_flashed_messages() %}
@@ -37,6 +38,7 @@
       <li><a href="{{ url_for('login') }}">Log In</a>
     {% endif %}
   </ul>
+  
 </nav>
 <section class="content">
   <header>

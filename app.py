@@ -121,8 +121,9 @@ def index():
 ######################################## Scheduling algorithm #################
 def genSchedule():
   import subprocess
-  subprocess.call(['javac', 'Scheduler.java'])
-  subprocess.call(['java', 'Scheduler'])
+  wd = './javaFiles'
+  subprocess.call(['javac', 'Scheduler.java'], cwd=wd)
+  subprocess.call(['java', 'Scheduler'], cwd=wd)
 
   
 if __name__ == "__main__":
