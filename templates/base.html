@@ -23,7 +23,7 @@
           <a href="{{ url_for('logout') }}">Choose HASS</a> |
       {% elif current_user.user_group == "professor" %}
           <a href="{{ url_for('logout') }}">View Schedule</a> |
-      {% elif current_user.user_group == "course_lead" %}
+      {% elif current_user.user_group == "subject_lead" %}
           <a href="{{ url_for('logout') }}">View Schedule</a> | 
           <a href="{{ url_for('courseInput') }}">Add Subject</a> |
       {% elif current_user.user_group == "admin" %}

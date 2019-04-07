@@ -63,7 +63,7 @@ def login():
         elif user.user_group == 'admin':
           return redirect(url_for('register'))
 
-        elif user.user_group == 'course_lead':
+        elif user.user_group == 'pillar_head':
           return redirect(url_for('courseInput'))
 
     flash('Invalid username / password')    
@@ -106,7 +106,7 @@ def displaySubjects():
 #@Roles("admin")
 def register():
   #form = RegisterForm()
-  flash(str(current_user.user_group))
+  #flash(str(current_user.user_group))
   return render_template('register.html')
 
 @app.route("/usersTable", methods=['GET', 'POST'])
