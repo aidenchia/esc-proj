@@ -105,8 +105,14 @@ def displaySubjects():
 @login_required
 #@Roles("admin")
 def register():
-  #form = RegisterForm()
   #flash(str(current_user.user_group))
+  Users.insert(
+        request.form['username'],
+        request.form['fullname'],
+        request.form['email'],
+        request.form['password'],
+        request.form['user_group'])
+  
   return render_template('register.html')
 
 @app.route("/usersTable", methods=['GET', 'POST'])
