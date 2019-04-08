@@ -3,7 +3,7 @@
   <h1>{% block title %}Resgister{% endblock %}</h1>
 {% endblock %}
 {% block content %}
-<form id="register-users" method="POST">
+<form id="register-users" action="/usersTable" method="POST">
     <label for="username">Username: </label>
     <input name="username" id="username"><br/><br/>
     
@@ -24,7 +24,7 @@
       <option value="nothing"></option>
       <option value="admin">Admin</option>
       <option value="pillar_head">Pillar Head</option>
-      <option value="course_lead">Subject Lead</option>
+      <option value="subject_lead">Subject Lead</option>
       <option value="professor">Professor</option>
       <option value="student">Student</option>
     </select><br/><br/>

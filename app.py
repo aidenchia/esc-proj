@@ -50,25 +50,28 @@ def Roles(included=True, *role):
 @app.route('/', methods=['GET', 'POST'])
 def login():
   if current_user.is_authenticated:
-    return redirect(url_for('courseInput'))
+    return redirect_user(current_user)
 
   form = LoginForm()
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
     if user is not None and user.check_password(form.password.data):
         login_user(user)
-        if user.user_group == 'student':
-          return redirect(url_for('viewSchedule'))
-        
-        elif user.user_group == 'admin':
-          return redirect(url_for('register'))
-
-        elif user.user_group == 'pillar_head':
-          return redirect(url_for('courseInput'))
+        return redirect_user(user)
 
     flash('Invalid username / password')    
     #return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
+
+def redirect_user(user):
+  if user.user_group == 'student':
+    return redirect(url_for('viewSchedule'))
+
+  elif user.user_group == 'admin':
+    return redirect(url_for('register'))
+
+  elif user.user_group == 'pillar_head' or user.user_group == 'subject_lead':
+    return redirect(url_for('courseInput'))
 
 
 @app.route("/logout")
@@ -87,7 +90,7 @@ def courseInput():
 
 @app.route("/database", methods=['GET','POST'])
 @login_required
-def displaySubjects():
+def subjectsTable():
   try:
     inserted = Subjects.insert( 
       request.form['subjectCode'],
@@ -105,17 +108,25 @@ def displaySubjects():
 @login_required
 #@Roles("admin")
 def register():
-  #flash(str(current_user.user_group))
+  form = RegisterForm()
+  if form.validate_on_submit():
+    Users.insert(request.form['username'],
+                 request.form['fullname'],
+                 request.form['email'],
+                 request.form['password'],
+                 request.form['user_group'])
+
+    return redirect(url_for('displayUsers'))  
+  
   return render_template('register.html')
 
 @app.route("/usersTable", methods=['GET', 'POST'])
-def displayUsers():
-  inserted = Users.insert(
-                    request.form['username'],
-                    request.form['fullname'],
-                    request.form['email'],
-                    request.form['password'],
-                    request.form['user_group'])
+def usersTable():
+  Users.insert(request.form['username'],
+               request.form['fullname'],
+               request.form['email'],
+               request.form['password'],
+               request.form['user_group'])
 
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
