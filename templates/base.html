@@ -1,10 +1,67 @@
 <!doctype html>
-<title>{% block title %}{% endblock %} - SUTD Scheduler</title>
+<!--<title>{% block title %}{% endblock %} - SUTD Scheduler</title>
 <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> 
+-->
 
+<head>
+  <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/static/css/base.css?version=57">  
+</head>
+
+
+<body>
+
+  <header>
+    <div class="container">
+      <img src="/static/images/icons/logo-sutd-white.png" alt="SUTD Scheduler" style="width:100px; height:60px" align="left">
+      <nav>
+        <ul>
+          {% if current_user.is_authenticated %}
+
+            {% if current_user.user_group == "student" %}
+              <li><a href="{{ url_for('logout') }}">View Schedule</a></li> 
+              <li><a href="{{ url_for('logout') }}">Choose HASS</a></li>
+              <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% endif %}
+
+            {% if current_user.user_group == "professor" %}
+              <li><a href="{{ url_for('logout') }}">View Schedule</a></li> 
+              <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% endif %}
+
+            {% if current_user.user_group == "subject_lead" or current_user.user_group == "pillar_head" %}
+              <li><a href="{{ url_for('logout') }}">View Schedule</a></li> 
+              <li><a href="{{ url_for('courseInput') }}">Add Subject</a></li>
+              <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% endif %}
+
+            {% if current_user.user_group == "admin" %}
+              <li><a href="{{ url_for('logout') }}">View All Schedules</a></li> 
+              <li><a href="{{ url_for('register') }}">Add new user</a></li>
+              <li><a href="{{ url_for('logout') }}">Remove user</a></li>
+              <li><a<a href="{{ url_for('courseInput') }}">Add Subject</a></li>
+              <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% endif %}
+
+          {% else %}
+            <li><a href="{{ url_for('logout') }}">Log In</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+</body>
+
+<!-- 
 <nav>
+
   <h1>SUTD Scheduler</h1>
+
+
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul class=flashes>
@@ -14,6 +71,9 @@
       </ul>
     {% endif %}
   {% endwith %}
+
+
+
 
     {% if current_user.is_authenticated %}
       <span>{{ current_user.username }}</span>
@@ -36,9 +96,13 @@
       <a href="{{ url_for('login') }}">Log In</a>
     {% endif %}
 </nav>
+
 <section class="content">
+
   <header>
     {% block header %}{% endblock %}
   </header>
+-->
+
   {% block content %}{% endblock %}
 </section>

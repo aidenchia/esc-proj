@@ -55,6 +55,15 @@ class Users(db.Model):
   password_hash = db.Column(db.String(128))
   user_group = db.Column(db.String(128))
 
+  # Student - specific fields
+  pillar = db.Column(db.String, nullable=True)
+  term = db.Column(db.Integer, nullable=True)
+  student_id = db.Column(db.Integer, nullable=True)
+  student_group = db.Column(db.String, nullable=True)
+
+  # Prof - specific fields
+
+
   def __init__(self, username, fullname, email, password, user_group, authenticated):
     self.username = username
     self.fullname = fullname
@@ -101,6 +110,18 @@ class Users(db.Model):
     if user is not None:
       db.session.delete(user)
       db.session.commit()
+    return None
+
+  @staticmethod
+  def edit(username=None, pillar="", term="", student_id="", student_group=""):
+    user = Users.query.filter_by(username=username).first()
+    if user is None:
+      return None
+
+    user.pillar = pillar
+    user.term = term
+    user.student_id = student_id
+    user.student_group = student_group
     return None
 
 

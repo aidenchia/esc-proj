@@ -131,10 +131,28 @@ def usersTable():
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
 
+@app.route("/editUsers", methods=['GET', 'POST'])
+def editUsers():
+  #Users.edit(request.form['pillar']
+  #           request.form['term']
+  #           request.form['student_id']
+  #           request.form['student_group'])
+
+  return render_template("register.html")
+
+
+
 @app.route("/home", methods=['GET','POST'])
 @login_required
 def index():
     return render_template("base.html",)
+
+
+
+######################################## STUDENTS #################
+@login_required
+def viewSchedule():
+  return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
 def genSchedule():

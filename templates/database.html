@@ -2,7 +2,7 @@
 {% block header %}
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}Table of Subjects{% endblock %}</title>
+  <!--<title>{% block title %}Table of Subjects{% endblock %}</title> -->
     <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 
@@ -11,9 +11,9 @@
 
   
 </head>
-{% endblock %}
+<!--{% endblock %}
 {% block content %}
-<body>
+<body> -->
   <section>
   <!--for demo wrap-->
   <h1>Subject Details</h1>
@@ -39,6 +39,7 @@
           <td>{{eachresult.subjectType}}</td>
           <td>{{eachresult.term}}</td>
         </tr>
+      {% endfor %}
       </tbody>
     </table>
   </div>
