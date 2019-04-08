@@ -3,6 +3,8 @@
   <h1>{% block title %}Resgister{% endblock %}</h1>
 {% endblock %}
 {% block content %}
+<!--
+
 <form id="register-users" action="/usersTable" method="POST">
     <label for="username">Username: </label>
     <input name="username" id="username"><br/><br/>
@@ -44,4 +46,35 @@
     
     <input type="submit" value="Confirm">
   </form>
+-->
+<form id="register-users" name="register-users" method="POST">
+        {{form.csrf_token}}
+        <h1>Register</h1>
+        </div>
+        <p>
+            {{form.username.label}}
+            {{form.username}}
+        </p>
+        <p>
+            {{form.password.label}}
+            {{form.password}}
+        </p>
+        <p>
+            {{form.confirmPassword.label}}
+            {{form.confirmPassword}}
+        </p>
+        <p>
+            {{form.fullname.label}}
+            {{form.fullname}}
+        </p>
+        <p>
+            {{form.email.label}}
+            {{form.email}}
+        </p>
+        <p>
+            {{form.user_group.label}}
+            {{form.user_group}}
+        </p>
+        <p><input type="submit" value="Go"></p>
+    </form>
 {% endblock %}

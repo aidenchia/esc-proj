@@ -1,8 +1,10 @@
 from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
+from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm
 from models import Users, Subjects
+from werkzeug.security import generate_password_hash
 import functools
 import os
 import sys
@@ -106,19 +108,30 @@ def subjectsTable():
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
 @login_required
-#@Roles("admin")
+@Roles(True,"admin")
 def register():
   form = RegisterForm()
+  flash(str(current_user.user_group))
   if form.validate_on_submit():
-    Users.insert(request.form['username'],
-                 request.form['fullname'],
-                 request.form['email'],
-                 request.form['password'],
-                 request.form['user_group'])
+    user = Users.query.filter_by(username=form.username.data).first()
+    flash(str(user))
+    if user is None:
+        Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices).get(form.user_group.data))
+        return redirect(url_for('courseInput'))
+    flash('Invalid Parameters')
+  return render_template('register.html',form=form)
 
-    return redirect(url_for('displayUsers'))  
-  
-  return render_template('register.html')
+#  if form.validate_on_submit():
+#    Users.insert(request.form['username'],
+#                 request.form['fullname'],
+#                 request.form['email'],
+#                 request.form['password'],
+#                 request.form['user_group'])
+#
+#    return redirect(url_for('displayUsers'))  
+#  
+#  return render_template('register.html')
+
 
 @app.route("/usersTable", methods=['GET', 'POST'])
 def usersTable():
