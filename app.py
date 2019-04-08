@@ -85,7 +85,7 @@ def logout():
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
-#@Roles("student")
+#@Roles(True,"student")
 def courseInput():
     #flash(str(current_user.user_group))
     return render_template('index.html')
@@ -116,8 +116,11 @@ def register():
     user = Users.query.filter_by(username=form.username.data).first()
     #flash(str(user))
     if user is None:
-        Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices).get(form.user_group.data))
-        return redirect(url_for('usersTable'))
+        if form.user_choices.data == -1:
+            flash("Please choose a user group.")
+        else:
+            Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices.data).get(form.user_group.data))
+            return redirect(url_for('usersTable'))
     flash('Invalid Parameters')
   return render_template('register.html',form=form)
 
