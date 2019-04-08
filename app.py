@@ -116,21 +116,13 @@ def register():
     user = Users.query.filter_by(username=form.username.data).first()
     flash(str(user))
     if user is None:
-        Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices).get(form.user_group.data))
-        return redirect(url_for('courseInput'))
+        if form.user_choices.data == -1:
+            flash("Please choose a user group.")
+        else:
+            Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices.data).get(form.user_group.data))
+            return redirect(url_for('courseInput'))
     flash('Invalid Parameters')
   return render_template('register.html',form=form)
-
-#  if form.validate_on_submit():
-#    Users.insert(request.form['username'],
-#                 request.form['fullname'],
-#                 request.form['email'],
-#                 request.form['password'],
-#                 request.form['user_group'])
-#
-#    return redirect(url_for('displayUsers'))  
-#  
-#  return render_template('register.html')
 
 
 @app.route("/usersTable", methods=['GET', 'POST'])
