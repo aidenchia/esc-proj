@@ -85,7 +85,7 @@ def logout():
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
-#@Roles("student")
+#@Roles(True,"student")
 def courseInput():
     #flash(str(current_user.user_group))
     return render_template('index.html')
