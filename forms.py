@@ -19,5 +19,5 @@ class RegisterForm(FlaskForm):
   confirmPassword = PasswordField('Confirm Password',validators=[DataRequired()])
   fullname = StringField('Full Name', validators=[DataRequired()])
   email = StringField('Email', validators=[DataRequired()])
-  user_group = SelectField('User Group',choices=user_group,validators=[DataRequired(),check_user_group_validator])
+  user_group = SelectField('User Group',choices=user_choices,validators=[DataRequired(),check_user_group_validator])
   #user_group = StringField('User Group' ,validators=[DataRequired()])
