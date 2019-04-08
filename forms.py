@@ -9,7 +9,7 @@ def check_user_group_validator(form,field):
 class LoginForm(FlaskForm):
   username = StringField('Username', validators=[DataRequired()])
   password = PasswordField('Password', validators=[DataRequired()])
-  remember_me = BooleanField('Remember Me', default=True)
+  #remember_me = BooleanField('Remember Me', default=True)
   submit = SubmitField('Sign In')
 
 class RegisterForm(FlaskForm):
