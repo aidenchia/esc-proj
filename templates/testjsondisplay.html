@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Schedule{% endblock %}</h1>
+<style>
+table {
+  width:60%;
+}
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+  text-align: left;
+}
+table#t01 tr:nth-child(even) {
+  background-color: #eee;
+}
+table#t01 tr:nth-child(odd) {
+ background-color: #fff;
+}
+table#t01 th {
+  background-color: black;
+  color: white;
+}
+</style>
+{% endblock %}
+<body>
+<table border="1", id="t01">
+    <thead>
+        <tr>
+            <th></th>
+            {% for col in json_r['8:30-9:00'].keys() %}
+            <th>{{ col }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for time, courses in json_r.items() %}
+        <tr>
+            <td>
+            {{time}}
+            </td>
+            {% for course in courses.values() %}
+            {% if course[1] != 0 %}
+                <td rowspan={{ course[1]}}>{{ course[0] }}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>

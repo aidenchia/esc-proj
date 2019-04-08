@@ -124,5 +124,37 @@ class Users(db.Model):
     user.student_group = student_group
     return None
 
+class Timetable(db.Model):
+  subject = db.Column(db.String)
+  session = db.Column(db.Integer)
+  weekday = db.Column(db.Integer)
+  cohort = db.Column(db.String)
+  startTime = db.Column(db.Integer)
+  classroom = db.Column(db.String)
+  
+  def __init__(self, subject, session, weekday, cohort, startTime, classroom):
+    self.subject = subject
+    self.session = session
+    self.weekday = weekday
+    self.cohort = cohort
+    self.startTime = startTime
+    self.classroom = classroom
 
+  def __repr__(self):
+    return '{}, {}, {}, [}'.format(self.subject, self.session, self.weekday, self.cohort)
+
+  @staticmethod
+  def insert(subject, session, weekday, cohort, startTime, classroom):
+      query = db.session.query(Timetable).filter_by(Timetable.subject).filter_by(Timetable.session) \
+      .filter_by(Timetable.weekday).filter_by(Timetable.cohort).filter_by(Timetable.startTime).filter_by(Timetable.classroom)
+      if query is None:
+          specific_class = Timetable(subject, session, weekday, cohort, startTime, classroom)
+          db.session.add(specific_class)
+          db.session.commit()
+      return None
+  @staticmethod
+  def replaceall(all_classes):
+      db.session.query(Timetable).delete()
+      db.session.commit()
+  
 
