@@ -4,6 +4,7 @@ from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm
 from models import Users, Subjects
+from werkzeug.security import generate_password_hash
 import functools
 import os
 import sys
@@ -34,7 +35,7 @@ def Roles(included=True, *role):
     def decorater(view):
         @functools.wraps(view)
         def wrapped_view(*args,**kwargs):
-            flash(str(current_user.user_group))
+            #flash(str(current_user.user_group))
             flash(str(role))
             if current_user.is_authenticated:
                 if included:
@@ -101,11 +102,18 @@ def displaySubjects():
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
 @login_required
-#@Roles("admin")
+@Roles("admin")
 def register():
-  #form = RegisterForm()
+  form = RegisterForm()
   flash(str(current_user.user_group))
-  return render_template('register.html')
+  if form.validate_on_submit():
+    user = Users.query.filter_by(username=form.username.data).first()
+    flash(str(user))
+    if user is None:
+        Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices).get(form.user_group.data))
+        return redirect(url_for('courseInput'))
+    flash('Invalid Parameters')
+  return render_template('register.html',form=form)
 
 @app.route("/usersTable", methods=['GET', 'POST'])
 def displayUsers():
