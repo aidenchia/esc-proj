@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
 from wtforms.validators import DataRequired, EqualTo, InputRequired, ValidationError
 
 def check_user_group_validator(form,field):
@@ -21,3 +21,7 @@ class RegisterForm(FlaskForm):
   email = StringField('Email', validators=[DataRequired()])
   user_group = SelectField('User Group',choices=user_choices,validators=[DataRequired(),check_user_group_validator])
   #user_group = StringField('User Group' ,validators=[DataRequired()])
+
+  pillar = StringField('Pillar')
+  term = StringField('Term')
+  student_id = IntegerField('Student ID')

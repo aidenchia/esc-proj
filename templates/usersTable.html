@@ -1,8 +1,59 @@
-<h1>Users</h1>
-<p>
-</p>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 98%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+  </style>
+</head>
+
+<h1> All Users</h1>
+<table>
+  <tr bgcolor="white">
+      <th>Username</th>
+      <th>Full Name</th>
+      <th>Email</th>
+      <th>User Group</th>
+      <th>Pillar</th>
+      <th>Term</th>
+      <th>Student ID</th>
+  </tr>
+    <tbody>
+      {% for eachresult in allUsers %}
+        <tr>
+          <td>{{eachresult.username}}</td>
+          <td>{{eachresult.fullname}} </td>
+          <td>{{eachresult.email}}</td>
+          <td>{{eachresult.user_group}}</td>
+          <td>{{eachresult.pillar}}</td>
+          <td>{{eachresult.term}}</td>
+          <td>{{eachresult.student_id}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+<!--
 <ul>
   {% for user in allUsers %}
     <p>{{ user.username}}</p>
   {% endfor %}
 </ul>
+-->
+
+{% endblock %}

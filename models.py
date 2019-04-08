@@ -113,7 +113,7 @@ class Users(db.Model):
     return None
 
   @staticmethod
-  def edit(username=None, pillar="", term="", student_id="", student_group=""):
+  def edit(username=None, pillar="", term="", student_id=""):
     user = Users.query.filter_by(username=username).first()
     if user is None:
       return None
@@ -121,7 +121,6 @@ class Users(db.Model):
     user.pillar = pillar
     user.term = term
     user.student_id = student_id
-    user.student_group = student_group
     return None
 
 

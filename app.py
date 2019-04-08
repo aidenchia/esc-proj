@@ -111,47 +111,33 @@ def subjectsTable():
 @Roles(True,"admin")
 def register():
   form = RegisterForm()
-  flash(str(current_user.user_group))
+  #flash(str(current_user.user_group))
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
-    flash(str(user))
+    #flash(str(user))
     if user is None:
         Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices).get(form.user_group.data))
-        return redirect(url_for('courseInput'))
+        return redirect(url_for('usersTable'))
     flash('Invalid Parameters')
   return render_template('register.html',form=form)
-
-#  if form.validate_on_submit():
-#    Users.insert(request.form['username'],
-#                 request.form['fullname'],
-#                 request.form['email'],
-#                 request.form['password'],
-#                 request.form['user_group'])
-#
-#    return redirect(url_for('displayUsers'))  
-#  
-#  return render_template('register.html')
 
 
 @app.route("/usersTable", methods=['GET', 'POST'])
 def usersTable():
-  Users.insert(request.form['username'],
-               request.form['fullname'],
-               request.form['email'],
-               request.form['password'],
-               request.form['user_group'])
-
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
 
 @app.route("/editUsers", methods=['GET', 'POST'])
 def editUsers():
-  #Users.edit(request.form['pillar']
-  #           request.form['term']
-  #           request.form['student_id']
-  #           request.form['student_group'])
+  form = RegisterForm()
+  if form.validate_on_submit():
+    user = Users.query.filter_by(username=form.username.data).first()
+    if user is None:
+      flash('No such user')
 
-  return render_template("register.html")
+    Users.edit(pillar=form.pillar.data, term=form.term.data, student_id=form.student_id.data)
+
+  return render_template("register.html", form=form)
 
 
 
