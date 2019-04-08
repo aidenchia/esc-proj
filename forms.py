@@ -13,7 +13,7 @@ class LoginForm(FlaskForm):
   submit = SubmitField('Sign In')
 
 class RegisterForm(FlaskForm):
-    user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
   username = StringField('Username', validators=[DataRequired()])
   password = PasswordField('Password', validators=[InputRequired(), DataRequired(), EqualTo('confirmPassword',message='Passwords must match')])
   confirmPassword = PasswordField('Confirm Password',validators=[DataRequired()])
