@@ -108,7 +108,7 @@ def subjectsTable():
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
 @login_required
-@Roles("admin")
+@Roles(True,"admin")
 def register():
   form = RegisterForm()
   flash(str(current_user.user_group))
