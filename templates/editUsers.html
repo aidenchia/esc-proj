@@ -1,25 +1,16 @@
 {% extends 'base.html' %}
-{% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
-{% endblock %}
+
 {% block content %}
 
-<form id="register-users" name="register-users" method="POST">
+<form id="edit-users" name="edit-users" method="POST">
         {{form.csrf_token}}
-        <h1>Register</h1>
+        <h1>Edit Users</h1>
         </div>
         <p>
             {{form.username.label}}
             {{form.username}}
         </p>
-        <p>
-            {{form.password.label}}
-            {{form.password}}
-        </p>
-        <p>
-            {{form.confirmPassword.label}}
-            {{form.confirmPassword}}
-        </p>
+
         <p>
             {{form.fullname.label}}
             {{form.fullname}}
@@ -43,6 +34,10 @@
         <p>
             {{form.student_id.label}}
             {{form.student_id}}
+        </p>
+
+        <p>
+            {{form.delete.label}}  {{form.delete}}
         </p>
         <p><input type="submit" value="Go"></p>
     </form>

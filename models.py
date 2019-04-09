@@ -112,19 +112,22 @@ class Users(db.Model):
       db.session.commit()
     return None
 
-  @staticmethod
-  def edit(username=None, pillar="", term="", student_id=""):
-    user = Users.query.filter_by(username=username).first()
-    if user is None:
-      return None
+  def edit(self, username, password, fullname, email, user_group, pillar, term, student_id, delete):
+    if delete:
+      Users.remove(username)
+      return username + " removed"
 
-    user.pillar = pillar
-    user.term = term
-    user.student_id = student_id
-    return None
+    if password != "": self.password = password 
+    if fullname != "": self.fullname = fullname 
+    if email != "": self.email = email
+    self.user_group = user_group 
+    if pillar != "": self.pillar = pillar 
+    if term != "": self.term = term 
+    if student_id != "": self.student_id = student_id 
+    db.session.commit()
 
 class Timetable(db.Model):
-  subject = db.Column(db.String)
+  subject = db.Column(db.String, primary_key=True)
   session = db.Column(db.Integer)
   weekday = db.Column(db.Integer)
   cohort = db.Column(db.String)
@@ -159,8 +162,9 @@ class Timetable(db.Model):
           db.session.add(specific_class)
           db.session.commit()
       return None
+
   @staticmethod
-  def replaceall(all_classes):
+  def replace_all(all_classes):
       db.session.query(Timetable).delete()
       db.session.commit()
       for specific_class in all_classes.values():

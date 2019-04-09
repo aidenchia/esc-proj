@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 98%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+  </style>
+</head>
+
+<h1> All Subjects</h1>
+<table>
+  <tr bgcolor="white">
+      <th>Subject Code</th>
+      <th>Subject Name</th>
+      <th>Term</th>
+      <th>Subject Type</th>
+  </tr>
+    <tbody>
+      {% for eachresult in allSubjects %}
+        <tr>
+          <td>{{eachresult.subjectCode}}</td>
+          <td>{{eachresult.subjectName}} </td>
+          <td>{{eachresult.term}}</td>
+          <td>{{eachresult.subjectType}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

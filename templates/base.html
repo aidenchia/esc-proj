@@ -1,18 +1,14 @@
 <!doctype html>
-<!--<title>{% block title %}{% endblock %} - SUTD Scheduler</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> 
--->
 
 <head>
   <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="/static/css/base.css?version=57">  
+    <link rel="stylesheet" href="/static/css/base.css?version=119">  
 </head>
 
 
 <body>
-
   <header>
     <div class="container">
       <img src="/static/images/icons/logo-sutd-white.png" alt="SUTD Scheduler" style="width:100px; height:60px" align="left">
@@ -38,10 +34,15 @@
             {% endif %}
 
             {% if current_user.user_group == "admin" %}
-              <li><a href="{{ url_for('logout') }}">View All Schedules</a></li> 
-              <li><a href="{{ url_for('register') }}">Add new user</a></li>
-              <li><a href="{{ url_for('editUsers') }}">Edit user</a></li>
-              <li><a<a href="{{ url_for('courseInput') }}">Add Subject</a></li>
+              <div class = "dropdown">
+              <li><a href="{{ url_for('register') }}">Users</li>
+                <div class = "dropdown-content">
+                    <a href="{{ url_for('usersTable')}}">View All Users</a>
+                    <a href="{{ url_for('register') }}">Add new user</a>
+                    <a href="{{ url_for('editUsers') }}">Edit user</a>
+                </div>
+              </div>
+              <li><a href="{{ url_for('subjectsTable') }}">Subjects</a></li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
 
@@ -54,6 +55,16 @@
   </header>
 
 </body>
+{% block content %}{% endblock %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 
 <!-- 
 <nav>
@@ -102,6 +113,4 @@
     {% block header %}{% endblock %}
   </header>
 -->
-
-  {% block content %}{% endblock %}
-</section>
+<!-- </section> -->

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
-from wtforms.validators import DataRequired, EqualTo, InputRequired, ValidationError
+from wtforms.validators import DataRequired, EqualTo, InputRequired, ValidationError, Optional
 
 def check_user_group_validator(form,field):
     if field.data == -1:
@@ -20,8 +20,24 @@ class RegisterForm(FlaskForm):
   fullname = StringField('Full Name', validators=[DataRequired()])
   email = StringField('Email', validators=[DataRequired()])
   user_group = SelectField('User Group',choices=user_choices,validators=[DataRequired(),check_user_group_validator])
-  #user_group = StringField('User Group' ,validators=[DataRequired()])
+  
+  # Student - related, must allow it to be blank
+  pillar = StringField('Pillar', validators=[Optional()])
+  term = StringField('Term', validators=[Optional()])
+  student_id = IntegerField('Student ID', validators=[Optional()])
 
-  pillar = StringField('Pillar')
-  term = StringField('Term')
-  student_id = IntegerField('Student ID')
+
+class EditForm(FlaskForm):
+  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  username = StringField('Username', validators=[DataRequired()])
+
+  password = PasswordField('Password', validators=[Optional()])
+  fullname = StringField('Full Name', validators=[Optional()])
+  email = StringField('Email', validators=[Optional()])
+  user_group = SelectField('User Group',choices=user_choices, validators=[Optional()])
+  
+  pillar = StringField('Pillar', validators=[Optional()])
+  term = StringField('Term', validators=[Optional()])
+  student_id = IntegerField('Student ID', validators=[Optional()])
+
+  delete = BooleanField('Remove User', default=False, validators=[Optional()])
