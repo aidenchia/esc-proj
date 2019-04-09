@@ -1,0 +1,24 @@
+{"professor":[
+    {"name":"Natalie","id":0,"coursetable":{"50005":[0,1]}},
+    {"name":"Sun Jun","id":1,"coursetable":{"50003":[0,1,2]}},
+    {"name":"Tony","id":2,"coursetable":{"50034":[0,1,2]}}],
+    "subject":[
+        {"component":[
+            {"duration":1.5,"sessionType":0,"classroom":-1,"cohorts":[]},
+            {"duration":1.5,"sessionType":0,"classroom":-1,"cohorts":[]},
+            {"duration":2,"sessionType":1,"classroom":-1,"cohorts":[0,1,2]}],
+            "pillar":4,
+            "sessionNumber":3,
+            "name":"Computer System Engineering",
+            "term":5,
+            "cohortNumber":3,
+            "totalEnrollNumber":150,
+            "type":0,
+            "courseId":"50.005"},
+        {"component":[{"duration":1.5,"sessionType":0,"classroom":-1,"cohorts":[]},{"duration":1.5,"sessionType":0,"classroom":-1,"cohorts":[]},{"duration":2,"sessionType":0,"classroom":-1,"cohorts":[]}],"pillar":4,"sessionNumber":3,"name":"Elements of Software Construction","term":5,"cohortNumber":3,"totalEnrollNumber":150,"type":0,"courseId":"50.003"},{"component":[{"duration":1.5,"sessionType":1,"classroom":-1,"cohorts":[0,1,2]},{"duration":1.5,"sessionType":1,"classroom":-1,"cohorts":[0,1,2]},{"duration":2,"sessionType":0,"classroom":-1,"cohorts":[]}],"pillar":4,"sessionNumber":3,"name":"Probability and Statistics","term":5,"cohortNumber":3,"totalEnrollNumber":150,"type":0,"courseId":"50.034"}],
+    "classroom":[{"name":"CC13","location":"2.503","id":1,"roomType":0,"capacity":50},{"name":"CC14","location":"2.504","id":2,"roomType":0,"capacity":50},{"name":"LT5","location":"2.501","id":3,"roomType":1,"capacity":50},{"name":"Lab1","location":"2.506","id":4,"roomType":2,"capacity":50}],
+    
+"studentGroup":
+[{"pillar":4,"size":50,"subjects":[50003,50005,50034],"name":"t5c1","cohort":0,"term":5},
+{"pillar":4,"size":50,"subjects":[50003,50005,50034],"name":"t5c2","cohort":1,"term":5},
+{"pillar":4,"size":50,"subjects":[50003,50005,50034],"name":"t5c3","cohort":2,"term":5}]}

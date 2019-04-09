@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
+import time
 
 
 db = SQLAlchemy()
@@ -117,10 +118,10 @@ class Users(db.Model):
       Users.remove(username)
       return username + " removed"
 
-    if password != "": self.password = password 
+    if password != "": self.password_hash = generate_password_hash(password) 
     if fullname != "": self.fullname = fullname 
     if email != "": self.email = email
-    self.user_group = user_group 
+    if user_group != 'Please select a user group': self.user_group = user_group 
     if pillar != "": self.pillar = pillar 
     if term != "": self.term = term 
     if student_id != "": self.student_id = student_id 
@@ -147,8 +148,8 @@ class Timetable(db.Model):
 
   @staticmethod
   def insert(subject, session, weekday, cohort, startTime, classroom):
-      query = db.session.query(Timetable).filter_by(Timetable.subject).filter_by(Timetable.session) \
-      .filter_by(Timetable.weekday).filter_by(Timetable.cohort).filter_by(Timetable.startTime).filter_by(Timetable.classroom)
+      query = Timetable.query.filter_by(subject).filter_by(session) \
+      .filter_by(weekday).filter_by(cohort).filter_by(startTime).filter_by(classroom).first()
       if query is None:
           specific_class = Timetable(subject, session, weekday, cohort, startTime, classroom)
           db.session.add(specific_class)
@@ -156,8 +157,14 @@ class Timetable(db.Model):
       return None
 
   @staticmethod
-  def replace_all(all_classes):
+  def delete(row): # row either a timetable object or the string "all"
+    if row == "all":
       db.session.query(Timetable).delete()
       db.session.commit()
+
+    else:
+      db.session.query(Timetable).delete(row)
+      db.session.commit()
   
+
 

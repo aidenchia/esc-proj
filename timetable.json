@@ -1,0 +1,26 @@
+{
+  "specific class":[
+  {"subject":"cse","session":0,"weekday":1,"cohort":[0],"startTime":3,"classroom":"cohort1"},
+  {"subject":"cse","session":1,"weekday":2,"cohort":[0],"startTime":0,"classroom":"cohort1"},
+  {"subject":"cse","session":2,"weekday":3,"cohort":[0,1,2],"startTime":0,"classroom":"Lec"},
+  {"subject":"cse","session":0,"weekday":0,"cohort":[1],"startTime":0,"classroom":"cohort2"},
+  {"subject":"cse","session":1,"weekday":1,"cohort":[1],"startTime":6,"classroom":"cohort1"},
+  {"subject":"cse","session":0,"weekday":0,"cohort":[2],"startTime":0,"classroom":"cohort1"},
+  {"subject":"cse","session":1,"weekday":2,"cohort":[2],"startTime":0,"classroom":"cohort2"},
+
+  {"subject":"esc","session":0,"weekday":1,"cohort":[0],"startTime":9,"classroom":"cohort2"},
+  {"subject":"esc","session":1,"weekday":2,"cohort":[0],"startTime":3,"classroom":"cohort2"},
+  {"subject":"esc","session":2,"weekday":4,"cohort":[0],"startTime":0,"classroom":"cohort2"},
+  {"subject":"esc","session":0,"weekday":0,"cohort":[1],"startTime":3,"classroom":"cohort2"},
+  {"subject":"esc","session":1,"weekday":1,"cohort":[1],"startTime":3,"classroom":"cohort1"},
+  {"subject":"esc","session":2,"weekday":3,"cohort":[1],"startTime":0,"classroom":"cohort1"},
+  {"subject":"esc","session":0,"weekday":1,"cohort":[2],"startTime":12,"classroom":"cohort2"},
+  {"subject":"esc","session":1,"weekday":2,"cohort":[2],"startTime":0,"classroom":"cohort1"},
+  {"subject":"esc","session":2,"weekday":3,"cohort":[2],"startTime":4,"classroom":"cohort1"},
+
+  {"subject":"prob","session":0,"weekday":0,"cohort":[0,1,2],"startTime":6,"classroom":"Lec"},
+  {"subject":"prob","session":1,"weekday":2,"cohort":[0,1,2],"startTime":6,"classroom":"Lec"},
+  {"subject":"prob","session":2,"weekday":3,"cohort":[0],"startTime":4,"classroom":"cohort2"},
+  {"subject":"prob","session":2,"weekday":3,"cohort":[1],"startTime":8,"classroom":"cohort1"},
+  {"subject":"prob","session":2,"weekday":4,"cohort":[2],"startTime":0,"classroom":"cohort1"}]
+}
