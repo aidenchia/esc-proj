@@ -165,16 +165,10 @@ class Timetable(db.Model):
       return None
 
   @staticmethod
-  def delete(row): # row either a timetable object or the string "all"
-    if row == "all":
+  def replace_all(all_classes): 
       db.session.query(Timetable).delete()
       db.session.commit()
-<<<<<<< HEAD
 
-    else:
-      db.session.query(Timetable).delete(row)
-      db.session.commit()
-=======
       for specific_class in all_classes.values():
           sc_subject = specific_class['subject']
           sc_session = specific_class['session']
@@ -183,6 +177,7 @@ class Timetable(db.Model):
           sc_startTime = specific_class['startTime']
           sc_classroom = specific_class['classroom']
           Timetable.insert(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom)
+
   @staticmethod
   def find_Timetable(subject_cohort_list):
       user_timetable = {"user_timetable":[]}
@@ -193,10 +188,6 @@ class Timetable(db.Model):
                   cohortdict = Timetable.row2dict(each_class)
                   user_timetable.get("user_timetable").append(cohortdict)
       return user_timetable
-                  
-              
-      
->>>>>>> 4f5cb0a340f894448cb1783dc9fe8c52b5e826d1
   
 
 
