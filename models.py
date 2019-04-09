@@ -141,6 +141,14 @@ class Timetable(db.Model):
 
   def __repr__(self):
     return '{}, {}, {}, [}'.format(self.subject, self.session, self.weekday, self.cohort)
+  
+  @staticmethod
+  def row2dict(row):
+    d = {}
+    for column in row.__table__.columns:
+        d[column.name] = str(getattr(row, column.name))
+
+    return d
 
   @staticmethod
   def insert(subject, session, weekday, cohort, startTime, classroom):
@@ -155,5 +163,26 @@ class Timetable(db.Model):
   def replaceall(all_classes):
       db.session.query(Timetable).delete()
       db.session.commit()
+      for specific_class in all_classes.values():
+          sc_subject = specific_class['subject']
+          sc_session = specific_class['session']
+          sc_weekday = specific_class['weekday']
+          sc_cohort = str(specific_class['cohort'])
+          sc_startTime = specific_class['startTime']
+          sc_classroom = specific_class['classroom']
+          Timetable.insert(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom)
+  @staticmethod
+  def find_Timetable(subject_cohort_list):
+      user_timetable = {"user_timetable":[]}
+      for subject,cohort in subject_cohort_list.items():
+          subject_classes = db.session.query(Timetable).filter_by(subject).all()
+          for each_class in subject_classes:
+              if cohort in list(each_class.cohort):
+                  cohortdict = Timetable.row2dict(each_class)
+                  user_timetable.get("user_timetable").append(cohortdict)
+      return user_timetable
+                  
+              
+      
   
 
