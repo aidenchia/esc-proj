@@ -2,7 +2,7 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, EditForm
 from models import Users, Subjects
 from werkzeug.security import generate_password_hash
 import functools
@@ -90,7 +90,7 @@ def courseInput():
     #flash(str(current_user.user_group))
     return render_template('index.html')
 
-@app.route("/database", methods=['GET','POST'])
+@app.route("/subjectsTable", methods=['GET','POST'])
 @login_required
 def subjectsTable():
   try:
@@ -102,8 +102,8 @@ def subjectsTable():
   except:
     print("Empty fields")
     
-  result = db.session.query(Subjects).order_by(Subjects.subjectName).all()
-  return render_template("database.html", result = result)
+  allSubjects = db.session.query(Subjects).order_by(Subjects.subjectName).all()
+  return render_template("subjectsTable.html", allSubjects=allSubjects)
 
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
@@ -116,32 +116,60 @@ def register():
     user = Users.query.filter_by(username=form.username.data).first()
     #flash(str(user))
     if user is None:
-        if form.user_choices.data == -1:
+        if form.user_group.data == -1:
             flash("Please choose a user group.")
         else:
-            Users.insert(form.username.data,form.fullname.data,form.email.data, generate_password_hash(form.password.data), dict(form.user_choices.data).get(form.user_group.data))
+            Users.insert(form.username.data,
+                         form.fullname.data,
+                         form.email.data, 
+                         generate_password_hash(form.password.data), 
+                         dict(form.user_choices).get(form.user_group.data))
             return redirect(url_for('usersTable'))
+
     flash('Invalid Parameters')
+
   return render_template('register.html',form=form)
 
 
 @app.route("/usersTable", methods=['GET', 'POST'])
+@Roles(True,"admin", "course_lead", "pillar_head")
 def usersTable():
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
 
 @app.route("/editUsers", methods=['GET', 'POST'])
 def editUsers():
-  form = RegisterForm()
+  form = EditForm()
+
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
+ 
     if user is None:
       flash('No such user')
+      return render_template('editUsers.html', form=form)
 
-    Users.edit(pillar=form.pillar.data, term=form.term.data, student_id=form.student_id.data)
+    status = user.edit(username=form.username.data,
+              password=form.password.data,
+              fullname=form.fullname.data,
+              email = form.email.data,
+              user_group= dict(form.user_choices).get(form.user_group.data),
+              pillar=form.pillar.data, 
+              term=form.term.data, 
+              student_id=form.student_id.data,
+              delete=form.delete.data)
 
-  return render_template("register.html", form=form)
+    flash(status)
+    
+    return redirect(url_for('usersTable'))
 
+  return render_template("editUsers.html", form=form)
+  
+
+@login_required
+@Roles(True,"admin")
+def deleteUser(username):
+  Users.remove(username)
+  return redirect(url_for('usersTable'))
 
 
 @app.route("/home", methods=['GET','POST'])
@@ -151,7 +179,7 @@ def index():
 
 
 
-######################################## STUDENTS #################
+######################################## STUDENTS ###############################
 @login_required
 def viewSchedule():
   return render_template("base.html") # for now

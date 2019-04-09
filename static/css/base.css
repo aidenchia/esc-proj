@@ -71,3 +71,42 @@ nav a::before {
 nav a:hover::before {
   width: 100%;
 }
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+  font-size: 14px;
+  border: none;
+  outline: none;
+  color: white;
+  background-color: inherit;
+  font-family: inherit; 
+  margin: 0;
+}
+
+
+.dropdown-content {
+  display: none; /* hidden by default */
+  position: absolute;
+  opacity: 0.8;
+  background-color: black;
+  max-width: 120px;
+  color: black;
+  text-align: right;
+  z-index: 1; /* elements with greater z-index are in front of other elements */
+}
+
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block; /* block display always starts on a newline and takes the full width available */
+}
