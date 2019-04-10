@@ -253,6 +253,7 @@ class Rooms(db.Model):
       return all_rooms
 
 class studentGroup(db.Model):
+    sg_id = db.Column(db.Integer, primary_key=True)
     pillar = db.Column(db.Integer)
     size = db.Column(db.Integer)
     subjects = db.Column(db.String)
