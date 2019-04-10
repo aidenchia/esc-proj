@@ -182,6 +182,7 @@ def index():
 ######################################## STUDENTS ###############################
 @login_required
 def viewStudentSchedule():
+    
   return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
@@ -210,7 +211,11 @@ def runScheduler():
   os.chdir('..')
 
 def outputToDatabase():
-    
+    return
   
 if __name__ == "__main__":
-  app.run(host='0.0.0.0', port=5000)
+    if app.config['TESTING']:
+        app.run(host='0.0.0.0', port=5000)
+    else:
+        port = int(os.environ.get('PORT'))
+        app.run(host='0.0.0.0',port=port)

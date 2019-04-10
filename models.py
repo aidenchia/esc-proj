@@ -138,7 +138,7 @@ class Users(db.Model):
   @staticmethod
   def getAllProfessors(for_scheduler=True):
       if for_scheduler:
-          query = Users.query(Users.fullname, Users.professor_id, Users.coursetable).filter_by(user_group="professor")
+          query = Users.query(Users.fullname, Users.professor_id, Users.coursetable).filter_by(user_group="professor").all()
       else:
           query = Users.query.filter_by(user_group="professor")
       all_professors = [professor._asdict() for professor in query]
