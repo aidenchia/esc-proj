@@ -69,8 +69,8 @@ class Users(db.Model):
   student_group = db.Column(db.String, nullable=True)
 
   # Prof - specific fields
-  professor_id = db.Column(db.Integer, nullable=True)
-  coursetable = db.Column(db.String, nullable=True)
+  #professor_id = db.Column(db.Integer, nullable=True)
+  #coursetable = db.Column(db.String, nullable=True)
 
 
   def __init__(self, username, fullname, email, password, user_group, authenticated):
