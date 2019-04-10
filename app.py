@@ -181,15 +181,33 @@ def index():
 
 ######################################## STUDENTS ###############################
 @login_required
-def viewSchedule():
+def viewStudentSchedule():
   return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
+@app.route("/genSchedule", methods=['GET', 'POST'])
 def genSchedule():
+  runScheduler()
+  return redirect(url_for('viewMasterSchedule'))
+
+@app.route("/viewMasterSchedule", methods=['GET', 'POST'])
+def viewMasterSchedule():
+  try:
+    f = open('timetable.json', 'r')
+    return f.read()
+
+  except FileNotFoundError:
+    flash('Schedule has not been generated yet')
+
+def runScheduler():
   import subprocess
-  wd = './javaFiles'
-  subprocess.call(['javac', 'Scheduler.java'], cwd=wd)
-  subprocess.call(['java', 'Scheduler'], cwd=wd)
+
+  os.chdir('./algorithm')
+  subprocess.call(['javac', '-cp', 'json-20180813.jar', 
+                    'Calendar.java', 'JsonUtils.java','Scheduler.java', 'Professor.java', 
+                    'StudentGroup.java', 'Classroom.java', 'Subject.java'])
+  subprocess.call(['java', '-cp', 'json-20180813.jar:.', 'Scheduler'])
+  os.chdir('..')
 
 def outputToDatabase():
     

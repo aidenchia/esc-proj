@@ -33,6 +33,7 @@
       <th>Pillar</th>
       <th>Term</th>
       <th>Student ID</th>
+      <th>Password</th>
   </tr>
     <tbody>
       {% for eachresult in allUsers %}
@@ -44,6 +45,7 @@
           <td>{{eachresult.pillar}}</td>
           <td>{{eachresult.term}}</td>
           <td>{{eachresult.student_id}}</td>
+          <td>{{eachresult.password_hash}}</td>
         </tr>
       {% endfor %}
     </tbody>

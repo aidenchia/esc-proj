@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="/static/images/icons/sutd-logo-png-1.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="/static/css/base.css?version=119">  
+    <link rel="stylesheet" href="/static/css/base.css?version=125">  
 </head>
 
 
@@ -40,6 +40,13 @@
                     <a href="{{ url_for('usersTable')}}">View All Users</a>
                     <a href="{{ url_for('register') }}">Add new user</a>
                     <a href="{{ url_for('editUsers') }}">Edit user</a>
+                </div>
+              </div>
+              <div class = "dropdown">
+              <li><a href="{{ url_for('viewMasterSchedule') }}">Schedule</a></li>
+                <div class = "dropdown-content">
+                      <a href="{{ url_for('genSchedule')}}">Generate Schedule</a>
+                      <a href="{{ url_for('viewMasterSchedule')}}">View Schedule</a>
                 </div>
               </div>
               <li><a href="{{ url_for('subjectsTable') }}">Subjects</a></li>

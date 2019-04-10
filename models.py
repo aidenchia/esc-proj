@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
+import time
 
 
 db = SQLAlchemy()
@@ -125,10 +126,10 @@ class Users(db.Model):
       Users.remove(username)
       return username + " removed"
 
-    if password != "": self.password = password 
+    if password != "": self.password_hash = generate_password_hash(password) 
     if fullname != "": self.fullname = fullname 
     if email != "": self.email = email
-    self.user_group = user_group 
+    if user_group != 'Please select a user group': self.user_group = user_group 
     if pillar != "": self.pillar = pillar 
     if term != "": self.term = term 
     if student_id != "": self.student_id = student_id 
@@ -173,7 +174,7 @@ class Timetable(db.Model):
   @staticmethod
   def insert(subject, session, weekday, cohort, startTime, classroom):
       query = Timetable.query.filter_by(subject).filter_by(session) \
-      .filter_by(weekday).filter_by(cohort).filter_by(startTime).filter_by(classroom)
+      .filter_by(weekday).filter_by(cohort).filter_by(startTime).filter_by(classroom).first()
       if query is None:
           specific_class = Timetable(subject, session, weekday, cohort, startTime, classroom)
           db.session.add(specific_class)
@@ -181,9 +182,10 @@ class Timetable(db.Model):
       return None
 
   @staticmethod
-  def replace_all(all_classes):
+  def replace_all(all_classes): 
       db.session.query(Timetable).delete()
       db.session.commit()
+
       for specific_class in all_classes.values():
           sc_subject = specific_class['subject']
           sc_session = specific_class['session']
@@ -195,7 +197,6 @@ class Timetable(db.Model):
           db.session.add(specific_class)
       db.session.commit()
       return None
-  
   @staticmethod
   def find_Timetable(subject_cohort_dict):
       user_timetable = {"user_timetable":[]}
@@ -297,6 +298,7 @@ class studentGroup(db.Model):
         all_groups = [group._asdict() for group in query]
         return all_groups
         
+
 
 
 
