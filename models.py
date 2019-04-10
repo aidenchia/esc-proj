@@ -46,6 +46,12 @@ class Subjects(db.Model):
       db.session.commit()
       result = "Added {}: {} to database".format(str(subject.subjectCode), str(subject.subjectName))
       return result
+  @staticmethod
+  def getAllSubjects():
+      query = db.session.query(Subjects).all()
+      all_subjects = [subject._asdict() for subject in query]
+      return all_subjects
+      
 
 class Users(db.Model):
   username = db.Column(db.String, primary_key=True)
@@ -62,6 +68,8 @@ class Users(db.Model):
   student_group = db.Column(db.String, nullable=True)
 
   # Prof - specific fields
+  professor_id = db.Column(db.Integer, nullable=True)
+  coursetable = db.Column(db.String, nullable=True)
 
 
   def __init__(self, username, fullname, email, password, user_group, authenticated):
@@ -126,6 +134,15 @@ class Users(db.Model):
     if student_id != "": self.student_id = student_id 
     db.session.commit()
 
+  @staticmethod
+  def getAllProfessors(for_scheduler=True):
+      if for_scheduler:
+          query = Users.query(Users.fullname, Users.professor_id, Users.coursetable).filter_by(user_group="professor")
+      else:
+          query = Users.query.filter_by(user_group="professor")
+      all_professors = [professor._asdict() for professor in query]
+      return all_professors
+
 class Timetable(db.Model):
   subject = db.Column(db.String, primary_key=True)
   session = db.Column(db.Integer)
@@ -143,7 +160,7 @@ class Timetable(db.Model):
     self.classroom = classroom
 
   def __repr__(self):
-    return '{}, {}, {}, [}'.format(self.subject, self.session, self.weekday, self.cohort)
+    return '{}, {}, {}, {}}'.format(self.subject, self.session, self.weekday, self.cohort)
   
   @staticmethod
   def row2dict(row):
@@ -155,8 +172,8 @@ class Timetable(db.Model):
 
   @staticmethod
   def insert(subject, session, weekday, cohort, startTime, classroom):
-      query = db.session.query(Timetable).filter_by(Timetable.subject).filter_by(Timetable.session) \
-      .filter_by(Timetable.weekday).filter_by(Timetable.cohort).filter_by(Timetable.startTime).filter_by(Timetable.classroom)
+      query = Timetable.query.filter_by(subject).filter_by(session) \
+      .filter_by(weekday).filter_by(cohort).filter_by(startTime).filter_by(classroom)
       if query is None:
           specific_class = Timetable(subject, session, weekday, cohort, startTime, classroom)
           db.session.add(specific_class)
@@ -174,19 +191,124 @@ class Timetable(db.Model):
           sc_cohort = str(specific_class['cohort'])
           sc_startTime = specific_class['startTime']
           sc_classroom = specific_class['classroom']
-          Timetable.insert(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom)
+          specific_class = Timetable(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom)
+          db.session.add(specific_class)
+      db.session.commit()
+      return None
+  
   @staticmethod
-  def find_Timetable(subject_cohort_list):
+  def find_Timetable(subject_cohort_dict):
       user_timetable = {"user_timetable":[]}
-      for subject,cohort in subject_cohort_list.items():
-          subject_classes = db.session.query(Timetable).filter_by(subject).all()
+      for subject,cohort in subject_cohort_dict.items():
+          subject_classes = Timetable.query.filter_by(subject).all()
           for each_class in subject_classes:
               if cohort in list(each_class.cohort):
                   cohortdict = Timetable.row2dict(each_class)
                   user_timetable.get("user_timetable").append(cohortdict)
       return user_timetable
-                  
-              
-      
   
+class Rooms(db.Model):
+  room_id = db.Column(db.Integer, primary_key=True)
+  location = db.Column(db.String)
+  name = db.Column(db.String)
+  roomType = db.Column(db.Integer)
+  capacity = db.Column(db.Integer)
+  
+  def __init__(self, location, name, roomType, capacity):
+    self.location = location
+    self.name = name
+    self.roomType = roomType
+    self.capacity = capacity
+
+  def __repr__(self):
+      return '{}, {}, {}, {}}'.format(self.location, self.name, self.roomType, self.capacity)
+
+  @staticmethod
+  def insert(location, name, roomType, capacity):
+      query = Rooms.session.query.filter_by(location)
+      if query is None:
+          room = Rooms(location, name, roomType, capacity)
+          db.session.add(room)
+          db.session.commit()
+      return None
+  
+  @staticmethod
+  def delete(Specific_location):
+      query = Rooms.session.query.filter_by(location=Specific_location).first()
+      db.session.delete(query)
+      db.session.commit()
+  
+  @staticmethod
+  def getroom(Specific_location):
+      query = Rooms.session.query.filter_by(location=Specific_location).first()
+      if query is not None:
+          return query.all()._asdict()
+      return None
+
+  @staticmethod
+  def geAllRooms():
+      query = Rooms.session.query.order_by(Rooms.room_id).all()
+      all_rooms = [room._asdict() for room in query]
+      return all_rooms
+
+class studentGroup(db.Model):
+    pillar = db.Column(db.Integer)
+    size = db.Column(db.Integer)
+    subjects = db.Column(db.String)
+    name = db.Column(db.String)
+    cohort = db.Column(db.Integer)
+    term = db.Column(db.Integer)
+    def __init__(self, pillar, size, subjects, name, cohort, term):
+        self.pillar = pillar
+        self.size = size
+        self.subjects = subjects
+        self.name = name
+        self.cohort = cohort
+        self.term = term
+    
+    def __repr__(self):
+      return '{}, {}, {}, {}, {}, {}'.format(self.pillar, self.size, self.subjects, self.name, self.cohort)
+
+    @staticmethod
+    def insert(pillar, size, subjects, name, cohort, term):
+        query = studentGroup.session.query.filter_by(pillar).filter_by(name)
+        if query is None:
+            newgroup = studentGroup(pillar, size, subjects, name, cohort, term)
+            db.session.add(newgroup)
+            db.session.commit()
+        return None
+    
+    @staticmethod
+    def delete(pillar, name):
+        query = studentGroup.session.query.filter_by(pillar).filter_by(name)
+        if query is not None:
+            db.session.delete(query)
+            db.session.commit()
+    
+    @staticmethod
+    def getGroup(pillar, name):
+        query = studentGroup.session.query.filter_by(pillar).filter_by(name)
+        if query is not None:
+            return query.all()._asdict()
+    
+    @staticmethod
+    def getAllGroups():
+        query = studentGroup.session.query.all()
+        all_groups = [group._asdict() for group in query]
+        return all_groups
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

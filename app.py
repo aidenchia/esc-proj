@@ -191,6 +191,8 @@ def genSchedule():
   subprocess.call(['javac', 'Scheduler.java'], cwd=wd)
   subprocess.call(['java', 'Scheduler'], cwd=wd)
 
+def outputToDatabase():
+    
   
 if __name__ == "__main__":
   app.run(host='0.0.0.0', port=5000)
