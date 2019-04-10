@@ -170,6 +170,7 @@ def deleteUser(username):
 ######################################## STUDENTS ###############################
 @login_required
 def viewStudentSchedule():
+    
   return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
@@ -197,6 +198,10 @@ def runScheduler():
   subprocess.call(['java', '-cp', 'json-20180813.jar:.', 'Scheduler'])
   os.chdir('..')
 
+def outputToDatabase():
+    return
   
 if __name__ == "__main__":
-  app.run(host='0.0.0.0', port=5000)
+    app.jinja_env.cache = {}
+    port = int(os.environ.get('PORT',5000))
+    app.run(host='0.0.0.0',port=port)

@@ -9,6 +9,7 @@ class Config(object):
     TESTING = False
 
 class ProductionConfig(Config):
+    TESTING = False
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
