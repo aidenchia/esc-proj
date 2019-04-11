@@ -3,11 +3,12 @@ from flask import flash, g, redirect, render_template, url_for, request, session
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm, EditForm
-from models import Users, Subjects
+from models import Users, Subjects, Timetable, Rooms, studentGroup
 from werkzeug.security import generate_password_hash
 import functools
 import os
 import sys
+import json
 
 
 app = Flask(__name__)
@@ -34,15 +35,25 @@ def Roles(included=True, *role):
         def wrapped_view(*args,**kwargs):
             #flash(str(current_user.user_group))
             #flash(str(role))
+            url = request.referrer
             if current_user.is_authenticated:
                 if included:
                     if current_user.user_group not in role:
-                        return redirect(url_for('login'))
+                        if url is not None:
+                            return redirect(url)
+                        else:
+                            return redirect(url_for('login'))
                 else:
                     if current_user.user_group in role:
-                        return redirect(url_for('login'))
+                        if url is not None:
+                            return redirect(url)
+                        else:
+                            return redirect(url_for('login'))
             else:
-                return redirect(url_for('login'))
+                if url is not None:
+                    return redirect(url)
+                else:
+                    return redirect(url_for('login'))
             return view(*args,**kwargs)
         return wrapped_view
     return decorater
@@ -182,13 +193,48 @@ def index():
 ######################################## STUDENTS ###############################
 @login_required
 def viewStudentSchedule():
-    
+    """
+    A schedule contains the following information per specific class:
+        subject id
+        subject name
+        type of session(cohort based learning, lecture, lab)
+        start time to end time
+        location of session(room id)
+        professors teaching
+    """
+    if current_user.user_group == 'student':
+        user_student_group_pillar = Users.query(Users.student_group, Users.pillar).filter_by(current_user.username)
+        user_subjects_cohort = studentGroup.query(studentGroup.subjects, studentGroup.cohort).filter_by(user_student_group_pillar)
+        
+        user_timetable = Timetable.find_Timetable(user_subjects_cohort)
   return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
 @app.route("/genSchedule", methods=['GET', 'POST'])
 def genSchedule():
+  """
+  Update the input.json file in algorithm folder from the database.
+  runScheduler
+  then, update the database with the new data.
+  """
+  input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
+  input_dict['professor'] = Users.getAllProfessors()
+  input_dict['subject'] = Subjects.getAllSubjects
+  input_dict['classroom'] = Rooms.geAllRooms()
+  input_dict['studentGroup'] = studentGroup.getAllGroups()
+  
+  from pathlib import Path
+  data_folder = Path("algorithm/")
+  file_to_open = data_folder / 'input.json'
+  with open(file_to_open,'w+') as input_file:
+      json.dump(input_dict, input_file)
+  
   runScheduler()
+  
+  with open('timetable.json') as data_file:    
+    data = json.load(data_file)
+  Timetable.replace_all(data)
+  
   return redirect(url_for('viewMasterSchedule'))
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
@@ -196,7 +242,7 @@ def viewMasterSchedule():
   try:
     f = open('timetable.json', 'r')
     return f.read()
-
+    
   except FileNotFoundError:
     flash('Schedule has not been generated yet')
 

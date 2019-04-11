@@ -67,7 +67,8 @@ class Users(db.Model):
   term = db.Column(db.Integer, nullable=True)
   student_id = db.Column(db.Integer, nullable=True)
   student_group = db.Column(db.String, nullable=True)
-
+  #subject = db.Column(db.String, nullable=True)
+  
   # Prof - specific fields
   #professor_id = db.Column(db.Integer, nullable=True)
   #coursetable = db.Column(db.String, nullable=True)
@@ -186,7 +187,7 @@ class Timetable(db.Model):
       db.session.query(Timetable).delete()
       db.session.commit()
 
-      for specific_class in all_classes.values():
+      for specific_class in list(all_classes.values())[0]:
           sc_subject = specific_class['subject']
           sc_session = specific_class['session']
           sc_weekday = specific_class['weekday']
@@ -256,7 +257,7 @@ class studentGroup(db.Model):
     sg_id = db.Column(db.Integer, primary_key=True)
     pillar = db.Column(db.Integer)
     size = db.Column(db.Integer)
-    subjects = db.Column(db.String)
+    subjects = db.Column(db.String) #a string representation of a list e.g. [50003, 50005, 50034]
     name = db.Column(db.String)
     cohort = db.Column(db.Integer)
     term = db.Column(db.Integer)
