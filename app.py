@@ -192,9 +192,11 @@ def viewStudentSchedule():
     """
     if current_user.user_group == 'student':
         user_student_group_pillar = Users.query(Users.student_group, Users.pillar).filter_by(current_user.username)
-        user_subjects_cohort = studentGroup.query(studentGroup.subjects, studentGroup.cohort).filter_by(user_student_group_pillar)
-        
-        user_timetable = Timetable.find_Timetable(user_subjects_cohort)
+        user_subjects_cohort = studentGroup.query(studentGroup.subjects, studentGroup.cohort).filter_by(user_student_group_pillar).all()
+        subject_cohort_dict = {}
+        for subject in user_subjects_cohort[0]:
+            subject_cohort_dict[str(subject)] = user_subjects_cohort[1]
+        user_timetable = Timetable.find_Timetable(subject_cohort_dict)
   return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
@@ -207,7 +209,7 @@ def genSchedule():
   """
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
   input_dict['professor'] = Users.getAllProfessors()
-  input_dict['subject'] = Subjects.getAllSubjects
+  input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
   
