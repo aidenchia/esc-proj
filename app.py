@@ -140,7 +140,8 @@ def register():
 @Roles(True,"admin", "course_lead", "pillar_head")
 def subjects():
     form = SubjectForm()
-    
+    if form.add_more_component.data:
+        form.component.append_entry(u'default value')
     return render_template('subjects.html',form=form)
 
 @app.route("/usersTable", methods=['GET', 'POST'])
