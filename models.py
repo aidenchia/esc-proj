@@ -198,6 +198,7 @@ class Timetable(db.Model):
           db.session.add(specific_class)
       db.session.commit()
       return None
+
   @staticmethod
   def find_Timetable(subject_cohort_dict):
       user_timetable = {"user_timetable":[]}
@@ -261,6 +262,7 @@ class studentGroup(db.Model):
     name = db.Column(db.String)
     cohort = db.Column(db.Integer)
     term = db.Column(db.Integer)
+
     def __init__(self, pillar, size, subjects, name, cohort, term):
         self.pillar = pillar
         self.size = size
@@ -274,29 +276,38 @@ class studentGroup(db.Model):
 
     @staticmethod
     def insert(pillar, size, subjects, name, cohort, term):
-        query = studentGroup.session.query.filter_by(pillar).filter_by(name)
+        query = studentGroup.query.filter_by(pillar=pillar).all()
         if query is None:
             newgroup = studentGroup(pillar, size, subjects, name, cohort, term)
             db.session.add(newgroup)
             db.session.commit()
+        else:
+          for q in query:
+            if q.name == name:
+              return None
+
+          newgroup = studentGroup(pillar, size, subjects, name, cohort, term)
+          db.session.add(newgroup)
+          db.session.commit()
+
         return None
     
     @staticmethod
     def delete(pillar, name):
-        query = studentGroup.session.query.filter_by(pillar).filter_by(name)
+        query = studentGroup.query.filter_by(pillar).filter_by(name)
         if query is not None:
             db.session.delete(query)
             db.session.commit()
     
     @staticmethod
     def getGroup(pillar, name):
-        query = studentGroup.session.query.filter_by(pillar).filter_by(name)
+        query = studentGroup.query.filter_by(pillar).filter_by(name)
         if query is not None:
             return query.all()._asdict()
     
     @staticmethod
     def getAllGroups():
-        query = studentGroup.session.query.all()
+        query = studentGroup.query.all()
         all_groups = [group._asdict() for group in query]
         return all_groups
         

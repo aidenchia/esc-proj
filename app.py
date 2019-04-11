@@ -2,7 +2,7 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
-from forms import LoginForm, RegisterForm, EditForm
+from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup
 from werkzeug.security import generate_password_hash
 import functools
@@ -177,6 +177,35 @@ def deleteUser(username):
   Users.remove(username)
   return redirect(url_for('usersTable'))
 
+@app.route("/editStudentGroups", methods=['GET', 'POST'])
+def editStudentGroups():
+  #subject_choices = [str(x.subjectCode) for x in Subjects.query.all()]
+  #form = StudentGroupForm(subject_choices)
+  form = StudentGroupForm()
+
+  if form.validate_on_submit():
+    if len(set([form.subject1.data, form.subject2.data, form.subject3.data])) != 3:
+      flash('Subject Combinations must be unique')
+      return redirect(url_for('editStudentGroups'))
+
+    
+    studentGroup.insert(pillar=form.pillar.data,
+                        size=form.size.data,
+                        name=form.name.data,
+                        subjects=str([dict(form.subject_choices).get(form.subject1.data), 
+                                      dict(form.subject_choices).get(form.subject2.data), 
+                                      dict(form.subject_choices).get(form.subject3.data)]),
+                        cohort=form.cohort.data,
+                        term=form.term.data)
+
+    return redirect(url_for('studentGroupTable'))
+
+  return render_template('editStudentGroups.html',form=form)
+
+@app.route("/studentGroupTable", methods=['GET', 'POST'])
+def studentGroupTable():
+  studentGroupTable = studentGroup.query.all()
+  return render_template('studentGroupTable.html', studentGroupTable=studentGroupTable)
 
 ######################################## STUDENTS ###############################
 @login_required
@@ -229,8 +258,9 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
+  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
   try:
-    f = open('timetable.json', 'r')
+    f = open(timetablePath, 'r')
     return f.read()
     
   except FileNotFoundError:
