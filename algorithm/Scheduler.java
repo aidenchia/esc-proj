@@ -11,10 +11,18 @@ public class Scheduler {
     private static ArrayList<StudentGroup> studentGroupSet;
     private static ArrayList<Professor> professorSet;
 
-    private static final int NUM_ITER = 5000;
+    private static int NUM_ITER;
 
     public static void main(String[] args) {
 
+        if (args.length == 0) {
+            NUM_ITER = 5000;
+        }
+
+        else {
+            NUM_ITER = Integer.valueOf(args[0]);
+        }
+        
         importDatabase();
 //        roomList = JsonUtils.readJsonRoomList();
 

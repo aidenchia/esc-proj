@@ -63,35 +63,30 @@ def Roles(included=True, *role):
 @app.route('/', methods=['GET', 'POST'])
 def login():
   if current_user.is_authenticated:
-    return redirect_user(current_user)
+    return redirect(url_for('home'))
 
   form = LoginForm()
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
     if user is not None and user.check_password(form.password.data):
         login_user(user)
-        return redirect_user(user)
+        return redirect(url_for('home'))
 
     flash('Invalid username / password')    
     #return redirect(url_for('register'))
   return render_template('login.html', title="Sign In", form=form)
-
-def redirect_user(user):
-  if user.user_group == 'student':
-    return redirect(url_for('viewSchedule'))
-
-  elif user.user_group == 'admin':
-    return redirect(url_for('register'))
-
-  elif user.user_group == 'pillar_head' or user.user_group == 'subject_lead':
-    return redirect(url_for('courseInput'))
-
 
 @app.route("/logout")
 def logout():
   logout_user()
   session.clear()
   return redirect(url_for('login'))
+
+@login_required
+@app.route("/home")
+def home():
+  return render_template('home.html')
+
 
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
@@ -113,7 +108,7 @@ def subjectsTable():
   except:
     print("Empty fields")
     
-  allSubjects = db.session.query(Subjects).order_by(Subjects.subjectName).all()
+  allSubjects = Subjects.select(all=True)
   return render_template("subjectsTable.html", allSubjects=allSubjects)
 
 ########################################## ADMIN ##########################
@@ -122,10 +117,10 @@ def subjectsTable():
 @Roles(True,"admin")
 def register():
   form = RegisterForm()
-  #flash(str(current_user.user_group))
+
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
-    #flash(str(user))
+
     if user is None:
         if form.user_group.data == -1:
             flash("Please choose a user group.")
@@ -181,13 +176,6 @@ def editUsers():
 def deleteUser(username):
   Users.remove(username)
   return redirect(url_for('usersTable'))
-
-
-@app.route("/home", methods=['GET','POST'])
-@login_required
-def index():
-    return render_template("base.html",)
-
 
 
 ######################################## STUDENTS ###############################
