@@ -26,7 +26,10 @@
         </p>
         <p>
             {{form.add_more_component.label}}
-            {{form.add_more_component}}
+            {% for cf in form.add_more_component %}
+                {{cf.label}}
+                {{cf}}
+            {% endfor %}
         </p>
         <p>
             {{form.pillar.label}}
