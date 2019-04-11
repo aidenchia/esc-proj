@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Add Subject{% endblock %}</h1>
+{% endblock %}
+{% block content %}
+
+<form id="add_subject" name="add_subject" method="POST">
+        {{form.csrf_token}}
+        <h1>Register</h1>
+        </div>
+        <p>
+            {{form.subject_name.label}}
+            {{form.subject_name}}
+        </p>
+        <p>
+            {{form.subject_id.label}}
+            {{form.subject_id}}
+        </p>
+        <p>
+            {{form.term_no.label}}
+            {{form.term_no}}
+        </p>
+        <p>
+            {{form.component.label}}
+            {{form.component}}
+        </p>
+        <p>
+            {{form.pillar.label}}
+            {{form.pillar}}
+        </p>
+        <p>
+            {{form.user_group.label}}
+            {{form.user_group}}
+        </p>
+        <p>
+            {{form.pillar.label}}
+            {{form.pillar}}
+        </p>
+        <p>
+            {{form.subject_type.label}}
+            {{form.subject_type}}
+        </p>
+        <p>
+            {{form.cohort_num.label}}
+            {{form.cohort_num}}
+        </p>
+        <p><input type="submit" value="Go"></p>
+    </form>
+{% endblock %}

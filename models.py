@@ -277,6 +277,7 @@ class studentGroup(db.Model):
     @staticmethod
     def insert(pillar, size, subjects, name, cohort, term):
         query = studentGroup.query.filter_by(pillar=pillar).all()
+        #query = studentGroup.query.filter(studentGroup.pillar==pillar, studentGroup.name==name)
         if query is None:
             newgroup = studentGroup(pillar, size, subjects, name, cohort, term)
             db.session.add(newgroup)
@@ -301,7 +302,7 @@ class studentGroup(db.Model):
     
     @staticmethod
     def getGroup(pillar, name):
-        query = studentGroup.query.filter_by(pillar).filter_by(name)
+        query = studentGroup.query.filter(studentGroup.name==name,studentGroup.pillar==pillar)
         if query is not None:
             return query.all()._asdict()
     

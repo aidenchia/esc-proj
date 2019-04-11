@@ -2,7 +2,7 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
-from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm
+from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup
 from werkzeug.security import generate_password_hash
 import functools
@@ -136,6 +136,12 @@ def register():
 
   return render_template('register.html',form=form)
 
+@app.route("/subjects", methods=['GET', 'POST'])
+@Roles(True,"admin", "course_lead", "pillar_head")
+def subjects():
+    form = SubjectForm()
+    
+    return render_template('subjects.html',form=form)
 
 @app.route("/usersTable", methods=['GET', 'POST'])
 @Roles(True,"admin", "course_lead", "pillar_head")
@@ -219,13 +225,53 @@ def viewStudentSchedule():
         location of session(room id)
         professors teaching
     """
+    Session = {0:'Lab',1:'Cohort Based Learning',2:'Lecture'}
+    student_schedule = [['Monday','Tuesday','Wedneday','Thursday','Friday'],
+                        ['08:30-09:00',None,None,None,None,None],
+                        ['09:00-09:30',None,None,None,None,None],
+                        ['09:30-10:00',None,None,None,None,None],
+                        ['10:00-10:30',None,None,None,None,None],
+                        ['10:30-11:00',None,None,None,None,None],
+                        ['11:00-11:30',None,None,None,None,None],
+                        ['11:30-12:00',None,None,None,None,None],
+                        ['12:00-12:30',None,None,None,None,None],
+                        ['12:30-13:00',None,None,None,None,None],
+                        ['13:00-13:30',None,None,None,None,None],
+                        ['13:30-14:00',None,None,None,None,None],
+                        ['14:00-14:30',None,None,None,None,None],
+                        ['14:30-15:00',None,None,None,None,None],
+                        ['15:00-15:30',None,None,None,None,None],
+                        ['15:30-16:00',None,None,None,None,None],
+                        ['16:00-16:30',None,None,None,None,None],
+                        ['16:30-17:00',None,None,None,None,None],
+                        ['17:00-17:30',None,None,None,None,None],
+                        ['17:30-18:00',None,None,None,None,None],
+                        ['18:00-18:30',None,None,None,None,None],
+                        ['18:30-19:00',None,None,None,None,None]]
+    
     if current_user.user_group == 'student':
-        user_student_group_pillar = Users.query(Users.student_group, Users.pillar).filter_by(current_user.username)
-        user_subjects_cohort = studentGroup.query(studentGroup.subjects, studentGroup.cohort).filter_by(user_student_group_pillar).all()
+        user_student_group_pillar = Users.query(Users.student_group, Users.pillar).filter_by(current_user.username).all()._asdict()
+        user_subjects_cohort = studentGroup.query(studentGroup.subjects, studentGroup.cohort)\
+                                .filter(studentGroup.name == user_student_group_pillar['student_group'],
+                                        studentGroup.pillar == user_student_group_pillar['pillar']).all()._asdict()
         subject_cohort_dict = {}
-        for subject in user_subjects_cohort[0]:
-            subject_cohort_dict[str(subject)] = user_subjects_cohort[1]
+        subjects = user_subjects_cohort['subjects']
+        for subject in subjects:
+            subject_cohort_dict[str(subject)] = str(user_subjects_cohort['cohort'])
         user_timetable = Timetable.find_Timetable(subject_cohort_dict)
+        all_professors = Users.getAllProfessors(for_scheduler=False)
+        subject_ids = Subjects.select()
+        for specific_class in user_timetable[user_timetable]:
+            subject_id = ''
+            subject_name = specific_class['subject']
+            session_type = 'Lecture' if len(specific_class['session']) > 1 else 'Cohort Based Learning'
+            start_to_end = student_schedule[int(specific_class['startTime'])+1][0]
+            location = ''
+            professors_teaching = ''
+            #for subject in subject_ids:
+            #    if subject.subjectName
+            #class_information = subject_ids
+        
   return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
