@@ -272,7 +272,7 @@ def viewStudentSchedule():
             #    if subject.subjectName
             #class_information = subject_ids
         
-  return render_template("base.html") # for now
+    return render_template("base.html") # for now
 
 ######################################## Scheduling algorithm #################
 @app.route("/genSchedule", methods=['GET', 'POST'])
