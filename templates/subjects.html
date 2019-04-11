@@ -27,8 +27,10 @@
         <p>
             {{form.add_more_component.label}}
             {% for cf in form.add_more_component %}
+            <p>
                 {{cf.label}}
                 {{cf}}
+            </p>
             {% endfor %}
         </p>
         <p>
