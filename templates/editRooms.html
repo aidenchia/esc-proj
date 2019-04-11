@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form id="edit-rooms" name="edit-rooms" method="POST">
+        {{form.csrf_token}}
+        <h1>Student Groups</h1>
+        </div>
+        <p>
+            {{form.fullname.label}}
+            {{form.fullname}}
+        </p>
+
+        <p>
+            {{form.password.label}}
+            {{form.password}}
+        </p>
+        <p>
+            {{form.email.label}}
+            {{form.email}}
+        </p>
+        <p>
+            {{form.user_group.label}}
+            {{form.user_group}}
+        </p>
+        <p>
+            {{form.pillar.label}}
+            {{form.pillar}}
+        </p>
+        <p>
+            {{form.term.label}}
+            {{form.term}}
+        </p>
+        <p>
+            {{form.student_id.label}}
+            {{form.student_id}}
+        </p>
+
+        <p>
+            {{form.delete.label}}  {{form.delete}}
+        </p>
+        <p><input type="submit" value="Go"></p>
+    </form>
+{% endblock %}

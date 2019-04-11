@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 98%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+  </style>
+</head>
+
+<h1> All Student Groups</h1>
+<table>
+  <tr bgcolor="white">
+      <th>Pillar</th>
+      <th>Size</th>
+      <th>Cohort</th>
+      <th>Term</th>
+      <th>Name</th>
+      <th>Subjects</th>
+  </tr>
+    <tbody>
+      {% for eachresult in studentGroupTable %}
+        <tr>
+          <td>{{eachresult.pillar}}</td>
+          <td>{{eachresult.size}} </td>
+          <td>{{eachresult.cohort}}</td>
+          <td>{{eachresult.term}}</td>
+          <td>{{eachresult.name}}</td>
+          <td>{{eachresult.subjects}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

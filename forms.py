@@ -59,5 +59,19 @@ class SubjectForm(FlaskForm):
     term_no = SelectField('Term number',choices=terms,validators=[DataRequired()])
     component = FieldList(FormField(componentForm),min_entries=1,validators=[DataRequired()])
     pillar = SelectField('Pillar',choices=pillar_choices,validators=[DataRequired()])
-    total
+
+
+class StudentGroupForm(FlaskForm):
+  subject_choices = [('1','50.001'),('2','50.002'), ('3', '50.034')]
+  pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','EPD'),('2','ASD'),('3','ESD'),('4','ISTD')]
+
+  pillar = SelectField('Pillar',choices=pillar_choices,validators=[DataRequired()])
+  size = IntegerField('Size', validators=[DataRequired(), NumberRange(min=5, max=50, message="Student group size must be between 5 and 50 inclusive")])
+  cohort = IntegerField('Cohort', validators=[DataRequired()])
+  term = IntegerField('Term', validators=[DataRequired()])
+  name = StringField('Name', validators=[DataRequired()])
+  subject1 = SelectField('Subject 1', choices=subject_choices, validators=[DataRequired()])
+  subject2 = SelectField('Subject 2', choices=subject_choices, validators=[DataRequired()])
+  subject3 = SelectField('Subject 3', choices=subject_choices, validators=[DataRequired()])
+
     
