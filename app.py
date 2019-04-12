@@ -143,7 +143,7 @@ def subjects():
     if form.add_more_component.data:
         print("came here instead")
         form.component.append_entry(u'default value')
-    elif form.validate_on_submit() and not form.add_more_component.data:
+    elif form.validate_on_submit():
         print("came here")
         if form.term_no.data == -1 or form.pillar.data == -1 or form.subject_type.data == -1:
             print("Please choose an option for term, pillar and subject type")

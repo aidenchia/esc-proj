@@ -69,7 +69,7 @@ class SubjectForm(FlaskForm):
     subject_id = IntegerField('Subject id(without the decimal point)', validators=[DataRequired()])
     term_no = SelectField('Term number',choices=terms,validators=[DataRequired()])
     component = FieldList(FormField(componentForm),min_entries=1,validators=[DataRequired()])
-    add_more_component = SubmitField("Add another component")
+    add_more_component = SubmitField("Add another component")   
     pillar = SelectField('Pillar',choices=pillar_choices,validators=[DataRequired()])
     subject_type = SelectField('Subject Type',choices=subject_types,validators=[DataRequired()])
     cohort_num = IntegerField('Number of Cohorts',validators=[DataRequired(),NumberRange(min=1, max=10, message='Number of cohorts must be between 1 and 10 inclusive')])
