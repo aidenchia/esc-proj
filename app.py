@@ -191,6 +191,8 @@ def editUsers():
               pillar=form.pillar.data, 
               term=form.term.data, 
               student_id=form.student_id.data,
+              professor_id=form.professor_id.data,
+              coursetable = form.coursetable.data,
               delete=form.delete.data)
 
     flash(status)

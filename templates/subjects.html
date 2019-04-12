@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
-{% block header %}
-  <h1>{% block title %}Add Subject{% endblock %}</h1>
-{% endblock %}
 {% block content %}
 
 <form id="add_subject" name="add_subject" method="POST">
         {{form.csrf_token}}
-        <h1>Register</h1>
+        <h1>Add Subjects</h1>
         </div>
         <p>
             {{form.subject_name.label}}

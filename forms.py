@@ -29,6 +29,10 @@ class RegisterForm(FlaskForm):
   student_id = IntegerField('Student ID', validators=[Optional()])
   #student_subjects = 
 
+  # Professor - related, must allow it to be blank
+  professor_id = IntegerField('Professor ID', validators=[Optional()])
+  course_table = StringField('Courses Taught', validators=[Optional()])
+
 class EditForm(FlaskForm):
   user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
   username = StringField('Username', validators=[DataRequired()])
@@ -38,9 +42,14 @@ class EditForm(FlaskForm):
   email = StringField('Email', validators=[Optional()])
   user_group = SelectField('User Group',choices=user_choices, validators=[Optional()])
   
+  # Student - related, must allow it to be blank
   pillar = StringField('Pillar', validators=[Optional()])
   term = StringField('Term', validators=[Optional()])
   student_id = IntegerField('Student ID', validators=[Optional()])
+
+  # Professor - related, must allow it to be blank
+  professor_id = IntegerField('Professor ID', validators=[Optional()])
+  coursetable = StringField('Courses Taught', validators=[Optional()])
 
   delete = BooleanField('Remove User', default=False, validators=[Optional()])
   

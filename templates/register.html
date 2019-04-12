@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
-{% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
-{% endblock %}
+
 {% block content %}
 
 <form id="register-users" name="register-users" method="POST">
@@ -44,6 +42,18 @@
             {{form.student_id.label}}
             {{form.student_id}}
         </p>
+
+        <p>
+            {{form.professor_id.label}}
+            {{form.professor_id}}
+        </p>
+
+        <p>
+            {{form.course_table.label}}
+            {{form.course_table}}
+        </p>
+
+
         <p><input type="submit" value="Go"></p>
     </form>
 {% endblock %}
