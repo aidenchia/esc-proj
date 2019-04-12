@@ -55,6 +55,10 @@ def test_remove_user(client):
   assert len(query) == 0
 
 
+def test_website(selenium):
+  selenium.get('https://sutd-scheduler.herokuapp.com')
+  
+
 
 
 

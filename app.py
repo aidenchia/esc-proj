@@ -118,6 +118,9 @@ def subjectsTable():
 def register():
   form = RegisterForm()
 
+  if form.add_more_component.data:
+    form.class1.append_entry(u'default value')
+
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
 
@@ -175,6 +178,9 @@ def usersTable():
 @app.route("/editUsers", methods=['GET', 'POST'])
 def editUsers():
   form = EditForm()
+
+  if form.add_more_component.data:
+    form.component.append_entry(u'default value')
 
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
@@ -341,7 +347,7 @@ def genSchedule():
   Update the input.json file in algorithm folder from the database.
   runScheduler
   then, update the database with the new data.
-  """
+  
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
   prof_format = {'name':'','id':0,'coursetable':{}}
   subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
@@ -361,13 +367,14 @@ def genSchedule():
   file_to_open = data_folder / 'input.json'
   with open(file_to_open,'w+') as input_file:
       json.dump(input_dict, input_file)
-  
+  """
   runScheduler()
-  
-  with open('timetable.json') as data_file:    
+  '''
+  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  with open(timetablePath, 'r') as data_file:    
     data = json.load(data_file)
   Timetable.replace_all(data)
-  
+  '''
   return redirect(url_for('viewMasterSchedule'))
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])

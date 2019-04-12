@@ -14,6 +14,10 @@ class LoginForm(FlaskForm):
   #remember_me = BooleanField('Remember Me', default=True)
   submit = SubmitField('Sign In')
 
+class classForm(Form):
+  classchoices = [('1', '50.003'),('2', '50.004'), ('3', '50.034')]
+  classes = SelectField('Enrolled in', choices=classchoices)
+
 class RegisterForm(FlaskForm):
   user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
   username = StringField('Username', validators=[DataRequired()])
@@ -31,7 +35,8 @@ class RegisterForm(FlaskForm):
 
   # Professor - related, must allow it to be blank
   professor_id = IntegerField('Professor ID', validators=[Optional()])
-  course_table = StringField('Courses Taught', validators=[Optional()])
+  class1 = FieldList(FormField(classForm), min_entries=1)
+  add_more_component = SubmitField("Add another Subject")
 
 class EditForm(FlaskForm):
   user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
@@ -50,6 +55,8 @@ class EditForm(FlaskForm):
   # Professor - related, must allow it to be blank
   professor_id = IntegerField('Professor ID', validators=[Optional()])
   coursetable = StringField('Courses Taught', validators=[Optional()])
+
+  add_more_component = SubmitField("Add another Subject")
 
   delete = BooleanField('Remove User', default=False, validators=[Optional()])
   

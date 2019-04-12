@@ -11,6 +11,7 @@
 <body>
   <header>
     <div class="container">
+      <a href="{{ url_for('home') }}">
       <img src="/static/images/icons/logo-sutd-white.png" alt="SUTD Scheduler" style="width:100px; height:60px" align="left">
       <nav>
         <ul>
@@ -40,7 +41,7 @@
                     <a href="{{ url_for('usersTable')}}">View All Users</a>
                     <a href="{{ url_for('register') }}">Add new user</a>
                     <a href="{{ url_for('editUsers') }}">Edit user</a>
-                    <a href="{{ url_for('subjects') }}">Add Subjects</a>
+                    <a href="{{ url_for('editStudentGroups') }}">Edit Student Groups</a>
                 </div>
               </div>
               <div class = "dropdown">
@@ -57,7 +58,12 @@
                     <a href="{{ url_for('viewRooms')}}">View Room</a>
                 </div>
               </div>
+              <div class = "dropdown">
               <li><a href="{{ url_for('subjectsTable') }}">Subjects</a></li>
+                <div class = "dropdown-content">
+                      <a href="{{ url_for('subjectsTable')}}">View Subjects</a>
+                      <a href="{{ url_for('subjects')}}">Edit Subjects</a>
+                </div>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
 
