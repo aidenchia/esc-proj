@@ -144,10 +144,12 @@ def register():
 def subjects():
     form = SubjectForm()
     if form.add_more_component.data:
+        print("came here instead")
         form.component.append_entry(u'default value')
-    if form.validate_on_submit():
+    elif form.validate_on_submit():
+        print("came here")
         if form.term_no.data == -1 or form.pillar.data == -1 or form.subject_type.data == -1:
-            flash("Please choose an option for term, pillar and subject type")
+            print("Please choose an option for term, pillar and subject type")
         else:
             subjectname = form.subject_name.data
             subjectid = form.subject_id.data
@@ -165,7 +167,7 @@ def subjects():
                         temp['cohorts'].append(i)
                 components.append(temp)
             Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
-        
+            
         
     return render_template('subjects.html',form=form)
 
@@ -251,7 +253,8 @@ def addRooms():
         if form.room_type.data == -1:
             flash("Please choose a room type.")
         else:
-            Rooms.insert(form.room_id.data, form.room_name.data, str(dict(form.roomtypes).get(form.room_type.data)), form.capacity.data)
+            print(form.room_id.data)
+            Rooms.insert(str(form.room_id.data), str(form.room_name.data), str(dict(form.roomtypes).get(form.room_type.data)), str(form.capacity.data))
             return redirect(url_for('viewRooms'))
     
     return render_template('addRooms.html',form=form)
@@ -354,10 +357,8 @@ def genSchedule():
   class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
   studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
   
-  #for professor in Users.getAllProfessors():
-      
-  
-  input_dict['professor'] = Users.getAllProfessors()
+  for professor in Users.getAllProfessors():
+      input_dict['professor'].append({'name':professor.fullnamell,'id':0,'coursetable':{}})
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
