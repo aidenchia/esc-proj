@@ -142,9 +142,9 @@ def subjects():
     form = SubjectForm()
     if form.add_more_component.data:
         form.component.append_entry(u'default value')
-    if form.validate_on_submit():
+    elif form.validate_on_submit():
         if form.term_no.data == -1 or form.pillar.data == -1 or form.subject_type.data == -1:
-            flash("Please choose an option for term, pillar and subject type")
+            print("Please choose an option for term, pillar and subject type")
         else:
             subjectname = form.subject_name.data
             subjectid = form.subject_id.data
@@ -162,7 +162,7 @@ def subjects():
                         temp['cohorts'].append(i)
                 components.append(temp)
             Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
-        
+            
         
     return render_template('subjects.html',form=form)
 

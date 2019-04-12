@@ -260,6 +260,7 @@ class Rooms(db.Model):
       query = Rooms.query.filter_by(location=location)
       if query is None:
           room = Rooms(location, name, roomType, capacity)
+          print(room)
           db.session.add(room)
           db.session.commit()
       return None
