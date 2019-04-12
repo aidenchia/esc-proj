@@ -254,7 +254,7 @@ class Rooms(db.Model):
 
   @staticmethod
   def insert(location, name, roomType, capacity):
-      query = Rooms.session.query.filter_by(location)
+      query = Rooms.query.filter_by(location)
       if query is None:
           room = Rooms(location, name, roomType, capacity)
           db.session.add(room)
@@ -263,20 +263,20 @@ class Rooms(db.Model):
   
   @staticmethod
   def delete(Specific_location):
-      query = Rooms.session.query.filter_by(location=Specific_location).first()
+      query = Rooms.query.filter_by(location=Specific_location).first()
       db.session.delete(query)
       db.session.commit()
   
   @staticmethod
   def getroom(Specific_location):
-      query = Rooms.session.query.filter_by(location=Specific_location).first()
+      query = Rooms.query.filter_by(location=Specific_location).first()
       if query is not None:
           return query.all()._asdict()
       return None
 
   @staticmethod
   def geAllRooms():
-      query = Rooms.session.query.order_by(Rooms.room_id).all()
+      query = Rooms.query.order_by(Rooms.room_id).all()
       all_rooms = [room._asdict() for room in query]
       return all_rooms
 
