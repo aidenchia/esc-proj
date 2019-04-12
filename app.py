@@ -245,6 +245,7 @@ def addRooms():
         if form.room_type.data == -1:
             flash("Please choose a room type.")
         else:
+            print(form.room_id.data)
             Rooms.insert(str(form.room_id.data), str(form.room_name.data), str(dict(form.roomtypes).get(form.room_type.data)), str(form.capacity.data))
             return redirect(url_for('viewRooms'))
     
