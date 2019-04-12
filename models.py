@@ -257,7 +257,7 @@ class Rooms(db.Model):
   @staticmethod
   def insert(location, name, roomType, capacity):
       print(location)
-      query = Rooms.query.filter_by(location)
+      query = Rooms.query.filter_by(location=location)
       if query is None:
           room = Rooms(location, name, roomType, capacity)
           db.session.add(room)
