@@ -88,8 +88,9 @@ class Users(db.Model):
   #subject = db.Column(db.String, nullable=True)
   
   # Prof - specific fields
-  #professor_id = db.Column(db.Integer, nullable=True)
-  #coursetable = db.Column(db.String, nullable=True)
+  professor_id = db.Column(db.Integer, nullable=True)
+  coursetable = db.Column(db.String, nullable=True) # "['50.004': [0, 1]]"
+
 
 
   def __init__(self, username, fullname, email, password, user_group, authenticated):
@@ -140,7 +141,7 @@ class Users(db.Model):
       db.session.commit()
     return None
 
-  def edit(self, username, password, fullname, email, user_group, pillar, term, student_id, delete):
+  def edit(self, username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, delete):
     if delete:
       Users.remove(username)
       return username + " removed"
@@ -152,6 +153,7 @@ class Users(db.Model):
     if pillar != "": self.pillar = pillar 
     if term != "": self.term = term 
     if student_id != "": self.student_id = student_id 
+    if coursetable != "": self.coursetable = coursetable
     db.session.commit()
 
   @staticmethod
