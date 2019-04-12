@@ -2,7 +2,7 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
-from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm
+from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup
 from werkzeug.security import generate_password_hash
 import functools
@@ -213,6 +213,40 @@ def editStudentGroups():
 def studentGroupTable():
   studentGroupTable = studentGroup.query.all()
   return render_template('studentGroupTable.html', studentGroupTable=studentGroupTable)
+
+@app.route("/addRooms", methods=['GET','POST'])
+def addRooms():
+    form = RoomForm()
+    if form.validate_on_submit():
+        if form.room_type.data == -1:
+            flash("Please choose a room type.")
+        else:
+            Rooms.insert(form.room_id.data, form.room_name.data, form.room_type.data, form.capacity.data)
+            
+    
+    return render_template('addRooms.html',form=form)
+
+@app.route("/editRooms", methods=['GET','POST'])
+def editRooms():
+    form = RoomForm()
+    if form.validate_on_submit():
+        if form.room_type.data == -1:
+            flash("Please choose a room type.")
+        else:
+            room = Rooms.query.filter_by(location=form.room_id.data).first()
+            if room is None:
+                flash("Room not found. Please try again")
+            else:
+                room.edit(form.room_id.data, form.room_name.data, form.room_type.data, form.capacity.data)
+            
+    
+    return render_template('addRooms.html',form=form)
+
+@app.route('/viewRooms', methods=['GET','POST'])
+def viewRooms():
+    rooms = Rooms.query.all()
+    return render_template('viewRooms.html',rooms=rooms)
+    
 
 ######################################## STUDENTS ###############################
 @login_required

@@ -50,6 +50,13 @@
                       <a href="{{ url_for('viewMasterSchedule')}}">View Schedule</a>
                 </div>
               </div>
+              <div class = "dropdown">
+              <li><a href="{{ url_for('addRooms') }}">Add Room</li>
+                <div class = "dropdown-content">
+                    <a href="{{ url_for('editRooms')}}">Edit Room</a>
+                    <a href="{{ url_for('viewRooms')}}">View Room</a>
+                </div>
+              </div>
               <li><a href="{{ url_for('subjectsTable') }}">Subjects</a></li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}

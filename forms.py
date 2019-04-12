@@ -54,7 +54,7 @@ class componentForm(Form):
 class SubjectForm(FlaskForm):
     terms = [('-1','Please select a term'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8')]
     pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','EPD'),('2','ASD'),('3','ESD'),('4','ISTD')]
-    subject_types = [('-1','Please select a pillar'),('0','Core'),('1','Elective')]
+    subject_types = [('-1','Please select a Subject Type'),('0','Core'),('1','Elective')]
     
     subject_name = StringField('Subject Name', validators=[DataRequired()])
     subject_id = IntegerField('Subject id(without the decimal point)', validators=[DataRequired()])
@@ -64,8 +64,14 @@ class SubjectForm(FlaskForm):
     pillar = SelectField('Pillar',choices=pillar_choices,validators=[DataRequired()])
     subject_type = SelectField('Subject Type',choices=subject_types,validators=[DataRequired()])
     cohort_num = IntegerField('Number of Cohorts',validators=[DataRequired(),NumberRange(min=1, max=10, message='Number of cohorts must be between 1 and 10 inclusive')])
+    total_enrollment = IntegerField('Total Enrollment',validators=[DataRequired(),NumberRange(min=10, max=500, message='Total Enrollments must be between 10 and 500 inclusive')])
     
-    
+class RoomForm(FlaskForm):
+    roomtypes = [('-1','Please select a room type'),('0','Cohort Classroom/Think Tank'),('1','Lecture Theatre'),('2','Science Lab')]
+    room_name = StringField("Room Name",validators=[DataRequired()])
+    room_id = StringField('Room Id',validators=[DataRequired()])
+    room_type = SelectField("Room Type",choices=roomtypes,validators=[DataRequired()])
+    capacity = IntegerField("Room Capacity",validators=[DataRequired()])
 
 class StudentGroupForm(FlaskForm):
   subject_choices = [('1','50.001'),('2','50.002'), ('3', '50.034')]

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 98%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+  </style>
+</head>
+
+<h1> All Rooms</h1>
+<table>
+  <tr bgcolor="white">
+      <th>id</th>
+      <th>Name</th>
+      <th>Room ID</th>
+      <th>Room Type</th>
+      <th>Capacity</th>
+  </tr>
+    <tbody>
+      {% for eachroom in rooms %}
+        <tr>
+          <td>{{eachroom.room_id}}</td>
+          <td>{{eachroom.name}} </td>
+          <td>{{eachroom.location}}</td>
+          <td>{{eachroom.roomType}}</td>
+          <td>{{eachroom.capacity}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}

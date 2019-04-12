@@ -13,6 +13,7 @@ class Subjects(db.Model):
   term = db.Column(db.Integer, nullable=True)
   subjectType = db.Column(db.Text, nullable=True)
   subjectName = db.Column(db.Text, nullable=True)
+  
 
   def __init__(self, subjectCode, term, subjectType, subjectName):
     self.subjectCode = subjectCode
@@ -225,6 +226,14 @@ class Rooms(db.Model):
 
   def __repr__(self):
       return '{}, {}, {}, {}}'.format(self.location, self.name, self.roomType, self.capacity)
+  
+  def edit(self, location, name, roomType, capacity):
+      
+    if name != "": self.name = name
+    if location != "": self.location = location 
+    if roomType != 'Please select a room type': self.roomType = roomType
+    if capacity != "": self.capacity = capacity
+    db.session.commit()
 
   @staticmethod
   def insert(location, name, roomType, capacity):

@@ -23,20 +23,15 @@
         <p>
             {{form.component.label}}
             {% for cf in form.component %}
-            <p>
+            <center><p>
                 {{cf.label}}
                 {{cf}}
-            </p>
+            </p></center>
             {% endfor %}
         </p>
         <p>
-            {{form.add_more_component.label}}
             {{form.add_more_component}}
             
-        </p>
-        <p>
-            {{form.pillar.label}}
-            {{form.pillar}}
         </p>
         <p>
             {{form.pillar.label}}
