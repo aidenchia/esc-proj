@@ -161,7 +161,7 @@ def subjects():
                     for i in range(cohort_num):
                         temp['cohorts'].append(i)
                 components.append(temp)
-            
+            Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
         
         
     return render_template('subjects.html',form=form)
@@ -285,7 +285,7 @@ def viewStudentSchedule():
         location of session(room id)
         professors teaching
     """
-    Session = {0:'Lab',1:'Cohort Based Learning',2:'Lecture'}
+    Session = {2:'Lab',0:'Cohort Based Learning',1:'Lecture'}
     student_schedule = [['Monday','Tuesday','Wedneday','Thursday','Friday'],
                         ['08:30-09:00',None,None,None,None,None],
                         ['09:00-09:30',None,None,None,None,None],
@@ -343,6 +343,14 @@ def genSchedule():
   then, update the database with the new data.
   """
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
+  prof_format = {'name':'','id':0,'coursetable':{}}
+  subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
+  class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
+  studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
+  
+  #for professor in Users.getAllProfessors():
+      
+  
   input_dict['professor'] = Users.getAllProfessors()
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
