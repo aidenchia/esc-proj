@@ -142,6 +142,28 @@ def subjects():
     form = SubjectForm()
     if form.add_more_component.data:
         form.component.append_entry(u'default value')
+    if form.validate_on_submit():
+        if form.term_no.data == -1 or form.pillar.data == -1 or form.subject_type.data == -1:
+            flash("Please choose an option for term, pillar and subject type")
+        else:
+            subjectname = form.subject_name.data
+            subjectid = form.subject_id.data
+            termno = dict(form.terms).get(form.term_no.data)
+            subjecttype = dict(form.subject_types).get(form.subject_type.data)
+            pillar = dict(form.pillar_choices).get(form.pillar.data)
+            cohort_num = form.cohort_num.data
+            total_enrollment = form.total_enrollment.data
+            session_nums = len(form.component.entries)
+            components = []
+            for each_entry in form.component.entries:
+                temp  = {"duration":each_entry.data['duration'],"sessionType": each_entry.data['session'],"classroom":-1, 'cohorts':[]}
+                if each_entry.data['session'] == 1:
+                    for i in range(cohort_num):
+                        temp['cohorts'].append(i)
+                components.append(temp)
+            
+        
+        
     return render_template('subjects.html',form=form)
 
 @app.route("/usersTable", methods=['GET', 'POST'])
@@ -221,8 +243,8 @@ def addRooms():
         if form.room_type.data == -1:
             flash("Please choose a room type.")
         else:
-            Rooms.insert(form.room_id.data, form.room_name.data, form.room_type.data, form.capacity.data)
-            
+            Rooms.insert(form.room_id.data, form.room_name.data, str(dict(form.roomtypes).get(form.room_type.data)), form.capacity.data)
+            return redirect(url_for('viewRooms'))
     
     return render_template('addRooms.html',form=form)
 
@@ -237,7 +259,8 @@ def editRooms():
             if room is None:
                 flash("Room not found. Please try again")
             else:
-                room.edit(form.room_id.data, form.room_name.data, form.room_type.data, form.capacity.data)
+                room.edit(form.room_id.data, form.room_name.data, str(dict(form.roomtypes).get(form.room_type.data)), form.capacity.data)
+                return redirect(url_for('viewRooms'))
             
     
     return render_template('addRooms.html',form=form)

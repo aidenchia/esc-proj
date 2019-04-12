@@ -13,13 +13,22 @@ class Subjects(db.Model):
   term = db.Column(db.Integer, nullable=True)
   subjectType = db.Column(db.Text, nullable=True)
   subjectName = db.Column(db.Text, nullable=True)
-  
+  components = db.Column(db.String)
+  pillar = db.Column(db.Integer)
+  cohortnum = db.Column(db.Integer)
+  totalenrollment = db.Column(db.Integer)
+  sessionnum = db.Column(db.Integer)
 
-  def __init__(self, subjectCode, term, subjectType, subjectName):
+  def __init__(self, subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum):
     self.subjectCode = subjectCode
     self.term = term
     self.subjectType = subjectType
     self.subjectName = subjectName
+    self.components = components
+    self.pillar = pillar
+    self.cohortnum = cohortnum
+    self.totalenrollment = totalenrollment
+    self.sessionnum = sessionnum
 
   def __repr__(self):
     return '{}: {}'.format(self.subjectCode, self.subjectName)
@@ -48,6 +57,14 @@ class Subjects(db.Model):
       db.session.commit()
       result = "Added {}: {} to database".format(str(subject.subjectCode), str(subject.subjectName))
       return result
+  
+  @staticmethod
+  def insertSubject(subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum):
+      subject = Subjects(subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum)
+      db.session.add(subject)
+      db.session.commit()
+      return None
+    
   @staticmethod
   def getAllSubjects():
       query = db.session.query(Subjects).all()
@@ -71,8 +88,8 @@ class Users(db.Model):
   #subject = db.Column(db.String, nullable=True)
   
   # Prof - specific fields
-  #professor_id = db.Column(db.Integer, nullable=True)
-  #coursetable = db.Column(db.String, nullable=True)
+  professor_id = db.Column(db.Integer, nullable=True)
+  coursetable = db.Column(db.String, nullable=True)
 
 
   def __init__(self, username, fullname, email, password, user_group, authenticated):
