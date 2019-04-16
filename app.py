@@ -117,6 +117,7 @@ def subjectsTable():
 @login_required
 @Roles(True,"admin")
 def register():
+  print("came herer from register")
   available_subjects = Subjects.query.all()
   subject_list = [('-1','Please choose a subject')]
   for subject in available_subjects:
@@ -244,8 +245,8 @@ def deleteUser(username):
 
 @app.route("/editStudentGroups", methods=['GET', 'POST'])
 def editStudentGroups():
+  print("came here in student group")
   subject_choices = [('-1','Choose the subject')]
-  #form = StudentGroupForm(subject_choices)
   for subject in Subjects.query.all():
       subject_choices.append((str(subject.subjectCode), subject.subjectName))
   form = StudentGroupForm()

@@ -98,8 +98,6 @@ class subjectSelectForm(Form):
     subject_choice = SelectField('Subject',coerce=int,validators=[DataRequired()])
 
 class StudentGroupForm(FlaskForm):
-  subject_choices = [('1','50.001'),('2','50.002'), ('3', '50.034')]
-
   pillar = SelectField('Pillar',choices=pillar_choices,validators=[DataRequired()])
   size = IntegerField('Size', validators=[DataRequired(), NumberRange(min=5, max=50, message="Student group size must be between 5 and 50 inclusive")])
   cohort = IntegerField('Cohort', validators=[DataRequired()])
