@@ -259,10 +259,6 @@ def editStudentGroups():
             flash('All choices must be filled')
             render_template('editStudentGroups.html',form=form)
         subjects.append(entry.data['subject_choice'])
-    if len(set([form.subject1.data, form.subject2.data, form.subject3.data])) != 3:
-      flash('Subject Combinations must be unique')
-      return redirect(url_for('editStudentGroups'))
-
     
     studentGroup.insert(pillar=form.pillar.data,
                         size=form.size.data,
