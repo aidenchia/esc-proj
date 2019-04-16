@@ -117,10 +117,17 @@ def subjectsTable():
 @login_required
 @Roles(True,"admin")
 def register():
+  available_subjects = Subjects.query.all()
+  subject_list = [('-1','Please choose a subject')]
+  for subject in available_subjects:
+      subject_list.append((str(subject.subjectCode),subject.subjectName))
   form = RegisterForm()
 
   if form.add_more_component.data:
     form.class1.append_entry(u'default value')
+
+  for entry in form.class1.entries:
+      entry.class1.classes.choices = subject_list
 
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
@@ -129,11 +136,18 @@ def register():
         if form.user_group.data == -1:
             flash("Please choose a user group.")
         else:
-            Users.insert(form.username.data,
-                         form.fullname.data,
-                         form.email.data, 
-                         generate_password_hash(form.password.data), 
-                         dict(form.user_choices).get(form.user_group.data))
+            temp_course_table = {}
+            for each_entry in form.class1.entries:
+                if each_entry.data['classes'] == '-1':
+                    print('Please select a class')
+                    return render_template('register.html',form=form)
+                else:
+                    temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
+            Users.insert(form.username.data,form.password.data,
+              form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
+              form.pillar.data, form.term.data, 
+              form.student_id.data,form.professor_id.data,
+              temp_course_table)
             return redirect(url_for('usersTable'))
 
     flash('Invalid Parameters')
@@ -170,7 +184,7 @@ def subjects():
             session_nums = len(form.component.entries)
             components = []
             for each_entry in form.component.entries:
-                temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":-1, 'cohorts':[]}
+                temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":each_entry.data['classroom'], 'cohorts':[]}
                 if each_entry.data['session'] == '-1':
                     print("Please choose an option for session type")
                     return render_template('subjects.html',form=form)

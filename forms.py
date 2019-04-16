@@ -8,6 +8,11 @@ def check_user_group_validator(form,field):
     if field.data == -1:
         raise ValidationError("Please select a user group")
 
+
+user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
+
+
 class LoginForm(FlaskForm):
   username = StringField('Username', validators=[DataRequired()])
   password = PasswordField('Password', validators=[DataRequired()])
@@ -16,10 +21,11 @@ class LoginForm(FlaskForm):
 
 class classForm(Form):
   classchoices = [('1', '50.003'),('2', '50.004'), ('3', '50.034')]
-  classes = SelectField('Enrolled in', choices=classchoices)
+  classes = SelectField('Enrolled in',coerce=int,validators=[Optional()])
+  cohorts = StringField('Cohorts teaching(space seperated)',validators=[Optional()])
 
 class RegisterForm(FlaskForm):
-  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  #user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
   username = StringField('Username', validators=[DataRequired()])
   password = PasswordField('Password', validators=[InputRequired(), DataRequired(), EqualTo('confirmPassword',message='Passwords must match')])
   confirmPassword = PasswordField('Confirm Password',validators=[DataRequired()])
@@ -35,11 +41,11 @@ class RegisterForm(FlaskForm):
 
   # Professor - related, must allow it to be blank
   professor_id = IntegerField('Professor ID', validators=[Optional()])
-  class1 = FieldList(FormField(classForm), min_entries=1)
+  class1 = FieldList(FormField(classForm), min_entries=1,validators=[Optional()])
   add_more_component = SubmitField("Add another Subject")
 
 class EditForm(FlaskForm):
-  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  #user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
   username = StringField('Username', validators=[DataRequired()])
 
   password = PasswordField('Password', validators=[Optional()])
@@ -63,13 +69,12 @@ class EditForm(FlaskForm):
 class componentForm(Form):
     #duration_length = [('-1','Please select a duration'),('0.5','0.5'),('0.5','0.5'),('0.5','0.5'),('0.5','0.5'),('0.5','0.5')]
     sessionTypes = [('-1','Please select a Session Type'), ('0','Cohort Based Learning'),('1','Lecture'),('2','Lab')]
-    duration = FloatField('Duration(in 0.5 increments)', validators=[DataRequired(),NumberRange(min=0.5,max=10.5,message="Your Class must be within 0.5 to 10.5 hrs long inclusive")])
+    duration = FloatField('Duration(in 0.5 increments)', validators=[DataRequired(),NumberRange(min=0.5,max=10,message="Your Class must be within 0.5 to 10 hrs long inclusive")])
     session = SelectField('Session type',choices=sessionTypes,validators=[DataRequired()])
     classroom = SelectField('Room',coerce=int,validators=[DataRequired()])
 
 class SubjectForm(FlaskForm):
     terms = [('-1','Please select a term'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8')]
-    pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
     subject_types = [('-1','Please select a Subject Type'),('0','Core'),('1','Elective')]
     
     subject_name = StringField('Subject Name', validators=[DataRequired()])
@@ -89,17 +94,17 @@ class RoomForm(FlaskForm):
     room_type = SelectField("Room Type",choices=roomtypes,validators=[DataRequired()])
     capacity = IntegerField("Room Capacity",validators=[DataRequired()])
 
+class subjectSelectForm(Form):
+    subject_choice = SelectField('Subject',coerce=int,validators=[DataRequired()])
+
 class StudentGroupForm(FlaskForm):
   subject_choices = [('1','50.001'),('2','50.002'), ('3', '50.034')]
-  pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','EPD'),('2','ASD'),('3','ESD'),('4','ISTD')]
 
   pillar = SelectField('Pillar',choices=pillar_choices,validators=[DataRequired()])
   size = IntegerField('Size', validators=[DataRequired(), NumberRange(min=5, max=50, message="Student group size must be between 5 and 50 inclusive")])
   cohort = IntegerField('Cohort', validators=[DataRequired()])
   term = IntegerField('Term', validators=[DataRequired()])
   name = StringField('Name', validators=[DataRequired()])
-  subject1 = SelectField('Subject 1', choices=subject_choices, validators=[DataRequired()])
-  subject2 = SelectField('Subject 2', choices=subject_choices, validators=[DataRequired()])
-  subject3 = SelectField('Subject 3', choices=subject_choices, validators=[DataRequired()])
+  subjectFieldList = FieldList(FormField(subjectSelectForm),min_entries=4,validators=[DataRequired()])
 
 

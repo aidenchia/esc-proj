@@ -28,16 +28,13 @@
             {{form.name}}
         </p>
         <p>
-            {{form.subject1.label}}
-            {{form.subject1}}
+            {{form.subjectFieldList.label}}
+            {% for cf in form.subjectFieldList %}
+            <center><p>
+                {{cf}}
+            </p></center>
+            {% endfor %}
         </p>
-        <p>
-            {{form.subject2.label}}
-            {{form.subject2}}
-        </p>
-        <p>
-            {{form.subject3.label}}
-            {{form.subject3}}
         </p>
         <p><input type="submit" value="Go"></p>
     </form>
