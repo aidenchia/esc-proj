@@ -5,12 +5,13 @@ from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup
 from werkzeug.security import generate_password_hash
+from flask_wtf.csrf import CSRFProtect
 import functools
 import os
 import sys
 import json
 
-
+csrf = CSRFProtect()
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 print("[INFO] DATABASE_URL:", app.config["SQLALCHEMY_DATABASE_URI"])
@@ -143,10 +144,11 @@ def register():
 @Roles(True,"admin", "course_lead", "pillar_head")
 def subjects():
     form = SubjectForm()
+    
     if form.add_more_component.data:
         print("came here instead")
         form.component.append_entry(u'default value')
-    elif form.validate_on_submit():
+    if form.validate_on_submit():
         print("came here")
         if form.term_no.data == -1 or form.pillar.data == -1 or form.subject_type.data == -1:
             print("Please choose an option for term, pillar and subject type")
@@ -404,4 +406,5 @@ def outputToDatabase():
 if __name__ == "__main__":
     app.jinja_env.cache = {}
     port = int(os.environ.get('PORT',5000))
+    csrf.init_app(app)
     app.run(host='0.0.0.0',port=port)
