@@ -247,7 +247,7 @@ def editStudentGroups():
   subject_choices = [('-1','Choose the subject')]
   #form = StudentGroupForm(subject_choices)
   for subject in Subjects.query.all():
-      subject_choices.append((subject.subjectCode, subject.subjectName))
+      subject_choices.append((str(subject.subjectCode), subject.subjectName))
   form = StudentGroupForm()
   for entry in form.subjectFieldList.entries:
       entry.subject_choice.choices = subject_choices
