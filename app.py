@@ -119,6 +119,7 @@ def subjectsTable():
 def register():
   print("came herer from register")
   available_subjects = Subjects.query.all()
+  print(available_subjects)
   subject_list = [('-1','Please choose a subject')]
   for subject in available_subjects:
       subject_list.append((str(subject.subjectCode),subject.subjectName))
@@ -153,7 +154,7 @@ def register():
             return redirect(url_for('usersTable'))
 
     flash('Invalid Parameters')
-
+  print("came herer from register")
   return render_template('register.html',form=form)
 
 @app.route("/subjects", methods=['GET', 'POST'])
