@@ -148,12 +148,13 @@ def subjects():
     for room in available_rooms:
         room_list.append((str(room.room_id), room.location))
     form = SubjectForm()
-    for entry in form.component.entries:
-        entry.classroom.choices = room_list
     
     if form.add_more_component.data:
         print("came here instead")
         form.component.append_entry(u'default value')
+    for entry in form.component.entries:
+        entry.classroom.choices = room_list
+
     if form.validate_on_submit():
         print("came here")
         if form.term_no.data == '-1' or form.pillar.data == '-1' or form.subject_type.data == '-1':
