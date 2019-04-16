@@ -123,7 +123,7 @@ def register():
   subject_list = [('-1','Please choose a subject')]
   for subject in available_subjects:
       subject_list.append((str(subject.subjectCode),subject.subjectName))
-  print("came herer from register")
+  print(subject_list)
   form = RegisterForm()
 
   if form.add_more_component.data:
