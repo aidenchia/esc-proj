@@ -65,7 +65,7 @@ class componentForm(Form):
     sessionTypes = [('-1','Please select a Session Type'), ('0','Cohort Based Learning'),('1','Lecture'),('2','Lab')]
     duration = FloatField('Duration(in 0.5 increments)', validators=[DataRequired(),NumberRange(min=0.5,max=10.5,message="Your Class must be within 0.5 to 10.5 hrs long inclusive")])
     session = SelectField('Session type',choices=sessionTypes,validators=[DataRequired()])
-    #classroom = SelectField('Room',coerce=int,validators=[DataRequired()])
+    classroom = SelectField('Room',coerce=int,validators=[DataRequired()])
 
 class SubjectForm(FlaskForm):
     terms = [('-1','Please select a term'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8')]

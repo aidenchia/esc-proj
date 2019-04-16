@@ -143,14 +143,20 @@ def register():
 @app.route("/subjects", methods=['GET', 'POST'])
 @Roles(True,"admin", "course_lead", "pillar_head")
 def subjects():
+    available_rooms = Rooms.query.all()
+    room_list = [('-1','No Preference')]
+    for room in available_rooms:
+        room_list.append((str(room.room_id), room.location))
     form = SubjectForm()
+    for entry in form.component.entries:
+        entry.classroom.choices = room_list
     
     if form.add_more_component.data:
         print("came here instead")
         form.component.append_entry(u'default value')
     if form.validate_on_submit():
         print("came here")
-        if form.term_no.data == -1 or form.pillar.data == -1 or form.subject_type.data == -1:
+        if form.term_no.data == '-1' or form.pillar.data == '-1' or form.subject_type.data == '-1':
             print("Please choose an option for term, pillar and subject type")
         else:
             subjectname = form.subject_name.data
@@ -164,6 +170,9 @@ def subjects():
             components = []
             for each_entry in form.component.entries:
                 temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":-1, 'cohorts':[]}
+                if each_entry.data['session'] == '-1':
+                    print("Please choose an option for session type")
+                    return render_template('subjects.html',form=form)
                 if each_entry.data['session'] == '1':
                     for i in range(cohort_num):
                         temp['cohorts'].append(i)
