@@ -157,7 +157,7 @@ def subjects():
             subjectid = form.subject_id.data
             termno = dict(form.terms).get(form.term_no.data)
             subjecttype = dict(form.subject_types).get(form.subject_type.data)
-            pillar = dict(form.pillar_choices).get(form.pillar.data)
+            pillar = form.pillar.data
             cohort_num = form.cohort_num.data
             total_enrollment = form.total_enrollment.data
             session_nums = len(form.component.entries)
