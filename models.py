@@ -244,7 +244,7 @@ class Rooms(db.Model):
     self.capacity = capacity
 
   def __repr__(self):
-      return '{}, {}, {}, {}}'.format(self.location, self.name, self.roomType, self.capacity)
+      return '{}, {}, {}, {}'.format(self.location, self.name, self.roomType, self.capacity)
   
   def edit(self, location, name, roomType, capacity):
       
