@@ -163,8 +163,8 @@ def subjects():
             session_nums = len(form.component.entries)
             components = []
             for each_entry in form.component.entries:
-                temp  = {"duration":each_entry.data['duration'],"sessionType": each_entry.data['session'],"classroom":-1, 'cohorts':[]}
-                if each_entry.data['session'] == 1:
+                temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":-1, 'cohorts':[]}
+                if each_entry.data['session'] == '1':
                     for i in range(cohort_num):
                         temp['cohorts'].append(i)
                 components.append(temp)
@@ -252,11 +252,11 @@ def studentGroupTable():
 def addRooms():
     form = RoomForm()
     if form.validate_on_submit():
-        if form.room_type.data == -1:
+        if form.room_type.data == '-1':
             flash("Please choose a room type.")
         else:
             print(form.room_id.data)
-            Rooms.insert(str(form.room_id.data), str(form.room_name.data), str(dict(form.roomtypes).get(form.room_type.data)), str(form.capacity.data))
+            Rooms.insert(str(form.room_id.data), str(form.room_name.data), int(form.room_type.data), int(form.capacity.data))
             return redirect(url_for('viewRooms'))
     
     return render_template('addRooms.html',form=form)
@@ -265,14 +265,14 @@ def addRooms():
 def editRooms():
     form = RoomForm()
     if form.validate_on_submit():
-        if form.room_type.data == -1:
+        if form.room_type.data == '-1':
             flash("Please choose a room type.")
         else:
             room = Rooms.query.filter_by(location=form.room_id.data).first()
             if room is None:
                 flash("Room not found. Please try again")
             else:
-                room.edit(form.room_id.data, form.room_name.data, str(dict(form.roomtypes).get(form.room_type.data)), form.capacity.data)
+                room.edit(form.room_id.data, form.room_name.data, int(form.room_type.data), form.capacity.data)
                 return redirect(url_for('viewRooms'))
             
     
