@@ -122,6 +122,7 @@ def register():
   subject_list = [('-1','Please choose a subject')]
   for subject in available_subjects:
       subject_list.append((str(subject.subjectCode),subject.subjectName))
+  print("came herer from register")
   form = RegisterForm()
 
   if form.add_more_component.data:
@@ -129,7 +130,7 @@ def register():
 
   for entry in form.class1.entries:
       entry.classes.choices = subject_list
-
+  print("came herer from register")
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
 
