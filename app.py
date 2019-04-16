@@ -127,7 +127,7 @@ def register():
     form.class1.append_entry(u'default value')
 
   for entry in form.class1.entries:
-      entry.class1.classes.choices = subject_list
+      entry.classes.choices = subject_list
 
   if form.validate_on_submit():
     user = Users.query.filter_by(username=form.username.data).first()
@@ -244,11 +244,21 @@ def deleteUser(username):
 
 @app.route("/editStudentGroups", methods=['GET', 'POST'])
 def editStudentGroups():
-  #subject_choices = [str(x.subjectCode) for x in Subjects.query.all()]
+  subject_choices = [('-1','Choose the subject')]
   #form = StudentGroupForm(subject_choices)
+  for subject in Subjects.query.all():
+      subject_choices.append((subject.subjectCode, subject.subjectName))
   form = StudentGroupForm()
+  for entry in form.subjectFieldList.entries:
+      entry.subject_choice.choices = subject_choices
 
   if form.validate_on_submit():
+    subjects = []
+    for entry in form.subjectFieldList.entries:
+        if entry.data['subject_choice'] == '-1':
+            flash('All choices must be filled')
+            render_template('editStudentGroups.html',form=form)
+        subjects.append(entry.data['subject_choice'])
     if len(set([form.subject1.data, form.subject2.data, form.subject3.data])) != 3:
       flash('Subject Combinations must be unique')
       return redirect(url_for('editStudentGroups'))
@@ -257,10 +267,7 @@ def editStudentGroups():
     studentGroup.insert(pillar=form.pillar.data,
                         size=form.size.data,
                         name=form.name.data,
-                        subjects=str([dict(form.subject_choices).get(form.subject1.data), 
-                                      dict(form.subject_choices).get(form.subject2.data), 
-                                      dict(form.subject_choices).get(form.subject3.data)]),
-                        cohort=form.cohort.data,
+                        subjects=subjects,
                         term=form.term.data)
 
     return redirect(url_for('studentGroupTable'))
