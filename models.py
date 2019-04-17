@@ -377,7 +377,7 @@ class studentGroup(db.Model):
                                'name': group.name,
                                'cohort': group.cohort,
                                'term': group.term})
-        all_groups = [group._asdict() for group in query]
+        #all_groups = [group._asdict() for group in query]
         return all_groups
         
 
