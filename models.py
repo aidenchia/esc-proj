@@ -83,7 +83,7 @@ class Subjects(db.Model):
       #subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
       all_subjects = []
       for subject in query:
-          all_subjects.append({'component':list(subject.components),
+          all_subjects.append({'component':ast.literal_eval(subject.components),
                                'pillar':subject.pillar,
                                'sessionNumber':subject.sessionnum,
                                'name':subject.subjectName,
@@ -318,7 +318,7 @@ class Rooms(db.Model):
                             'id':room.room_id,
                             'roomType':room.roomType,
                             'capacity':room.capacity})
-      all_rooms = [room.__dict__ for room in query]
+      #all_rooms = [room.__dict__ for room in query]
       return all_rooms
 
 class studentGroup(db.Model):
