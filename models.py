@@ -310,7 +310,7 @@ class Rooms(db.Model):
   @staticmethod
   def geAllRooms():
       query = Rooms.query.all()
-      all_rooms = [room._asdict() for room in query]
+      all_rooms = [room.__dict__ for room in query]
       return all_rooms
 
 class studentGroup(db.Model):
