@@ -190,13 +190,14 @@ def subjects():
             components = []
             for each_entry in form.component.entries:
                 temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":each_entry.data['classroom'], 'cohorts':[]}
-                if each_entry.data['session'] == -1:
+                if int(each_entry.data['session']) == -1:
                     print("Please choose an option for session type")
                     return render_template('subjects.html',form=form)
-                if each_entry.data['session'] == 1:
+                if int(each_entry.data['session']) == 1:
                     for i in range(cohort_num):
                         temp['cohorts'].append(i)
                 components.append(temp)
+                print(temp)
             Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
             
         
