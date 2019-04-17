@@ -60,8 +60,20 @@ class Subjects(db.Model):
   
   @staticmethod
   def insertSubject(subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum):
-      subject = Subjects(subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum)
-      db.session.add(subject)
+      subject = db.session.query(Subjects).filter_by(subjectCode=subjectCode).first()
+      if subject is not None:
+          subject.subjectCode = subjectCode
+          subject.term = term
+          subject.subjectType = subjectType
+          subject.subjectName = subjectName
+          subject.components = components
+          subject.pillar = pillar
+          subject.cohortnum = cohortnum
+          subject.totalenrollment = totalenrollment
+          subject.sessionnum = sessionnum
+      else:
+          subject = Subjects(subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum)
+          db.session.add(subject)
       db.session.commit()
       return None
     
