@@ -80,7 +80,19 @@ class Subjects(db.Model):
   @staticmethod
   def getAllSubjects():
       query = db.session.query(Subjects).all()
-      all_subjects = [subject._asdict() for subject in query]
+      #subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
+      all_subjects = []
+      for subject in query:
+          all_subjects.append({'component':list(subject.components),
+                               'pillar':subject.pillar,
+                               'sessionNumber':subject.sessionnum,
+                               'name':subject.subjectName,
+                               'term':subject.term,
+                               'cohortNumber':subject.cohortnum,
+                               'totalEnrollNumber':subject.totalenrollment,
+                               'type':subject.subjectType,
+                               'courseId':str(int(subject.subjectCode))})
+      #all_subjects = [subject._asdict() for subject in query]
       return all_subjects
       
 
@@ -177,9 +189,9 @@ class Users(db.Model):
       if for_scheduler:
           query = Users.query(Users.fullname, Users.professor_id, Users.coursetable).filter_by(user_group="professor").all()
       else:
-          query = Users.query.filter_by(user_group="professor")
-      all_professors = [professor._asdict() for professor in query]
-      return all_professors
+          query = Users.query.filter_by(user_group="professor").all()
+      #all_professors = [professor._asdict() for professor in query]
+      return query
 
 class Timetable(db.Model):
   subject = db.Column(db.String, primary_key=True)
@@ -356,6 +368,15 @@ class studentGroup(db.Model):
     @staticmethod
     def getAllGroups():
         query = studentGroup.query.all()
+        studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
+        all_groups = []
+        for group in query:
+            all_groups.append({'pillar': group.pillar,
+                               'size': group.size,
+                               'subjects': list(group.subjects),
+                               'name': group.name,
+                               'cohort': group.cohort,
+                               'term': group.term})
         all_groups = [group._asdict() for group in query]
         return all_groups
         

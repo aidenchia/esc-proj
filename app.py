@@ -115,8 +115,8 @@ def subjectsTable():
 
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
-#@login_required
-#@Roles(True,"admin")
+@login_required
+@Roles(True,"admin")
 def register():
   print("came herer from register")
   available_subjects = Subjects.query.all()
@@ -297,7 +297,7 @@ def editStudentGroups():
     studentGroup.insert(pillar=form.pillar.data,
                         size=form.size.data,
                         name=form.name.data,
-                        subjects=subjects,
+                        subjects=str(subjects),
                         cohort=form.cohort.data,
                         term=form.term.data)
 
@@ -410,11 +410,11 @@ def viewStudentSchedule():
 ######################################## Scheduling algorithm #################
 @app.route("/genSchedule", methods=['GET', 'POST'])
 def genSchedule():
-  """
+  '''
   Update the input.json file in algorithm folder from the database.
   runScheduler
   then, update the database with the new data.
-  
+  '''
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
   prof_format = {'name':'','id':0,'coursetable':{}}
   subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
@@ -422,17 +422,17 @@ def genSchedule():
   studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
   
   for professor in Users.getAllProfessors():
-      input_dict['professor'].append({'name':professor.fullnamell,'id':0,'coursetable':{}})
+      input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':list(professor.coursetable)})
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
   
   from pathlib import Path
   data_folder = Path("algorithm/")
-  file_to_open = data_folder / 'input.json'
+  file_to_open = data_folder / 'input(1).json'
   with open(file_to_open,'w+') as input_file:
       json.dump(input_dict, input_file)
-  """
+  
   runScheduler()
   '''
   timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
@@ -444,7 +444,7 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
-  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  timetablePath = os.path.join(os.getcwd(), "algorithm/input(1).json")
   try:
     f = open(timetablePath, 'r')
     return f.read()
