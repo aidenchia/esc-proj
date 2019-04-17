@@ -278,9 +278,9 @@ def deleteUser(username):
 @app.route("/editStudentGroups", methods=['GET', 'POST'])
 def editStudentGroups():
   print("came here in student group")
-  subject_choices = [('-1','Choose the subject')]
+  subject_choices = [(-1,'Choose the subject')]
   for subject in Subjects.query.all():
-      subject_choices.append((str(int(subject.subjectCode)), subject.subjectName))
+      subject_choices.append((int(subject.subjectCode), subject.subjectName))
   form = StudentGroupForm()
   for entry in form.subjectFieldList.entries:
       entry.subject_choice.choices = subject_choices
@@ -288,7 +288,7 @@ def editStudentGroups():
   if form.validate_on_submit():
     subjects = []
     for entry in form.subjectFieldList.entries:
-        if entry.data['subject_choice'] == '-1':
+        if entry.data['subject_choice'] == -1:
             flash('All choices must be filled')
             print('All choices not chosen')
             render_template('editStudentGroups.html',form=form)
