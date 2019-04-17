@@ -163,9 +163,9 @@ def register():
 @Roles(True,"admin", "course_lead", "pillar_head")
 def subjects():
     available_rooms = Rooms.query.all()
-    room_list = [('-1','No Preference')]
+    room_list = [(-1,'No Preference')]
     for room in available_rooms:
-        room_list.append((str(room.room_id), room.location))
+        room_list.append((room.room_id, room.location))
     form = SubjectForm()
     
     if form.add_more_component.data:
@@ -190,10 +190,10 @@ def subjects():
             components = []
             for each_entry in form.component.entries:
                 temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":each_entry.data['classroom'], 'cohorts':[]}
-                if each_entry.data['session'] == '-1':
+                if each_entry.data['session'] == -1:
                     print("Please choose an option for session type")
                     return render_template('subjects.html',form=form)
-                if each_entry.data['session'] == '1':
+                if each_entry.data['session'] == 1:
                     for i in range(cohort_num):
                         temp['cohorts'].append(i)
                 components.append(temp)
