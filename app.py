@@ -11,6 +11,7 @@ import functools
 import os
 import sys
 import json
+import ast
 
 #scsrf = CSRFProtect()
 app = Flask(__name__)
@@ -422,7 +423,7 @@ def genSchedule():
   studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
   
   for professor in Users.getAllProfessors():
-      input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':list(professor.coursetable)})
+      input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()

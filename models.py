@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
-
+import ast
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -310,6 +310,14 @@ class Rooms(db.Model):
   @staticmethod
   def geAllRooms():
       query = Rooms.query.all()
+      all_rooms = []
+      #class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
+      for room in query:
+          all_rooms.append({'name':room.name,
+                            'location':room.location,
+                            'id':room.room_id,
+                            'roomType':room.roomType,
+                            'capacity':room.capacity})
       all_rooms = [room.__dict__ for room in query]
       return all_rooms
 
@@ -373,7 +381,7 @@ class studentGroup(db.Model):
         for group in query:
             all_groups.append({'pillar': group.pillar,
                                'size': group.size,
-                               'subjects': list(group.subjects),
+                               'subjects': ast.literal_eval(group.subjects),
                                'name': group.name,
                                'cohort': group.cohort,
                                'term': group.term})
