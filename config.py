@@ -2,14 +2,14 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
-    DEBUG = False
+    DEBUG = True
     CSRF_ENABLED = True	
     SECRET_KEY = os.urandom(12)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     TESTING = False
 
 class ProductionConfig(Config):
-    TESTING = False
+    TESTING = True
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
 
