@@ -4,6 +4,7 @@ from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup
+import models
 from werkzeug.security import generate_password_hash
 from flask_wtf.csrf import CSRFProtect
 import functools
@@ -149,7 +150,7 @@ def register():
                     temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
             Users.insert(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
-              form.pillar.data, form.term.data, 
+              dict(form.pillar_choices).get(form.pillar.data), form.term.data, 
               form.student_id.data,form.professor_id.data,
               temp_course_table)
             return redirect(url_for('usersTable'))
@@ -253,7 +254,7 @@ def editStudentGroups():
   print("came here in student group")
   subject_choices = [('-1','Choose the subject')]
   for subject in Subjects.query.all():
-      subject_choices.append((str(subject.subjectCode), subject.subjectName))
+      subject_choices.append((str(int(subject.subjectCode)), subject.subjectName))
   form = StudentGroupForm()
   for entry in form.subjectFieldList.entries:
       entry.subject_choice.choices = subject_choices

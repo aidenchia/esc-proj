@@ -9,8 +9,8 @@ def check_user_group_validator(form,field):
         raise ValidationError("Please select a user group")
 
 
-user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
-pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
+#user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+#pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
 
 
 class LoginForm(FlaskForm):
@@ -25,7 +25,9 @@ class classForm(Form):
   cohorts = StringField('Cohorts teaching(space seperated)',validators=[Optional()])
 
 class RegisterForm(FlaskForm):
-  #user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
+  
   username = StringField('Username', validators=[DataRequired()])
   password = PasswordField('Password', validators=[InputRequired(), DataRequired(), EqualTo('confirmPassword',message='Passwords must match')])
   confirmPassword = PasswordField('Confirm Password',validators=[DataRequired()])
@@ -34,7 +36,7 @@ class RegisterForm(FlaskForm):
   user_group = SelectField('User Group',choices=user_choices,validators=[DataRequired(),check_user_group_validator])
   
   # Student - related, must allow it to be blank
-  pillar = StringField('Pillar', validators=[Optional()])
+  pillar = SelectField('Pillar',choices=pillar_choices,validators=[Optional()])
   term = StringField('Term', validators=[Optional()])
   student_id = IntegerField('Student ID', validators=[Optional()])
   #student_subjects = 
@@ -45,7 +47,7 @@ class RegisterForm(FlaskForm):
   add_more_component = SubmitField("Add another Subject")
 
 class EditForm(FlaskForm):
-  #user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
   username = StringField('Username', validators=[DataRequired()])
 
   password = PasswordField('Password', validators=[Optional()])
@@ -76,6 +78,7 @@ class componentForm(Form):
 class SubjectForm(FlaskForm):
     terms = [('-1','Please select a term'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8')]
     subject_types = [('-1','Please select a Subject Type'),('0','Core'),('1','Elective')]
+    pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
     
     subject_name = StringField('Subject Name', validators=[DataRequired()])
     subject_id = IntegerField('Subject id(without the decimal point)', validators=[DataRequired()])
