@@ -2,7 +2,7 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
-from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm
+from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm, RequestForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup
 import models
 from werkzeug.security import generate_password_hash
@@ -112,6 +112,26 @@ def subjectsTable():
     
   allSubjects = Subjects.select(all=True)
   return render_template("subjectsTable.html", allSubjects=allSubjects)
+
+
+@app.route("/request", methods=['GET', 'POST'])
+def request():
+  form = RequestForm()
+
+  rooms = Rooms.query.all()
+  rooms_list = [(-1, 'Please choose a room')]
+  for room in rooms:
+    rooms_list.append((str(room.room_id), room.name))
+
+  for entry in form.room.entries:
+    entry.room_choices.choices = rooms_list
+
+  if form.validate_on_submit():
+    print("do something")
+    # insert into post table
+    # redirect()
+
+  return render_template("request.html", form=form)
 
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])

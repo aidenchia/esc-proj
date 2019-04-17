@@ -111,3 +111,24 @@ class StudentGroupForm(FlaskForm):
   subjectFieldList = FieldList(FormField(subjectSelectForm),min_entries=4,validators=[DataRequired()])
 
 
+class RequestForm(FlaskForm):
+  class requestRoomForm(Form):
+    room_choices = SelectField('Room', coerce=int, validators=[DataRequired()])
+
+  day_choices = [('-1', 'Please select a day'), 
+                  ('0', 'Wednesday'),
+                  ('1', 'Friday')]
+
+  time_choices = [('-1', 'Please select a time'), 
+                  ('0', '2pm-3pm'),
+                  ('1', '3pm-4pm'),
+                  ('2', '4pm-5pm'),
+                  ('3', '5pm-6pm'),
+                  ('4', '6pm-7pm')]
+
+  room = FieldList(FormField(requestRoomForm), min_entries=1, validators=[DataRequired()])
+  time = SelectField('Time', choices=time_choices, validators=[DataRequired()])
+  day = SelectField('Day', choices=day_choices, validators=[DataRequired()])
+
+
+
