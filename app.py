@@ -141,13 +141,15 @@ def register():
         if form.user_group.data == -1:
             flash("Please choose a user group.")
         else:
-            temp_course_table = {}
-            for each_entry in form.class1.entries:
-                if each_entry.data['classes'] == -1:
-                    print('Please select a class')
-                    return render_template('register.html',form=form)
-                else:
-                    temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
+            temp_course_table = None
+            if form.user_group.data in ['2','3','4']:
+                temp_course_table = {}
+                for each_entry in form.class1.entries:
+                    if each_entry.data['classes'] == -1:
+                        print('Please select a class')
+                        return render_template('register.html',form=form)
+                    else:
+                        temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
             Users.insert(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
               dict(form.pillar_choices).get(form.pillar.data), form.term.data, 
@@ -158,13 +160,15 @@ def register():
         if form.user_group.data == -1:
             flash("Please choose a user group.")
         else:
-            temp_course_table = {}
-            for each_entry in form.class1.entries:
-                if each_entry.data['classes'] == -1:
-                    print('Please select a class')
-                    return render_template('register.html',form=form)
-                else:
-                    temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
+            temp_course_table = None
+            if form.user_group.data in ['2','3','4']:
+                temp_course_table = {}
+                for each_entry in form.class1.entries:
+                    if each_entry.data['classes'] == -1:
+                        print('Please select a class')
+                        return render_template('register.html',form=form)
+                    else:
+                        temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
             user.edit(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
               dict(form.pillar_choices).get(form.pillar.data), form.term.data, 
