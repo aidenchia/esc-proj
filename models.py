@@ -143,9 +143,10 @@ class Users(db.Model):
       user = Users(username, fullname, email, password, user_group, False)
       db.session.add(user)
       db.session.commit()
+      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, False)
     else:
       user = query
-    user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, False)
+      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, False)
     return None
 
   @staticmethod
