@@ -143,7 +143,7 @@ def register():
         else:
             temp_course_table = {}
             for each_entry in form.class1.entries:
-                if each_entry.data['classes'] == '-1':
+                if each_entry.data['classes'] == -1:
                     print('Please select a class')
                     return render_template('register.html',form=form)
                 else:
@@ -160,7 +160,7 @@ def register():
         else:
             temp_course_table = {}
             for each_entry in form.class1.entries:
-                if each_entry.data['classes'] == '-1':
+                if each_entry.data['classes'] == -1:
                     print('Please select a class')
                     return render_template('register.html',form=form)
                 else:
