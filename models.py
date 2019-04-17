@@ -194,7 +194,8 @@ class Users(db.Model):
       return query
 
 class Timetable(db.Model):
-  subject = db.Column(db.String, primary_key=True)
+  timetable_id = db.Column(db.Integer, primary_key=True)
+  subject = db.Column(db.String)
   session = db.Column(db.Integer)
   weekday = db.Column(db.Integer)
   cohort = db.Column(db.String)
