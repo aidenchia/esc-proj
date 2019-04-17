@@ -152,7 +152,7 @@ def register():
                         print('Please select a class')
                         return render_template('register.html',form=form)
                     else:
-                        temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
+                        temp_course_table[each_entry.data['classes']] = str(list(map(int,each_entry.data['cohorts'].split())))
             Users.insert(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
               dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
@@ -174,7 +174,7 @@ def register():
                         print('Please select a class')
                         return render_template('register.html',form=form)
                     else:
-                        temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
+                        temp_course_table[each_entry.data['classes']] = str(list(map(int,each_entry.data['cohorts'].split())))
             user.edit(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
               dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
@@ -290,13 +290,15 @@ def editStudentGroups():
     for entry in form.subjectFieldList.entries:
         if entry.data['subject_choice'] == '-1':
             flash('All choices must be filled')
+            print('All choices not chosen')
             render_template('editStudentGroups.html',form=form)
         subjects.append(entry.data['subject_choice'])
-    
+    print(subjects)
     studentGroup.insert(pillar=form.pillar.data,
                         size=form.size.data,
                         name=form.name.data,
                         subjects=subjects,
+                        cohort=form.cohort.data,
                         term=form.term.data)
 
     return redirect(url_for('studentGroupTable'))
