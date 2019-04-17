@@ -364,8 +364,13 @@ def editRooms():
 @app.route('/viewRooms', methods=['GET','POST'])
 def viewRooms():
     rooms = Rooms.query.all()
-    return render_template('viewRooms.html',rooms=rooms)
-    
+    return render_template('viewRooms.html',rooms=rooms)    
+
+
+
+@app.route('/viewRequests', methods=['GET', 'POST'])
+def viewRequests():
+  return render_template('requestsTable.html')
 
 ######################################## STUDENTS ###############################
 @login_required

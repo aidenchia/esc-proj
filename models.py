@@ -389,6 +389,29 @@ class studentGroup(db.Model):
         return all_groups
         
 
+class Requests(db.Model):
+  request_id = db.Column(db.Integer, primary_key=True)
+  requestee = db.Column(db.String)
+  room = db.Column(db.String)
+  day = db.Column(db.String)
+  time = db.Column(db.Integer)
+  date_created = db.Column(db.DateTime)
+  approved = db.Column(db.Boolean, default=False)
+
+  def __init__(self, requestee, room, day, time, date_created):
+    self.room = room
+    self.requestee = requestee
+    self.day = day 
+    self.time = time 
+    self.date_created = date_created
+
+  @staticmethod
+  def insert(requestee, room, day, time):
+    import datetime
+    date_created = datetime.datetime.now()
+    newrequest = Request(requestee, room, day, time, date_created)
+    db.session.add(newrequest)
+    db.session.commit()
 
 
 
