@@ -118,11 +118,11 @@ def subjectsTable():
 #@Roles(True,"admin")
 def register():
   print("came herer from register")
-  #available_subjects = Subjects.query.all()
-  #print(available_subjects)
+  available_subjects = db.session.query(Subjects).all() #Subjects.query.all()
+  print(available_subjects)
   subject_list = [('-1','Please choose a subject')]
-  #for subject in available_subjects:
-  #    subject_list.append((str(subject.subjectCode),subject.subjectName))
+  for subject in available_subjects:
+      subject_list.append((str(subject.subjectCode),subject.subjectName))
   print(subject_list)
   form = RegisterForm()
 
