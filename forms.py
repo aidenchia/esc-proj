@@ -27,6 +27,7 @@ class classForm(Form):
 class RegisterForm(FlaskForm):
   user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
   pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
+  terms = [('-1','Please select a term'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8')]
   
   username = StringField('Username', validators=[DataRequired()])
   password = PasswordField('Password', validators=[InputRequired(), DataRequired(), EqualTo('confirmPassword',message='Passwords must match')])
@@ -37,7 +38,7 @@ class RegisterForm(FlaskForm):
   
   # Student - related, must allow it to be blank
   pillar = SelectField('Pillar',choices=pillar_choices,validators=[Optional()])
-  term = StringField('Term', validators=[Optional()])
+  term = SelectField('Term',choices=terms, validators=[Optional()])
   student_id = IntegerField('Student ID', validators=[Optional()])
   #student_subjects = 
 
