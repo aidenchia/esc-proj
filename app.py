@@ -156,7 +156,7 @@ def register():
 
     flash('Invalid Parameters')
   print("came herer from register")
-  return render_template('addRooms.html')
+  return render_template('register.html',form=form)
   #return render_template('register.html',form=form)
 
 @app.route("/subjects", methods=['GET', 'POST'])
