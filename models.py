@@ -244,7 +244,7 @@ class Timetable(db.Model):
           sc_classroom = specific_class['classroom']
           specific_class = Timetable(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom)
           db.session.add(specific_class)
-      db.session.commit()
+          db.session.commit()
       return None
 
   @staticmethod
