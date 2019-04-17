@@ -309,7 +309,7 @@ class Rooms(db.Model):
 
   @staticmethod
   def geAllRooms():
-      query = Rooms.query.order_by(Rooms.room_id).all()
+      query = Rooms.query.all()
       all_rooms = [room._asdict() for room in query]
       return all_rooms
 
