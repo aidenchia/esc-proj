@@ -134,7 +134,7 @@ def register():
       entry.classes.choices = subject_list
   print("came herer from register")
   print(form.class1.entries[0].classes.choices)
-  if form.validate_on_submit():
+  if form.validate_on_submit() and not form.add_more_component.data:
     user = Users.query.filter_by(username=form.username.data).first()
 
     if user is None:
@@ -142,6 +142,9 @@ def register():
             flash("Please choose a user group.")
         else:
             temp_course_table = None
+            temp_term_number = None
+            if form.user_group.data == '5':
+                temp_term_number = form.term.data
             if form.user_group.data in ['2','3','4']:
                 temp_course_table = {}
                 for each_entry in form.class1.entries:
@@ -152,7 +155,7 @@ def register():
                         temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
             Users.insert(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
-              dict(form.pillar_choices).get(form.pillar.data), form.term.data, 
+              dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
               form.student_id.data,form.professor_id.data,
               str(temp_course_table))
             return redirect(url_for('usersTable'))
@@ -161,6 +164,9 @@ def register():
             flash("Please choose a user group.")
         else:
             temp_course_table = None
+            temp_term_number = None
+            if form.user_group.data == '5':
+                temp_term_number = form.term.data
             if form.user_group.data in ['2','3','4']:
                 temp_course_table = {}
                 for each_entry in form.class1.entries:
@@ -171,7 +177,7 @@ def register():
                         temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
             user.edit(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
-              dict(form.pillar_choices).get(form.pillar.data), form.term.data, 
+              dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
               form.student_id.data,form.professor_id.data,
               str(temp_course_table),False)
             return redirect(url_for('usersTable'))
