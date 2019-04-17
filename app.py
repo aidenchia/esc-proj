@@ -11,7 +11,7 @@ import os
 import sys
 import json
 
-csrf = CSRFProtect()
+#scsrf = CSRFProtect()
 app = Flask(__name__)
 app.config.from_object(os.environ['APP_SETTINGS'])
 print("[INFO] DATABASE_URL:", app.config["SQLALCHEMY_DATABASE_URI"])
@@ -438,5 +438,5 @@ def outputToDatabase():
 if __name__ == "__main__":
     app.jinja_env.cache = {}
     port = int(os.environ.get('PORT',5000))
-    csrf.init_app(app)
+    #csrf.init_app(app)
     app.run(host='0.0.0.0',port=port)
