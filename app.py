@@ -427,6 +427,8 @@ def genSchedule():
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
   
+  print(input_dict)
+  
   from pathlib import Path
   data_folder = Path("algorithm/")
   file_to_open = data_folder / 'input(1).json'
