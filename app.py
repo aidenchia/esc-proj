@@ -114,8 +114,8 @@ def subjectsTable():
 
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
-@login_required
-@Roles(True,"admin")
+#@login_required
+#@Roles(True,"admin")
 def register():
   print("came herer from register")
   available_subjects = Subjects.query.all()

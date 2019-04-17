@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form id="register-users" name="register-users" method="POST">
+<form id="register" name="register" method="POST">
 <!--
         {{form.csrf_token}}
         <h1>Register</h1>
@@ -49,7 +49,7 @@
             {{form.professor_id.label}}
             {{form.professor_id}}
         </p>
-<!--
+
         <p>
             {% for cf in form.class1 %}
             <center><p>
