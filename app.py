@@ -39,25 +39,15 @@ def Roles(included=True, *role):
         def wrapped_view(*args,**kwargs):
             #flash(str(current_user.user_group))
             #flash(str(role))
-            url = request.referrer
             if current_user.is_authenticated:
                 if included:
                     if current_user.user_group not in role:
-                        if url is not None:
-                            return redirect(url)
-                        else:
-                            return redirect(url_for('login'))
+                        return redirect(url_for('login'))
                 else:
                     if current_user.user_group in role:
-                        if url is not None:
-                            return redirect(url)
-                        else:
-                            return redirect(url_for('login'))
+                        return redirect(url_for('login'))
             else:
-                if url is not None:
-                    return redirect(url)
-                else:
-                    return redirect(url_for('login'))
+                return redirect(url_for('login'))
             return view(*args,**kwargs)
         return wrapped_view
     return decorater
