@@ -19,7 +19,7 @@
 
             {% if current_user.user_group == "student" %}
               <li><a href="{{ url_for('logout') }}">View Schedule</a></li> 
-              <li><a href="{{ url_for('logout') }}">Choose HASS</a></li>
+              <li><a href="{{ url_for('chooseHASS') }}">Choose HASS</a></li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
 

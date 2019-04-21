@@ -113,8 +113,11 @@ class StudentGroupForm(FlaskForm):
 
 class RequestForm(FlaskForm):
   day_choices = [('-1', 'Please select a day'), 
-                  ('0', 'Wednesday'),
-                  ('1', 'Friday')]
+                  ('0', 'Monday'),
+                  ('1', 'Tuesday'),
+                  ('2', 'Wedneday'),
+                  ('3', 'Thursday'),
+                  ('4', 'Friday')]
 
   time_choices = [('-1', 'Please select a time'), 
                   ('0', '2pm-3pm'),
@@ -125,9 +128,13 @@ class RequestForm(FlaskForm):
 
   room_choices = []
   room = SelectField("Room", choices=room_choices, coerce=int, validators=[DataRequired()])
-  #room = FieldList(FormField(requestRoomForm), min_entries=1, validators=[DataRequired()])
   time = SelectField('Time', choices=time_choices, validators=[DataRequired()])
   day = SelectField('Day', choices=day_choices, validators=[DataRequired()])
+
+
+class HASSForm(FlaskForm):
+  hass_choices = []
+  hass_picked = SelectField('Choose HASS', choices=hass_choices, validators=[DataRequired()])
 
 
 

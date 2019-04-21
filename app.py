@@ -3,7 +3,7 @@ from flask import flash, g, redirect, render_template, url_for, request, session
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
 from flask_mail import Mail, Message
-from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm, RequestForm
+from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm, RequestForm, HASSForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup, Requests
 import models
 from werkzeug.security import generate_password_hash
@@ -243,6 +243,7 @@ def subjects():
                 components.append(temp)
                 print(temp)
             Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
+            return redirect(url_for('subjectsTable'))
             
         
     return render_template('subjects.html',form=form)
@@ -454,6 +455,20 @@ def viewStudentSchedule():
 
 @app.route("/chooseHASS", methods=['GET', 'POST'])
 def chooseHASS():
+  hass_choices = Subjects.query.filter_by(pillar=0).all()
+  hass_list = [("-1", 'No Preference')]
+
+  form = HASSForm()
+  for subject in hass_choices:
+    hass_list.append((str(subject.subjectCode), subject.subjectName))
+
+  form.hass_picked.choices = hass_list
+
+  if form.validate_on_submit():
+    hass_picked = form.hass_picked.data
+    # ENROL STUDENT IN HASS STUDENT GROUP
+    return hass_picked
+
   return None
 
 ######################################## Scheduling algorithm #################
