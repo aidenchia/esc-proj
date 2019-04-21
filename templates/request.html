@@ -7,14 +7,6 @@
         <h1>Make Request</h1>
         </div>
         <p>
-            {% for cf in form.room %}
-            <center><p>
-                {{cf}}
-            </p></center>
-            {% endfor %}
-        </p>
-
-        <p>
             {{form.day.label}}
             {{form.day}}
         </p>
@@ -23,6 +15,12 @@
             {{form.time.label}}
             {{form.time}}
         </p>
+
+        <p>
+            {{form.room.label}}
+            {{form.room}}
+        </p>
+        
         <p><input type="submit" value="Go"></p>
     </form>
 {% endblock %}

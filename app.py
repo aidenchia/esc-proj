@@ -3,7 +3,7 @@ from flask import flash, g, redirect, render_template, url_for, request, session
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
 from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm, RequestForm
-from models import Users, Subjects, Timetable, Rooms, studentGroup
+from models import Users, Subjects, Timetable, Rooms, studentGroup, Requests
 import models
 from werkzeug.security import generate_password_hash
 from flask_wtf.csrf import CSRFProtect
@@ -12,6 +12,7 @@ import os
 import sys
 import json
 import ast
+import logging
 
 #scsrf = CSRFProtect()
 app = Flask(__name__)
@@ -114,30 +115,78 @@ def subjectsTable():
   allSubjects = Subjects.select(all=True)
   return render_template("subjectsTable.html", allSubjects=allSubjects)
 
+'''
+@app.route("/subjects", methods=['GET', 'POST'])
+#@Roles(True,"admin", "course_lead", "pillar_head")
+def subjects():
+    available_rooms = Rooms.query.all()
+    room_list = [(-1,'No Preference')]
+    for room in available_rooms:
+        room_list.append((room.room_id, room.location))
+    form = SubjectForm()
+    
+    if form.add_more_component.data:
+        print("came here instead")
+        form.component.append_entry(u'default value')
+    for entry in form.component.entries:
+        entry.classroom.choices = room_list
+
+    if form.validate_on_submit():
+        print("came here")
+        if form.term_no.data == '-1' or form.pillar.data == '-1' or form.subject_type.data == '-1':
+            print("Please choose an option for term, pillar and subject type")
+        else:
+            subjectname = form.subject_name.data
+            subjectid = form.subject_id.data
+            termno = dict(form.terms).get(form.term_no.data)
+            subjecttype = dict(form.subject_types).get(form.subject_type.data)
+            pillar = form.pillar.data
+            cohort_num = form.cohort_num.data
+            total_enrollment = form.total_enrollment.data
+            session_nums = len(form.component.entries)
+            components = []
+            for each_entry in form.component.entries:
+                temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":each_entry.data['classroom'], 'cohorts':[]}
+                if int(each_entry.data['session']) == -1:
+                    print("Please choose an option for session type")
+                    return render_template('subjects.html',form=form)
+                if int(each_entry.data['session']) == 1:
+                    for i in range(cohort_num):
+                        temp['cohorts'].append(i)
+                components.append(temp)
+                print(temp)
+            Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
+            
+        
+    return render_template('subjects.html',form=form)
+'''
+
 
 @app.route("/request", methods=['GET', 'POST'])
 def request():
-  form = RequestForm()
-
   rooms = Rooms.query.all()
-  rooms_list = [(-1, 'Please choose a room')]
+  rooms_list = [(-1, 'No Preference')]
   for room in rooms:
-    rooms_list.append((str(room.room_id), room.name))
+    rooms_list.append((room.room_id, room.name))
 
-  for entry in form.room.entries:
-    entry.room_choices.choices = rooms_list
+  form = RequestForm()
+  form.room.choices = rooms_list
+  #for entry in form.room.entries:
+  #  entry.room_choices.choices = rooms_list
 
   if form.validate_on_submit():
-    print("do something")
-    # insert into post table
-    # redirect()
+    Requests.insert(requestee=current_user.username,
+                    room="test",
+                    day=form.day.data,
+                    time=form.time.data)
+    return redirect(url_for(courseInput))
 
   return render_template("request.html", form=form)
 
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
 @login_required
-@Roles(True,"admin")
+#@Roles(True,"admin")
 def register():
   print("came herer from register")
   available_subjects = Subjects.query.all()
@@ -202,13 +251,14 @@ def register():
               form.student_id.data,form.professor_id.data,
               str(temp_course_table),False)
             return redirect(url_for('usersTable'))
+
     flash('Invalid Parameters')
   print("came herer from register")
   return render_template('register.html',form=form)
   #return render_template('register.html',form=form)
 
 @app.route("/subjects", methods=['GET', 'POST'])
-@Roles(True,"admin", "course_lead", "pillar_head")
+#@Roles(True,"admin", "course_lead", "pillar_head")
 def subjects():
     available_rooms = Rooms.query.all()
     room_list = [(-1,'No Preference')]
@@ -367,10 +417,10 @@ def viewRooms():
     return render_template('viewRooms.html',rooms=rooms)    
 
 
-
 @app.route('/viewRequests', methods=['GET', 'POST'])
 def viewRequests():
-  return render_template('requestsTable.html')
+  allRequests = Requests.query.all()
+  return render_template('requestsTable.html', allRequests=allRequests)
 
 ######################################## STUDENTS ###############################
 @login_required
