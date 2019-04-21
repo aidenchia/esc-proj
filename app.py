@@ -2,6 +2,7 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
+from flask_mail import Mail, Message
 from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm, RequestForm
 from models import Users, Subjects, Timetable, Rooms, studentGroup, Requests
 import models
@@ -25,6 +26,7 @@ with app.app_context():
   db.create_all()
   login_manager.init_app(app)
   login_manager.login_view = "login"
+  mail = Mail(app)
 
 
 ######################################## Wrapper for roles required #################
@@ -374,6 +376,18 @@ def viewRequests():
   allRequests.reverse()
 
   return render_template('requestsTable.html', allRequests=allRequests)
+
+@app.route('/ping', methods=['GET', 'POST'])
+def ping():
+  subject = "Hello"
+  sender = app.config['MAIL_USERNAME']
+  recipients = ['aidenchia95@gmail.com']
+
+  msg = Message(subject, sender=sender, recipients=recipients)
+  msg.body = "Test"
+  mail.send(msg)
+  return "Message sent"
+
 
 ######################################## STUDENTS ###############################
 @login_required
