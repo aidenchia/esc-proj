@@ -112,9 +112,6 @@ class StudentGroupForm(FlaskForm):
 
 
 class RequestForm(FlaskForm):
-  class requestRoomForm(Form):
-    room_choices = SelectField('Room', coerce=int, validators=[DataRequired()])
-
   day_choices = [('-1', 'Please select a day'), 
                   ('0', 'Wednesday'),
                   ('1', 'Friday')]

@@ -395,7 +395,7 @@ class Requests(db.Model):
   requestee = db.Column(db.String)
   room = db.Column(db.String)
   day = db.Column(db.String)
-  time = db.Column(db.Integer)
+  time = db.Column(db.String)
   date_created = db.Column(db.DateTime)
   approved = db.Column(db.Boolean, default=False)
 
@@ -414,6 +414,12 @@ class Requests(db.Model):
     db.session.add(newrequest)
     db.session.commit()
     return None 
+
+  @staticmethod
+  def edit(request_id):
+    request = Requests.query.filter_by(request_id=request_id).first()
+    request.approved = True
+    db.session.commit()
 
 
 

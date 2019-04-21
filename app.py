@@ -119,9 +119,9 @@ def request():
     username = current_user.get_id()
 
     Requests.insert(requestee=username,
-                    room= form.room.data,
-                    day=form.day.data,
-                    time=form.time.data)
+                    room= dict(form.room.choices)[form.room.data],
+                    day=dict(form.day.choices)[form.day.data],
+                    time=dict(form.time.choices)[form.time.data])
 
     return redirect(url_for("courseInput"))
 
@@ -363,8 +363,16 @@ def viewRooms():
 
 @app.route('/viewRequests', methods=['GET', 'POST'])
 def viewRequests():
+  from flask import request
+  if request.method == "POST":
+    listOfApprovedBookings = [int(x) for x in request.form.getlist("approval")]
+    for request_id in listOfApprovedBookings:
+      Requests.edit(request_id)
+    return redirect(url_for('viewRequests'))
+
   allRequests = Requests.query.all()
   allRequests.reverse()
+
   return render_template('requestsTable.html', allRequests=allRequests)
 
 ######################################## STUDENTS ###############################

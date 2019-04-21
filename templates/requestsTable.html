@@ -24,6 +24,7 @@
 </head>
 
 <h1> All Requests</h1>
+<form action="/viewRequests" method="POST">
 <table>
   <tr bgcolor="white">
       <th>Request ID</th>
@@ -32,7 +33,8 @@
       <th>Room</th>
       <th>Day</th>
       <th>Time</th>
-      <th>Approved</th>
+      <th>Status</th>
+      <th>Approve</th>
   </tr>
     <tbody>
       {% for eachresult in allRequests %}
@@ -44,9 +46,12 @@
           <td>{{eachresult.day}}</td>
           <td>{{eachresult.time}}</td>
           <td>{{eachresult.approved}}</td>
+          <td><input type="checkbox" name="approval" value={{eachresult.request_id}}></td>
         </tr>
       {% endfor %}
     </tbody>
 </table>
-
+<p><br></br></p>
+<input type="submit" value="Submit">
+</form>
 {% endblock %}
