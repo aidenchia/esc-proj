@@ -382,7 +382,7 @@ def viewRequests():
   return render_template('requestsTable.html', allRequests=allRequests)
 
 @app.route('/ping', methods=['GET', 'POST'])
-def ping(subject, message):
+def ping(subject="test", message="ping"):
   subject = subject
   sender = app.config['MAIL_USERNAME']
   recipients = ['aidenchia95@gmail.com']
