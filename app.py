@@ -27,6 +27,7 @@ with app.app_context():
   login_manager.init_app(app)
   login_manager.login_view = "login"
   mail = Mail(app)
+  db.engine.dispose()
 
 
 ######################################## Wrapper for roles required #################
