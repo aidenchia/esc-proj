@@ -105,53 +105,6 @@ def subjectsTable():
   allSubjects = Subjects.select(all=True)
   return render_template("subjectsTable.html", allSubjects=allSubjects)
 
-'''
-@app.route("/subjects", methods=['GET', 'POST'])
-#@Roles(True,"admin", "course_lead", "pillar_head")
-def subjects():
-    available_rooms = Rooms.query.all()
-    room_list = [(-1,'No Preference')]
-    for room in available_rooms:
-        room_list.append((room.room_id, room.location))
-    form = SubjectForm()
-    
-    if form.add_more_component.data:
-        print("came here instead")
-        form.component.append_entry(u'default value')
-    for entry in form.component.entries:
-        entry.classroom.choices = room_list
-
-    if form.validate_on_submit():
-        print("came here")
-        if form.term_no.data == '-1' or form.pillar.data == '-1' or form.subject_type.data == '-1':
-            print("Please choose an option for term, pillar and subject type")
-        else:
-            subjectname = form.subject_name.data
-            subjectid = form.subject_id.data
-            termno = dict(form.terms).get(form.term_no.data)
-            subjecttype = dict(form.subject_types).get(form.subject_type.data)
-            pillar = form.pillar.data
-            cohort_num = form.cohort_num.data
-            total_enrollment = form.total_enrollment.data
-            session_nums = len(form.component.entries)
-            components = []
-            for each_entry in form.component.entries:
-                temp  = {"duration":each_entry.data['duration'],"sessionType": int(each_entry.data['session']),"classroom":each_entry.data['classroom'], 'cohorts':[]}
-                if int(each_entry.data['session']) == -1:
-                    print("Please choose an option for session type")
-                    return render_template('subjects.html',form=form)
-                if int(each_entry.data['session']) == 1:
-                    for i in range(cohort_num):
-                        temp['cohorts'].append(i)
-                components.append(temp)
-                print(temp)
-            Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
-            
-        
-    return render_template('subjects.html',form=form)
-'''
-
-
 @app.route("/request", methods=['GET', 'POST'])
 def request():
   rooms = Rooms.query.all()
@@ -161,15 +114,16 @@ def request():
 
   form = RequestForm()
   form.room.choices = rooms_list
-  #for entry in form.room.entries:
-  #  entry.room_choices.choices = rooms_list
 
   if form.validate_on_submit():
-    Requests.insert(requestee=current_user.username,
-                    room="test",
+    username = current_user.get_id()
+
+    Requests.insert(requestee=username,
+                    room= form.room.data,
                     day=form.day.data,
                     time=form.time.data)
-    return redirect(url_for(courseInput))
+
+    return redirect(url_for("courseInput"))
 
   return render_template("request.html", form=form)
 
@@ -410,6 +364,7 @@ def viewRooms():
 @app.route('/viewRequests', methods=['GET', 'POST'])
 def viewRequests():
   allRequests = Requests.query.all()
+  allRequests.reverse()
   return render_template('requestsTable.html', allRequests=allRequests)
 
 ######################################## STUDENTS ###############################

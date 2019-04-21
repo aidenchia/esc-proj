@@ -409,10 +409,11 @@ class Requests(db.Model):
   @staticmethod
   def insert(requestee, room, day, time):
     import datetime
-    date_created = datetime.datetime.now()
-    newrequest = Request(requestee, room, day, time, date_created)
+    date_created = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    newrequest = Requests(requestee, room, day, time, date_created)
     db.session.add(newrequest)
     db.session.commit()
+    return None 
 
 
 

@@ -127,7 +127,7 @@ class RequestForm(FlaskForm):
                   ('4', '6pm-7pm')]
 
   room_choices = []
-  room = SelectField("Room", choices=room_choices, validators=[DataRequired()])
+  room = SelectField("Room", choices=room_choices, coerce=int, validators=[DataRequired()])
   #room = FieldList(FormField(requestRoomForm), min_entries=1, validators=[DataRequired()])
   time = SelectField('Time', choices=time_choices, validators=[DataRequired()])
   day = SelectField('Day', choices=day_choices, validators=[DataRequired()])
