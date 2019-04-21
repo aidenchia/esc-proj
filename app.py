@@ -370,6 +370,9 @@ def viewRequests():
     listOfApprovedBookings = [int(x) for x in request.form.getlist("approval")]
     for request_id in listOfApprovedBookings:
       Requests.edit(request_id)
+      request = Requests.query.filter_by(request_id=request_id).first()
+      confirmMessage = "Booking details: " + "\nRoom: " + request.room + "\nDay: " + request.day + "\nTime: " + request.time 
+      ping("Request ID: " + str(request_id) + " approved", confirmMessage)
     return redirect(url_for('viewRequests'))
 
   allRequests = Requests.query.all()
@@ -378,15 +381,14 @@ def viewRequests():
   return render_template('requestsTable.html', allRequests=allRequests)
 
 @app.route('/ping', methods=['GET', 'POST'])
-def ping():
-  subject = "Hello"
+def ping(subject, message):
+  subject = subject
   sender = app.config['MAIL_USERNAME']
   recipients = ['aidenchia95@gmail.com']
 
   msg = Message(subject, sender=sender, recipients=recipients)
-  msg.body = "Test"
+  msg.body = message
   mail.send(msg)
-  return "Message sent"
 
 
 ######################################## STUDENTS ###############################
@@ -449,6 +451,10 @@ def viewStudentSchedule():
             #class_information = subject_ids
         
     return render_template("base.html") # for now
+
+@app.route("/chooseHASS", methods=['GET', 'POST'])
+def chooseHASS():
+  return None
 
 ######################################## Scheduling algorithm #################
 @app.route("/genSchedule", methods=['GET', 'POST'])
