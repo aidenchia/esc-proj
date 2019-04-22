@@ -468,9 +468,9 @@ def chooseHASS():
   if form.validate_on_submit():
     hass_picked = form.hass_picked.data
     # ENROL STUDENT IN HASS STUDENT GROUP
-    return hass_picked
+    return redirect(url_for('home'))
 
-  return None
+  return render_template('chooseHASS.html', form=form)
 
 ######################################## Scheduling algorithm #################
 @app.route("/genSchedule", methods=['GET', 'POST'])
