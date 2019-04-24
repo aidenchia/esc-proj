@@ -62,6 +62,9 @@ def Roles(included=True, *role):
 
  
 ########################################## ALL USERS ##########################
+@app.route('/gcal', methods=['GET'])
+def sendToGoogle():
+  return render_template('googleCalendar.html')
 @app.route('/', methods=['GET', 'POST'])
 def login():
   if current_user.is_authenticated:
