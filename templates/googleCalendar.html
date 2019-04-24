@@ -133,8 +133,9 @@
 			 * appropriate message is printed.
 			 */
 			function listUpcomingEvents() {
+                console.log("lalalala");
 				gapi.client.calendar.events.list({
-					'calendarId': 'primary',
+					'calendarId': 'sutd',
 					'timeMin': (new Date()).toISOString(),
 					'showDeleted': false,
 					'singleEvents': true,
