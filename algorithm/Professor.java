@@ -1,4 +1,4 @@
-
+package algorithm;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +43,9 @@ public class Professor {
                                     if (input3D[i][j][k].getCohortNo().contains(sg.getCohort())) {
                                         if (!sClassSet.contains(input3D[i][j][k])) {
                                             sClassSet.add(input3D[i][j][k]);
+                                            if (!input3D[i][j][k].getProfessor().contains(this)) {
+                                                input3D[i][j][k].setProfessor(this);
+                                            }
                                         }
                                     }
                                 }
