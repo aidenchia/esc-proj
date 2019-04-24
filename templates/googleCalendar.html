@@ -11,7 +11,8 @@
 		<button id="authorize_button" style="display: none;">Authorize</button>
 		<button id="signout_button" style="display: none;">Sign Out</button>
 
-		<pre id="content" style="white-space: pre-wrap;"></pre>
+        <pre id="content" style="white-space: pre-wrap;"></pre>
+        <iframe src="https://calendar.google.com/calendar/embed?src=sutdwtd%40gmail.com&ctz=Asia%2FSingapore" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
 		<script type="text/javascript">
 			// Client ID and API key from the Developer Console
@@ -31,7 +32,7 @@
 			/**
 			 *  On load, called to load the auth2 library and API client library.
 			 */
-			var event = {
+			const event = {
 				'summary': 'Google I/O 2015',
 				'location': '800 Howard St., San Francisco, CA 94103',
 				'description': 'A chance to hear more about Google\'s developer products.',
@@ -135,7 +136,7 @@
 			function listUpcomingEvents() {
                 console.log("lalalala");
 				gapi.client.calendar.events.list({
-					'calendarId': 'sutd',
+					'calendarId': 'primary',
 					'timeMin': (new Date()).toISOString(),
 					'showDeleted': false,
 					'singleEvents': true,
@@ -158,7 +159,7 @@
 						appendPre('No upcoming events found.');
 					}
                     var request = gapi.client.calendar.events.insert({
-                        'calendarId': 'sutd',
+                        'calendarId': 'primary',
                         'resource': event
                     });
 
