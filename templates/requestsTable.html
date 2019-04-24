@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 98%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+
+  </style>
+</head>
+
+<h1> All Requests</h1>
+<form action="/viewRequests" method="POST">
+<table>
+  <tr bgcolor="white">
+      <th>Request ID</th>
+      <th>Date created</th>
+      <th>Requestee</th>
+      <th>Room</th>
+      <th>Day</th>
+      <th>Time</th>
+      <th>Status</th>
+      <th>Approve</th>
+  </tr>
+    <tbody>
+      {% for eachresult in allRequests %}
+        <tr>
+          <td>{{eachresult.request_id}}</td>
+          <td>{{eachresult.date_created}} </td>
+          <td>{{eachresult.requestee}}</td>
+          <td>{{eachresult.room}}</td>
+          <td>{{eachresult.day}}</td>
+          <td>{{eachresult.time}}</td>
+          <td>{{eachresult.approved}}</td>
+          <td><input type="checkbox" name="approval" value={{eachresult.request_id}}></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+<p><br></br></p>
+<input type="submit" value="Submit">
+</form>
+{% endblock %}

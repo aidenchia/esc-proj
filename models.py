@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
-
+import ast
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -80,7 +80,19 @@ class Subjects(db.Model):
   @staticmethod
   def getAllSubjects():
       query = db.session.query(Subjects).all()
-      all_subjects = [subject._asdict() for subject in query]
+      #subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
+      all_subjects = []
+      for subject in query:
+          all_subjects.append({'component':ast.literal_eval(subject.components),
+                               'pillar':subject.pillar,
+                               'sessionNumber':subject.sessionnum,
+                               'name':subject.subjectName,
+                               'term':subject.term,
+                               'cohortNumber':subject.cohortnum,
+                               'totalEnrollNumber':subject.totalenrollment,
+                               'type':subject.subjectType,
+                               'courseId':str(int(subject.subjectCode))})
+      #all_subjects = [subject._asdict() for subject in query]
       return all_subjects
       
 
@@ -143,7 +155,10 @@ class Users(db.Model):
       user = Users(username, fullname, email, password, user_group, False)
       db.session.add(user)
       db.session.commit()
-      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable)
+      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, False)
+    else:
+      user = query
+      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, False)
     return None
 
   @staticmethod
@@ -172,14 +187,15 @@ class Users(db.Model):
   @staticmethod
   def getAllProfessors(for_scheduler=True):
       if for_scheduler:
-          query = Users.query(Users.fullname, Users.professor_id, Users.coursetable).filter_by(user_group="professor").all()
+          query = Users.query.with_entities(Users.fullname, Users.professor_id, Users.coursetable).filter_by(user_group="professor").all()
       else:
-          query = Users.query.filter_by(user_group="professor")
-      all_professors = [professor._asdict() for professor in query]
-      return all_professors
+          query = Users.query.filter_by(user_group="professor").all()
+      #all_professors = [professor._asdict() for professor in query]
+      return query
 
 class Timetable(db.Model):
-  subject = db.Column(db.String, primary_key=True)
+  timetable_id = db.Column(db.Integer, primary_key=True)
+  subject = db.Column(db.String)
   session = db.Column(db.Integer)
   weekday = db.Column(db.Integer)
   cohort = db.Column(db.String)
@@ -229,7 +245,7 @@ class Timetable(db.Model):
           sc_classroom = specific_class['classroom']
           specific_class = Timetable(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom)
           db.session.add(specific_class)
-      db.session.commit()
+          db.session.commit()
       return None
 
   @staticmethod
@@ -294,8 +310,16 @@ class Rooms(db.Model):
 
   @staticmethod
   def geAllRooms():
-      query = Rooms.query.order_by(Rooms.room_id).all()
-      all_rooms = [room._asdict() for room in query]
+      query = Rooms.query.all()
+      all_rooms = []
+      #class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
+      for room in query:
+          all_rooms.append({'name':room.name,
+                            'location':room.location,
+                            'id':room.room_id,
+                            'roomType':room.roomType,
+                            'capacity':room.capacity})
+      #all_rooms = [room.__dict__ for room in query]
       return all_rooms
 
 class studentGroup(db.Model):
@@ -353,10 +377,49 @@ class studentGroup(db.Model):
     @staticmethod
     def getAllGroups():
         query = studentGroup.query.all()
-        all_groups = [group._asdict() for group in query]
+        studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
+        all_groups = []
+        for group in query:
+            all_groups.append({'pillar': group.pillar,
+                               'size': group.size,
+                               'subjects': ast.literal_eval(group.subjects),
+                               'name': group.name,
+                               'cohort': group.cohort,
+                               'term': group.term})
+        #all_groups = [group._asdict() for group in query]
         return all_groups
         
 
+class Requests(db.Model):
+  request_id = db.Column(db.Integer, primary_key=True)
+  requestee = db.Column(db.String)
+  room = db.Column(db.String)
+  day = db.Column(db.String)
+  time = db.Column(db.String)
+  date_created = db.Column(db.DateTime)
+  approved = db.Column(db.Boolean, default=False)
+
+  def __init__(self, requestee, room, day, time, date_created):
+    self.room = room
+    self.requestee = requestee
+    self.day = day 
+    self.time = time 
+    self.date_created = date_created
+
+  @staticmethod
+  def insert(requestee, room, day, time):
+    import datetime
+    date_created = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    newrequest = Requests(requestee, room, day, time, date_created)
+    db.session.add(newrequest)
+    db.session.commit()
+    return None 
+
+  @staticmethod
+  def edit(request_id):
+    request = Requests.query.filter_by(request_id=request_id).first()
+    request.approved = True
+    db.session.commit()
 
 
 

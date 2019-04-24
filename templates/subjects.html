@@ -18,7 +18,6 @@
             {{form.term_no}}
         </p>
         <p>
-            {{form.component.label}}
             {% for cf in form.component %}
             <center><p>
                 {{cf}}
@@ -45,6 +44,7 @@
             {{form.total_enrollment.label}}
             {{form.total_enrollment}}
         </p>
+
         <p><input type="submit" value="Go"></p>
     </form>
 {% endblock %}

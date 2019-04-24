@@ -2,8 +2,9 @@ from flask import Flask
 from flask import flash, g, redirect, render_template, url_for, request, session, abort
 from flask import current_app
 from flask_login import login_required, current_user, login_user,logout_user
-from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm
-from models import Users, Subjects, Timetable, Rooms, studentGroup
+from flask_mail import Mail, Message
+from forms import LoginForm, RegisterForm, EditForm, StudentGroupForm, SubjectForm, RoomForm, RequestForm, HASSForm
+from models import Users, Subjects, Timetable, Rooms, studentGroup, Requests
 import models
 from werkzeug.security import generate_password_hash
 from flask_wtf.csrf import CSRFProtect
@@ -11,6 +12,8 @@ import functools
 import os
 import sys
 import json
+import ast
+import logging
 
 #scsrf = CSRFProtect()
 app = Flask(__name__)
@@ -23,6 +26,8 @@ with app.app_context():
   db.create_all()
   login_manager.init_app(app)
   login_manager.login_view = "login"
+  mail = Mail(app)
+  db.engine.dispose()
 
 
 ######################################## Wrapper for roles required #################
@@ -37,25 +42,15 @@ def Roles(included=True, *role):
         def wrapped_view(*args,**kwargs):
             #flash(str(current_user.user_group))
             #flash(str(role))
-            url = request.referrer
             if current_user.is_authenticated:
                 if included:
                     if current_user.user_group not in role:
-                        if url is not None:
-                            return redirect(url)
-                        else:
-                            return redirect(url_for('login'))
+                        return redirect(url_for('login'))
                 else:
                     if current_user.user_group in role:
-                        if url is not None:
-                            return redirect(url)
-                        else:
-                            return redirect(url_for('login'))
+                        return redirect(url_for('login'))
             else:
-                if url is not None:
-                    return redirect(url)
-                else:
-                    return redirect(url_for('login'))
+                return redirect(url_for('login'))
             return view(*args,**kwargs)
         return wrapped_view
     return decorater
@@ -93,6 +88,11 @@ def home():
   return render_template('home.html')
 
 
+@app.route("/googleCalendar")
+def googleCalendar():
+  return render_template("googleCalendar.html")
+
+
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
@@ -116,9 +116,31 @@ def subjectsTable():
   allSubjects = Subjects.select(all=True)
   return render_template("subjectsTable.html", allSubjects=allSubjects)
 
+@app.route("/request", methods=['GET', 'POST'])
+def request():
+  rooms = Rooms.query.all()
+  rooms_list = [(-1, 'No Preference')]
+  for room in rooms:
+    rooms_list.append((room.room_id, room.name))
+
+  form = RequestForm()
+  form.room.choices = rooms_list
+
+  if form.validate_on_submit():
+    username = current_user.get_id()
+
+    Requests.insert(requestee=username,
+                    room= dict(form.room.choices)[form.room.data],
+                    day=dict(form.day.choices)[form.day.data],
+                    time=dict(form.time.choices)[form.time.data])
+
+    return redirect(url_for("courseInput"))
+
+  return render_template("request.html", form=form)
+
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
-#@login_required
+@login_required
 #@Roles(True,"admin")
 def register():
   print("came herer from register")
@@ -137,25 +159,52 @@ def register():
       entry.classes.choices = subject_list
   print("came herer from register")
   print(form.class1.entries[0].classes.choices)
-  if form.validate_on_submit():
+  if form.validate_on_submit() and not form.add_more_component.data:
     user = Users.query.filter_by(username=form.username.data).first()
 
     if user is None:
         if form.user_group.data == -1:
             flash("Please choose a user group.")
         else:
-            temp_course_table = {}
-            for each_entry in form.class1.entries:
-                if each_entry.data['classes'] == '-1':
-                    print('Please select a class')
-                    return render_template('register.html',form=form)
-                else:
-                    temp_course_table[each_entry.data['classes']] = str(each_entry.data['cohorts'].split())
+            temp_course_table = None
+            temp_term_number = None
+            if form.user_group.data == '5':
+                temp_term_number = form.term.data
+            if form.user_group.data in ['2','3','4']:
+                temp_course_table = {}
+                for each_entry in form.class1.entries:
+                    if each_entry.data['classes'] == -1:
+                        print('Please select a class')
+                        return render_template('register.html',form=form)
+                    else:
+                        temp_course_table[each_entry.data['classes']] = str(list(map(int,each_entry.data['cohorts'].split())))
             Users.insert(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
-              dict(form.pillar_choices).get(form.pillar.data), form.term.data, 
+              dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
               form.student_id.data,form.professor_id.data,
-              temp_course_table)
+              str(temp_course_table))
+            return redirect(url_for('usersTable'))
+    else:
+        if form.user_group.data == -1:
+            flash("Please choose a user group.")
+        else:
+            temp_course_table = None
+            temp_term_number = None
+            if form.user_group.data == '5':
+                temp_term_number = form.term.data
+            if form.user_group.data in ['2','3','4']:
+                temp_course_table = {}
+                for each_entry in form.class1.entries:
+                    if each_entry.data['classes'] == -1:
+                        print('Please select a class')
+                        return render_template('register.html',form=form)
+                    else:
+                        temp_course_table[each_entry.data['classes']] = str(list(map(int,each_entry.data['cohorts'].split())))
+            user.edit(form.username.data,form.password.data,
+              form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
+              dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
+              form.student_id.data,form.professor_id.data,
+              str(temp_course_table),False)
             return redirect(url_for('usersTable'))
 
     flash('Invalid Parameters')
@@ -164,7 +213,7 @@ def register():
   #return render_template('register.html',form=form)
 
 @app.route("/subjects", methods=['GET', 'POST'])
-@Roles(True,"admin", "course_lead", "pillar_head")
+#@Roles(True,"admin", "course_lead", "pillar_head")
 def subjects():
     available_rooms = Rooms.query.all()
     room_list = [(-1,'No Preference')]
@@ -203,6 +252,7 @@ def subjects():
                 components.append(temp)
                 print(temp)
             Subjects.insertSubject(subjectid,termno,subjecttype,subjectname, str(components), pillar, cohort_num, total_enrollment, session_nums)
+            return redirect(url_for('subjectsTable'))
             
         
     return render_template('subjects.html',form=form)
@@ -255,9 +305,9 @@ def deleteUser(username):
 @app.route("/editStudentGroups", methods=['GET', 'POST'])
 def editStudentGroups():
   print("came here in student group")
-  subject_choices = [('-1','Choose the subject')]
+  subject_choices = [(-1,'Choose the subject')]
   for subject in Subjects.query.all():
-      subject_choices.append((str(int(subject.subjectCode)), subject.subjectName))
+      subject_choices.append((int(subject.subjectCode), subject.subjectName))
   form = StudentGroupForm()
   for entry in form.subjectFieldList.entries:
       entry.subject_choice.choices = subject_choices
@@ -265,15 +315,17 @@ def editStudentGroups():
   if form.validate_on_submit():
     subjects = []
     for entry in form.subjectFieldList.entries:
-        if entry.data['subject_choice'] == '-1':
+        if entry.data['subject_choice'] == -1:
             flash('All choices must be filled')
+            print('All choices not chosen')
             render_template('editStudentGroups.html',form=form)
         subjects.append(entry.data['subject_choice'])
-    
+    print(subjects)
     studentGroup.insert(pillar=form.pillar.data,
                         size=form.size.data,
                         name=form.name.data,
-                        subjects=subjects,
+                        subjects=str(subjects),
+                        cohort=form.cohort.data,
                         term=form.term.data)
 
     return redirect(url_for('studentGroupTable'))
@@ -318,8 +370,36 @@ def editRooms():
 @app.route('/viewRooms', methods=['GET','POST'])
 def viewRooms():
     rooms = Rooms.query.all()
-    return render_template('viewRooms.html',rooms=rooms)
-    
+    return render_template('viewRooms.html',rooms=rooms)    
+
+
+@app.route('/viewRequests', methods=['GET', 'POST'])
+def viewRequests():
+  from flask import request
+  if request.method == "POST":
+    listOfApprovedBookings = [int(x) for x in request.form.getlist("approval")]
+    for request_id in listOfApprovedBookings:
+      Requests.edit(request_id)
+      request = Requests.query.filter_by(request_id=request_id).first()
+      confirmMessage = "Booking details: " + "\nRoom: " + request.room + "\nDay: " + request.day + "\nTime: " + request.time 
+      ping("Request ID: " + str(request_id) + " approved", confirmMessage)
+    return redirect(url_for('viewRequests'))
+
+  allRequests = Requests.query.all()
+  allRequests.reverse()
+
+  return render_template('requestsTable.html', allRequests=allRequests)
+
+@app.route('/ping', methods=['GET', 'POST'])
+def ping(subject="test", message="ping"):
+  subject = subject
+  sender = app.config['MAIL_USERNAME']
+  recipients = ['aidenchia95@gmail.com']
+
+  msg = Message(subject, sender=sender, recipients=recipients)
+  msg.body = message
+  mail.send(msg)
+
 
 ######################################## STUDENTS ###############################
 @login_required
@@ -382,14 +462,32 @@ def viewStudentSchedule():
         
     return render_template("base.html") # for now
 
+@app.route("/chooseHASS", methods=['GET', 'POST'])
+def chooseHASS():
+  hass_choices = Subjects.query.filter_by(pillar=0).all()
+  hass_list = [("-1", 'No Preference')]
+
+  form = HASSForm()
+  for subject in hass_choices:
+    hass_list.append((str(subject.subjectCode), subject.subjectName))
+
+  form.hass_picked.choices = hass_list
+
+  if form.validate_on_submit():
+    hass_picked = form.hass_picked.data
+    # ENROL STUDENT IN HASS STUDENT GROUP
+    return redirect(url_for('home'))
+
+  return render_template('chooseHASS.html', form=form)
+
 ######################################## Scheduling algorithm #################
 @app.route("/genSchedule", methods=['GET', 'POST'])
 def genSchedule():
-  """
+  '''
   Update the input.json file in algorithm folder from the database.
   runScheduler
   then, update the database with the new data.
-  
+  '''
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
   prof_format = {'name':'','id':0,'coursetable':{}}
   subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
@@ -397,28 +495,31 @@ def genSchedule():
   studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
   
   for professor in Users.getAllProfessors():
-      input_dict['professor'].append({'name':professor.fullnamell,'id':0,'coursetable':{}})
+      input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
+  
+  print(input_dict)
   
   from pathlib import Path
   data_folder = Path("algorithm/")
   file_to_open = data_folder / 'input.json'
   with open(file_to_open,'w+') as input_file:
       json.dump(input_dict, input_file)
-  """
+  
   runScheduler()
-  '''
+  
   timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
   with open(timetablePath, 'r') as data_file:    
     data = json.load(data_file)
   Timetable.replace_all(data)
-  '''
+  
   return redirect(url_for('viewMasterSchedule'))
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
+  #timetablePath = os.path.join(os.getcwd(), "algorithm/input(1).json")
   timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
   try:
     f = open(timetablePath, 'r')

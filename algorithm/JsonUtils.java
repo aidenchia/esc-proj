@@ -1,16 +1,22 @@
-
+package algorithm;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import javax.management.remote.SubjectDelegationPermission;
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class JsonUtils {
-    public static void writeToJson(Chromosome c) {
+    public static void writeToJson(Chromosome c) throws Exception{
+        if (c == null) {
+            throw new Exception();
+        }
         JSONObject json = new JSONObject();
         JSONArray sClassSet = new JSONArray();
         try {
@@ -18,12 +24,23 @@ public class JsonUtils {
             for(SpecificClass s: lineC) {
                 if (s != null) {
                     JSONObject sClass = new JSONObject();
-                    sClass.put("subject", s.getSubject().getName());
+                    sClass.put("subject", s.getSubject().getId());
                     sClass.put("cohort", s.getCohortNo());
                     sClass.put("session", s.getSession());
                     sClass.put("weekday", s.getWeekday());
                     sClass.put("startTime", s.getStartTime());
                     sClass.put("classroom", s.getClassroom().getName());
+                    sClass.put("duration", s.getDuration());
+                    ArrayList<Integer> profId = new ArrayList<>();
+                    for (Professor p: s.getProfessor()) {
+                        profId.add(p.getId());
+                    }
+                    sClass.put("professor", profId);
+                    ArrayList<Integer> sgId = new ArrayList<>();
+                    for (StudentGroup sg: s.getStudentGroup()) {
+                        sgId.add(sg.getId());
+                    }
+                    sClass.put("studentgroup", sgId);
                     sClassSet.put(sClass);
                 }
             }
@@ -43,19 +60,61 @@ public class JsonUtils {
 
     }
 
-    private static JSONArray writeSubjects(){
+    public static JSONObject writeComponents(int sessionType, double duration,
+                                            int[] classrooms, ArrayList<Integer> cohorts) {
+
+        JSONObject component = new JSONObject();
+        component.put("sessionType", sessionType); // 0: cohort; 1: lecture; 2: lab
+        component.put("duration", duration); // value type is double
+        component.put("classroom", classrooms); // every classroom has an integer id; 0 means null
+        component.put("cohorts", cohorts);
+        return component;
+    }
+    public static JSONObject writeASubejct(String name, int courseId, int type, int term,
+                                            int pillar, int cohortNum, int totalEnrollNumber,
+                                            int sessionNumber, JSONArray componets ) {
+
+        JSONObject subject = new JSONObject();
+        subject.put("name", name);
+        subject.put("courseId", courseId);
+        subject.put("type", type); // 0: CORE; 1: ELECTIVE
+        subject.put("term", term);
+        subject.put("pillar", pillar); // 0: HASS; 1: ASD; 2: EPD; 3: ESD; 4: ISTD
+        subject.put("cohortNumber", cohortNum);
+        subject.put("totalEnrollNumber", totalEnrollNumber);
+        subject.put("sessionNumber", sessionNumber);
+        JSONArray compoent = componets;
+        subject.put("component", compoent);
+
+        return subject;
+    }
+
+    public static JSONArray writeSubjects(){
         JSONArray subjectSet = new JSONArray();
         try {
+            JSONObject c;
             ArrayList<Integer> cohorts = new ArrayList<>();
             cohorts.add(0); cohorts.add(1); cohorts.add(2);
             ArrayList<Integer> zeroCohort = new ArrayList<>();
 
+            JSONArray component = new JSONArray();
+            c = writeComponents(0, 1.5, new int[]{0,1,2,3,4,5,6,7,8,9}, zeroCohort);
+            component.put(c);
+            c = writeComponents(0, 1.5, new int[]{0,1,2,3,4,5,6,7,8,9}, zeroCohort);
+            component.put(c);
+            c = writeComponents(0, 2, new int[]{0,1,2,3,4,5,6,7,8,9}, zeroCohort);
+            component.put(c);
+
+            JSONObject subjectDW = writeASubejct("Digital World", 10009,
+                    0, 3, 5, 10, 450, 3, component);
+            subjectSet.put(subjectDW);
+
             JSONObject subjectCSE = new JSONObject();
             subjectCSE.put("name", "Computer System Engineering");
-            subjectCSE.put("courseId", "50.005");
+            subjectCSE.put("courseId", 50005);
             subjectCSE.put("type", 0); // 0: CORE; 1: ELECTIVE
             subjectCSE.put("term", 5);
-            subjectCSE.put("pillar", 4); // 0: HASS; 1: ASD; 2: EPD; 3: ESD; 4: ISTD
+            subjectCSE.put("pillar", 4); // 0: HASS; 1: ASD; 2: EPD; 3: ESD; 4: ISTD; 5: Freshman
             subjectCSE.put("cohortNumber", 3);
             subjectCSE.put("totalEnrollNumber", 150);
             subjectCSE.put("sessionNumber", 3);
@@ -64,17 +123,17 @@ public class JsonUtils {
             JSONObject component1 = new JSONObject();
             component1.put("sessionType", 0); // 0: cohort; 1: lecture; 2: lab
             component1.put("duration", 1.5); // value type is double
-            component1.put("classroom", 0); // every classroom has an integer id; 0 means null
+            component1.put("classroom", new int[]{10,11}); // every classroom has an integer id; 0 means null
             component1.put("cohorts", zeroCohort);
             JSONObject component2 = new JSONObject();
             component2.put("sessionType", 0); // 0: cohort; 1: lecture; 2: lab
             component2.put("duration", 1.5); // value type is double
-            component2.put("classroom", 0); // every classroom has an integer id; 0 means null
+            component2.put("classroom", new int[]{10,11}); // every classroom has an integer id; 0 means null
             component2.put("cohorts", zeroCohort);
             JSONObject component3 = new JSONObject();
             component3.put("sessionType", 1); // 0: cohort; 1: lecture; 2: lab
             component3.put("duration", 2.0); // value type is double
-            component3.put("classroom", 0); // every classroom has an integer id; 0 means null
+            component3.put("classroom", new int[]{20}); // every classroom has an integer id; 0 means null
             component3.put("cohorts", cohorts);
             CSEcompoent.put(component1);
             CSEcompoent.put(component2);
@@ -84,7 +143,7 @@ public class JsonUtils {
 
             JSONObject subjectESC = new JSONObject();
             subjectESC.put("name", "Elements of Software Construction");
-            subjectESC.put("courseId", "50.003");
+            subjectESC.put("courseId", 50003);
             subjectESC.put("type", 0); // 0: CORE; 1: ELECTIVE
             subjectESC.put("term", 5);
             subjectESC.put("pillar", 4); // 0: HASS; 1: ASD; 2: EPD; 3: ESD; 4: ISTD
@@ -96,7 +155,7 @@ public class JsonUtils {
             JSONObject component4 = new JSONObject();
             component4.put("sessionType", 0); // 0: cohort; 1: lecture; 2: lab
             component4.put("duration", 2.0); // value type is double
-            component4.put("classroom", 0); // every classroom has an integer id; 0 means null
+            component4.put("classroom", new int[]{10,11}); // every classroom has an integer id; 0 means null
             component4.put("cohorts", zeroCohort);
             ESCcompoent.put(component1);
             ESCcompoent.put(component2);
@@ -107,7 +166,7 @@ public class JsonUtils {
 
             JSONObject subjectPROB = new JSONObject();
             subjectPROB.put("name", "Probability and Statistics");
-            subjectPROB.put("courseId", "50.034");
+            subjectPROB.put("courseId", 50034);
             subjectPROB.put("type", 0); // 0: CORE; 1: ELECTIVE
             subjectPROB.put("term", 5);
             subjectPROB.put("pillar", 4); // 0: HASS; 1: ASD; 2: EPD; 3: ESD; 4: ISTD
@@ -119,17 +178,17 @@ public class JsonUtils {
             JSONObject component5 = new JSONObject();
             component5.put("sessionType", 1); // 0: cohort; 1: lecture; 2: lab
             component5.put("duration", 1.5); // value type is double
-            component5.put("classroom", 0); // every classroom has an integer id; 0 means null
+            component5.put("classroom", new int[]{20}); // every classroom has an integer id; 0 means null
             component5.put("cohorts", cohorts);
             JSONObject component6 = new JSONObject();
             component6.put("sessionType", 1); // 0: cohort; 1: lecture; 2: lab
             component6.put("duration", 1.5); // value type is double
-            component6.put("classroom", 0); // every classroom has an integer id; 0 means null
+            component6.put("classroom", new int[]{20}); // every classroom has an integer id; 0 means null
             component6.put("cohorts", cohorts);
             JSONObject component7 = new JSONObject();
             component7.put("sessionType", 0); // 0: cohort; 1: lecture; 2: lab
             component7.put("duration", 2.0); // value type is double
-            component7.put("classroom", 0); // every classroom has an integer id; 0 means null\
+            component7.put("classroom", new int[]{10,11}); // every classroom has an integer id; 0 means null\
             component7.put("cohorts", zeroCohort);
             PROBcompoent.put(component5);
             PROBcompoent.put(component6);
@@ -144,39 +203,120 @@ public class JsonUtils {
         return subjectSet;
     }
 
-    private static JSONArray writeClassroom() {
+    public static JSONObject writeARoom(int id, String name, String location, int capacity, int roomType) {
+        JSONObject room = new JSONObject();
+        room.put("id", id); // -1 means empty
+        room.put("name", name);
+        room.put("location", location);
+        room.put("capacity", capacity);
+        room.put("roomType", roomType); //0: cohort; 1: lecture; 2: lab
+
+        return room;
+    }
+
+    // 0 - 9: freshman cohort rooms
+    // 10, 11: term 5 ISTD cohort room
+    // 12, 13, 14: term 7 ISTD electives
+    // 15, 16, 17: empty cohort room
+    // 18: LT2; 19: LT4; 20: LT5
+    // 21: bio lab; 22: physics lab; 23: safety lab
+    public static JSONArray writeClassroom() {
         JSONArray classroomSet = new JSONArray();
-        JSONObject classroom1 = new JSONObject();
-        classroom1.put("id", 1); // 0 means empty
-        classroom1.put("name", "CC13");
-        classroom1.put("location", "2.503");
-        classroom1.put("capacity", 50);
-        classroom1.put("roomType", 0); //0: cohort; 1: lecture; 2: lab
-        classroomSet.put(classroom1);
-        JSONObject classroom2 = new JSONObject();
-        classroom2.put("id", 2); // 0 means empty
-        classroom2.put("name", "CC14");
-        classroom2.put("location", "2.504");
-        classroom2.put("capacity", 50);
-        classroom2.put("roomType", 0); //0: cohort; 1: lecture; 2: lab
-        classroomSet.put(classroom2);
-        JSONObject classroom3 = new JSONObject();
-        classroom3.put("id", 3); // 0 means empty
-        classroom3.put("name", "LT5");
-        classroom3.put("location", "2.501");
-        classroom3.put("capacity", 50);
-        classroom3.put("roomType", 1); //0: cohort; 1: lecture; 2: lab
-        classroomSet.put(classroom3);
+        JSONObject room;
+        room = writeARoom(0, "CC1", "1.301", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(1, "CC2", "1.302", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(2, "CC3", "2.505", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(3, "CC4", "1.301", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(4, "CC5", "1.302", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(5, "CC6", "2.505", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(6, "CC7", "1.301", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(7, "CC8", "1.302", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(8, "CC9", "2.505", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(9, "CC10", "1.301", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(10, "CC13", "1.302", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(11, "CC14", "2.505", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(12, "CC15", "1.301", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(13, "CC16", "1.302", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(14, "CC17", "2.505", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(15, "Empty1", "1.301", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(16, "Empty2", "1.302", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(17, "Empty3", "2.505", 50, 0);
+        classroomSet.put(room);
+        room = writeARoom(18, "LT2", "1.302", 150, 1);
+        classroomSet.put(room);
+        room = writeARoom(19, "LT4", "2.505", 150, 1);
+        classroomSet.put(room);
+        room = writeARoom(20, "LT5", "1.302", 150, 1);
+        classroomSet.put(room);
+        room = writeARoom(21, "BioLab", "2.505", 50, 2);
+        classroomSet.put(room);
+        room = writeARoom(22, "PhysicsLab", "1.302", 50, 2);
+        classroomSet.put(room);
+        room = writeARoom(23, "SafetyLab", "2.505", 50, 2);
+        classroomSet.put(room);
+
         return classroomSet;
     }
 
-    private static JSONArray writeStudentGroup() {
-        ArrayList<String> subjects = new ArrayList<>();
-        subjects.add("Computer System Engineering");
-        subjects.add("Elements of Software Construction");
-        subjects.add("Probability and Statistics");
+    public static JSONObject writeAStudentGroup(int term, int cohort, String name, int size,
+                                                 List<Integer> subjects, int pillar, int id) {
+        JSONObject sg = new JSONObject();
+        sg.put("term", term);
+        sg.put("cohort", cohort);
+        sg.put("name", name);
+        sg.put("size", size);
+        sg.put("subjects", subjects);
+        sg.put("pillar", pillar); //0: HASS; 1: ASD; 4: ISTD;
+        sg.put("id", id);
+        return sg;
+    }
+    public static JSONArray writeStudentGroup() {
+        ArrayList<Integer> subjects = new ArrayList<>();
+        subjects.add(50005);
+        subjects.add(50003);
+        subjects.add(50034);
+
+        List<Integer> freshmore = Arrays.asList(10009);
 
         JSONArray studentGroupSet = new JSONArray();
+
+        JSONObject sg0 = writeAStudentGroup(3, 0,"t3c1", 50, freshmore, 5, 0);
+        studentGroupSet.put(sg0);
+        JSONObject sg1 = writeAStudentGroup(3, 1,"t3c2", 50, freshmore, 5, 1);
+        studentGroupSet.put(sg1);
+        JSONObject sg2 = writeAStudentGroup(3, 2,"t3c3", 50, freshmore, 5, 2);
+        studentGroupSet.put(sg2);
+        JSONObject sg3 = writeAStudentGroup(3, 3,"t3c4", 50, freshmore, 5, 3);
+        studentGroupSet.put(sg3);
+        JSONObject sg4 = writeAStudentGroup(3, 4,"t3c5", 50, freshmore, 5, 4);
+        studentGroupSet.put(sg4);
+        JSONObject sg5 = writeAStudentGroup(3, 5,"t3c6", 50, freshmore, 5, 5);
+        studentGroupSet.put(sg5);
+        JSONObject sg6 = writeAStudentGroup(3, 6,"t3c7", 50, freshmore, 5, 6);
+        studentGroupSet.put(sg6);
+        JSONObject sg7 = writeAStudentGroup(3, 7,"t3c8", 50, freshmore, 5, 7);
+        studentGroupSet.put(sg7);
+        JSONObject sg8 = writeAStudentGroup(3, 8,"t3c9", 50, freshmore, 5, 8);
+        studentGroupSet.put(sg8);
+        JSONObject sg9 = writeAStudentGroup(3, 9,"t3c10", 50, freshmore, 5, 9);
+        studentGroupSet.put(sg9);
 
         JSONObject studentgroup1 = new JSONObject();
         studentgroup1.put("term", 5);
@@ -185,6 +325,7 @@ public class JsonUtils {
         studentgroup1.put("size", 50);
         studentgroup1.put("subjects", subjects);
         studentgroup1.put("pillar", 4); //0: HASS; 1: ASD; 4: ISTD;
+        studentgroup1.put("id", 10);
         studentGroupSet.put(studentgroup1);
 
         JSONObject studentgroup2 = new JSONObject();
@@ -194,6 +335,7 @@ public class JsonUtils {
         studentgroup2.put("size", 50);
         studentgroup2.put("subjects", subjects);
         studentgroup2.put("pillar", 4); //0: HASS; 1: ASD; 4: ISTD;
+        studentgroup2.put("id", 11);
         studentGroupSet.put(studentgroup2);
 
         JSONObject studentgroup3 = new JSONObject();
@@ -203,12 +345,23 @@ public class JsonUtils {
         studentgroup3.put("size", 50);
         studentgroup3.put("subjects", subjects);
         studentgroup3.put("pillar", 4); //0: HASS; 1: ASD; 4: ISTD;
+        studentgroup3.put("id", 12);
         studentGroupSet.put(studentgroup3);
 
         return studentGroupSet;
     }
 
-    private static JSONArray writeProfessor() {
+    public static JSONObject writeAProf(int id, String name, HashMap<Integer, List> courseTable) {
+        JSONObject prof = new JSONObject();
+        prof.put("id", id);
+        prof.put("name", name);
+        HashMap<Integer, List> courseTable1 = courseTable;
+        prof.put("coursetable",courseTable);
+
+        return prof;
+    }
+
+    public static JSONArray writeProfessor() {
         ArrayList<Integer> cohortLs1 = new ArrayList<>();
         cohortLs1.add(0);cohortLs1.add(1);cohortLs1.add(2);
         ArrayList<Integer> cohortLs2 = new ArrayList<>();
@@ -218,30 +371,62 @@ public class JsonUtils {
 
         JSONArray professorSet = new JSONArray();
 
+        JSONObject prof0 = new JSONObject();
+        prof0.put("id", 0);
+        prof0.put("name", "Natalie");
+        HashMap<Integer, List> courseTable0 = new HashMap<>();
+        courseTable0.put(50005, Arrays.asList(0,1));
+        courseTable0.put(10009, Arrays.asList(3,4));
+        prof0.put("coursetable",courseTable0);
+        professorSet.put(prof0);
+
         JSONObject prof1 = new JSONObject();
-        prof1.put("id", 0);
-        prof1.put("name", "Natalie");
-        HashMap<String, ArrayList> courseTable1 = new HashMap<>();
-        courseTable1.put("Computer System Engineering", cohortLs2);
+        prof1.put("id", 1);
+        prof1.put("name", "Sudipta");
+        HashMap<Integer, ArrayList> courseTable1 = new HashMap<>();
+        courseTable1.put(50003, cohortLs1);
         prof1.put("coursetable",courseTable1);
         professorSet.put(prof1);
 
         JSONObject prof2 = new JSONObject();
-        prof2.put("id", 1);
-        prof2.put("name", "Sun Jun");
-        HashMap<String, ArrayList> courseTable2 = new HashMap<>();
-        courseTable2.put("Elements of Software Construction", cohortLs1);
+        prof2.put("id", 2);
+        prof2.put("name", "Tony");
+        HashMap<Integer, ArrayList> courseTable2 = new HashMap<>();
+        courseTable2.put(50034, cohortLs1);
         prof2.put("coursetable",courseTable2);
         professorSet.put(prof2);
 
         JSONObject prof3 = new JSONObject();
-        prof3.put("id", 2);
-        prof3.put("name", "Tony");
-        HashMap<String, ArrayList> courseTable3 = new HashMap<>();
-        courseTable3.put("Probability and Statistics", cohortLs1);
+        prof3.put("id", 3);
+        prof3.put("name", "David");
+        HashMap<Integer, ArrayList> courseTable3 = new HashMap<>();
+        courseTable3.put(50005, cohortLs3);
         prof3.put("coursetable",courseTable3);
         professorSet.put(prof3);
 
+        HashMap<Integer, List> courseTable4 = new HashMap<>();
+        courseTable4.put(10009, Arrays.asList(0,1));
+        JSONObject prof4 = writeAProf(4, "Oka", courseTable4);
+
+        professorSet.put(prof4);
+
+        HashMap<Integer, List> courseTable5 = new HashMap<>();
+        courseTable5.put(10009, Arrays.asList(2,5));
+        JSONObject prof5 = writeAProf(5, "Gemma", courseTable5);
+
+        professorSet.put(prof5);
+
+        HashMap<Integer, List> courseTable6 = new HashMap<>();
+        courseTable6.put(10009, Arrays.asList(6,7));
+        JSONObject prof6 = writeAProf(6, "Norman", courseTable6);
+
+        professorSet.put(prof6);
+
+        HashMap<Integer, List> courseTable7 = new HashMap<>();
+        courseTable7.put(10009, Arrays.asList(8,9));
+        JSONObject prof7 = writeAProf(6, "DuoDuo", courseTable7);
+
+        professorSet.put(prof7);
         return professorSet;
     }
 
@@ -371,7 +556,7 @@ public class JsonUtils {
                         break;
                 }
 
-                String courseId = subject.getString("courseId");
+                int courseId = subject.getInt("courseId");
                 int type = subject.getInt("type");
                 SubjectType subjectType;
                 if (type == 0) {
@@ -388,12 +573,10 @@ public class JsonUtils {
                 for (int j = 0; j < component.length(); j++) {
                     JSONObject g = component.getJSONObject(j);
                     double duration = g.getDouble("duration");
-                    int classroomNo = g.getInt("classroom");
-                    Classroom room;
-                    if (classroomNo == -1) {
-                        room = null;
-                    }else {
-                        room = roomList.getRoomList()[classroomNo];
+                    JSONArray possibleRoomSet = g.getJSONArray("classroom");
+                    Classroom[] rooms = new Classroom[possibleRoomSet.length()];
+                    for (int d = 0; d < possibleRoomSet.length(); d++) {
+                        rooms[d] = roomList.getRoomList()[possibleRoomSet.getInt(d)];
                     }
                     int sessionType = g.getInt("sessionType");
                     ClassType stype;
@@ -406,19 +589,17 @@ public class JsonUtils {
                     }
                     JSONArray cohorts =  g.getJSONArray("cohorts");
                     if (cohorts.length() == 0) {
-                        subjectComp[j] = new GenericClass(stype, duration, room);
+                        subjectComp[j] = new GenericClass(stype, duration, rooms);
                     }else {
                         ArrayList<Integer> s = new ArrayList<>();
                         for (int k = 0; k < cohorts.length(); k++) {
                             s.add((int)cohorts.get(k));
                         }
-                        subjectComp[j] = new GenericClass(stype, duration, room, s);
+                        subjectComp[j] = new GenericClass(stype, duration, rooms, s);
                     }
                 }
-                String s = String.valueOf(courseId.charAt(0)) + String.valueOf(courseId.charAt(1)) +
-                        String.valueOf(courseId.charAt(3)) + String.valueOf(courseId.charAt(4)) +
-                        String.valueOf(courseId.charAt(5));
-                int id = Integer.valueOf(s);
+
+                int id = courseId;
 //                System.out.println(id);
                 Subject subject1 = new Subject(name, id, subjectType, term, totalEnrollNumber/cohortNum,
                         cohortNum, subjectComp);
@@ -477,6 +658,7 @@ public class JsonUtils {
                 String name = studentGroup.getString("name");
                 int cohort = studentGroup.getInt("cohort");
                 int term = studentGroup.getInt("term");
+                int id = studentGroup.getInt("id");
                 JSONArray subjects = studentGroup.getJSONArray("subjects");
                 ArrayList<Subject> subjectSet = new ArrayList<>();
                 for (int j = 0; j < subjects.length(); j++) {
@@ -488,7 +670,7 @@ public class JsonUtils {
                         }
                     }
                 }
-                StudentGroup studentGroup1 = new StudentGroup(0, name, pillar, term, cohort, subjectSet, size);
+                StudentGroup studentGroup1 = new StudentGroup(id, name, pillar, term, cohort, subjectSet, size);
                 studentGroups.add(studentGroup1);
             }
         }catch (JSONException e) {
@@ -526,7 +708,7 @@ public class JsonUtils {
                     for (int cohortNo = 0; cohortNo < student.length(); cohortNo++) {
                         for (StudentGroup sg: studentGroups) {
                             for (Subject sub: sg.getSubjects()) {
-                                if (sg.getCohort() == cohortNo && sub.getId() == Integer.valueOf(courseId)) {
+                                if (sg.getCohort() == student.getInt(cohortNo) && sub.getId() == Integer.valueOf(courseId)) {
                                     p.addSubject(sub, sg);
                                 }
                             }

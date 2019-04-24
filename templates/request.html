@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form id="make-request" name="make-request" method="POST">
+        {{form.csrf_token}}
+        <h1>Make Request</h1>
+        </div>
+        <p>
+            {{form.day.label}}
+            {{form.day}}
+        </p>
+
+        <p>
+            {{form.time.label}}
+            {{form.time}}
+        </p>
+
+        <p>
+            {{form.room.label}}
+            {{form.room}}
+        </p>
+        
+        <p><input type="submit" value="Go"></p>
+    </form>
+{% endblock %}

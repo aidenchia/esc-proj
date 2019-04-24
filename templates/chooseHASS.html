@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form id="choose-HASS" name="choose-HASS" method="POST">
+        {{form.csrf_token}}
+        <h1>Choose HASS</h1>
+        </div>
+        <p>
+            {{form.hass_picked.label}}
+            {{form.hass_picked}}
+        </p>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+{% endblock %}

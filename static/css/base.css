@@ -74,7 +74,7 @@ nav a:hover::before {
 
 .dropdown {
   float: left;
-  overflow: hidden;
+  overflow: visible;
   font-size: 14px;
   border: none;
   outline: none;
