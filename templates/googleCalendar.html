@@ -23,11 +23,7 @@
 
 			// Authorization scopes required by the API; multiple scopes can be
 			// included, separated by spaces.
-<<<<<<< HEAD
-			var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
-=======
 			var SCOPES = "https://www.googleapis.com/auth/calendar";
->>>>>>> 81446b038a78401cb5e39e573f95e905a64920f1
 
 			var authorizeButton = document.getElementById('authorize_button');
 			var signoutButton = document.getElementById('signout_button');
@@ -35,10 +31,6 @@
 			/**
 			 *  On load, called to load the auth2 library and API client library.
 			 */
-<<<<<<< HEAD
-			function handleClientLoad() {
-				gapi.load('client:auth2', initClient);
-=======
 			var event = {
 				'summary': 'Google I/O 2015',
 				'location': '800 Howard St., San Francisco, CA 94103',
@@ -77,7 +69,6 @@
 				request.execute(function(event) {
 					appendPre('Event created: ' + event.htmlLink);
 				});
->>>>>>> 81446b038a78401cb5e39e573f95e905a64920f1
 			}
 
 			/**
