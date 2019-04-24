@@ -85,6 +85,11 @@ def home():
   return render_template('home.html')
 
 
+@app.route("/googleCalendar")
+def googleCalendar():
+  return render_template("googleCalendar.html")
+
+
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
