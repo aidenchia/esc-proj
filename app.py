@@ -501,7 +501,7 @@ def genSchedule():
   
   from pathlib import Path
   data_folder = Path("algorithm/")
-  file_to_open = data_folder / 'input(1).json'
+  file_to_open = data_folder / 'input.json'
   with open(file_to_open,'w+') as input_file:
       json.dump(input_dict, input_file)
   
