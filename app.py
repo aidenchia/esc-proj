@@ -60,6 +60,7 @@ def Roles(included=True, *role):
 @app.route('/gcal', methods=['GET'])
 def sendToGoogle():
   return render_template('googleCalendar.html')
+  
 @app.route('/', methods=['GET', 'POST'])
 def login():
   if current_user.is_authenticated:
@@ -134,7 +135,7 @@ def request():
                     day=dict(form.day.choices)[form.day.data],
                     time=dict(form.time.choices)[form.time.data])
 
-    return redirect(url_for("courseInput"))
+    return redirect(url_for("home"))
 
   return render_template("request.html", form=form)
 
