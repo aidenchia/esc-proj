@@ -309,9 +309,9 @@ class Timetable(db.Model):
 
   @staticmethod
   def insert(subject, session, weekday, cohort, startTime, classroom,duration,professor,studentgroup):
-      query = Timetable.query.filter_by(subject).filter_by(session) \
-      .filter_by(weekday).filter_by(cohort).filter_by(startTime)\
-      .filter_by(classroom).filter_by(duration).filter_by(professor).filter_by(studentgroup).first()
+      query = Timetable.query.filter_by(subject=subject).filter_by(session=session) \
+      .filter_by(weekday=weekday).filter_by(cohort=cohort).filter_by(startTime=startTime)\
+      .filter_by(classroom=classroom).filter_by(duration=duration).filter_by(professor=professor).filter_by(studentgroup=studentgroup).first()
       if query is None:
           specific_class = Timetable(subject, session, weekday, cohort, startTime, classroom,duration,professor,studentgroup)
           db.session.add(specific_class)
@@ -342,11 +342,12 @@ class Timetable(db.Model):
   def find_Timetable(subject_cohort_dict):
       user_timetable = {"user_timetable":[]}
       for subject,cohort in subject_cohort_dict.items():
-          subject_classes = Timetable.query.filter_by(subject).all()
+          subject_classes = Timetable.query.filter_by(subject=subject).all()
           for each_class in subject_classes:
               if cohort in list(each_class.cohort):
                   cohortdict = Timetable.row2dict(each_class)
                   user_timetable.get("user_timetable").append(cohortdict)
+      print(user_timetable)
       return user_timetable
   
 class Rooms(db.Model):

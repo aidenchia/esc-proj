@@ -484,7 +484,7 @@ def viewStudentSchedule():
         for each_student_group in input_dict['studentGroup']:
             if each_student_group['name'] == current_user.student_group:
                 for subject in each_student_group['subjects']:
-                    subject_cohort_dict[int(subject)] = str(each_student_group['cohort'])
+                    subject_cohort_dict[str(subject)] = str(each_student_group['cohort'])
                 break
         print(subject_cohort_dict)
         user_timetable = Timetable.find_Timetable(subject_cohort_dict)
