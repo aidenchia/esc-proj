@@ -91,7 +91,7 @@ class Subjects(db.Model):
                                'cohortNumber':subject.cohortnum,
                                'totalEnrollNumber':subject.totalenrollment,
                                'type':subject.subjectType,
-                               'subjectId':str(int(subject.subjectCode))})
+                               'courseId':str(int(subject.subjectCode))})
       #all_subjects = [subject._asdict() for subject in query]
       return all_subjects
 
