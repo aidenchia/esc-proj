@@ -152,8 +152,8 @@ def register():
   print(subject_list)
   student_group_list = [(-1,'Please choose a student group')]
   available_student_groups = studentGroup.query.all()
-  for studentGroup in available_student_groups:
-      student_group_list.append(available_student_groups.name,available_student_groups.name)
+  for eachstudentGroup in available_student_groups:
+      student_group_list.append(eachstudentGroup.name,eachstudentGroup.name)
   form = RegisterForm()
 
   if form.add_more_component.data:
@@ -524,17 +524,21 @@ def genSchedule():
   then, update the database with the new data.
   '''
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
-  prof_format = {'name':'','id':0,'coursetable':{}}
-  subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
+  prof_format = {'name':'','id':0,'courseTable':{}}
+  subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'subjectId':''}
   class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
-  studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
+  studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1,'id':0}
   
-  for professor in Users.getAllProfessors():
-      input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
+
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
-  
+  classroomlist = [i for i in range(len(input_dict['classroom']))]
+  for professor in Users.getAllProfessors():
+    ct = ast.literal_eval(professor.coursetable)
+    ct['classroom'] = classroomlist
+    input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'courseTable':ct})
+    
   print(input_dict)
   
   from pathlib import Path

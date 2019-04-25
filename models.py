@@ -91,7 +91,7 @@ class Subjects(db.Model):
                                'cohortNumber':subject.cohortnum,
                                'totalEnrollNumber':subject.totalenrollment,
                                'type':subject.subjectType,
-                               'courseId':str(int(subject.subjectCode))})
+                               'subjectId':str(int(subject.subjectCode))})
       #all_subjects = [subject._asdict() for subject in query]
       return all_subjects
       
@@ -378,7 +378,7 @@ class studentGroup(db.Model):
     @staticmethod
     def getAllGroups():
         query = studentGroup.query.all()
-        studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
+        studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1, 'id':0}
         all_groups = []
         for group in query:
             all_groups.append({'pillar': group.pillar,
@@ -386,7 +386,8 @@ class studentGroup(db.Model):
                                'subjects': ast.literal_eval(group.subjects),
                                'name': group.name,
                                'cohort': group.cohort,
-                               'term': group.term})
+                               'term': group.term,
+                               'id': group.sg_id})
         #all_groups = [group._asdict() for group in query]
         return all_groups
         
