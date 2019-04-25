@@ -14,7 +14,7 @@
         <pre id="content" style="white-space: pre-wrap;"></pre>
         <iframe src="https://calendar.google.com/calendar/embed?src=sutdwtd%40gmail.com&ctz=Asia%2FSingapore" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
-		<script type="text/javascript">
+		<script type="text/javascript" src="test.json">
 			// Client ID and API key from the Developer Console
 			var CLIENT_ID = '1065378676798-ar3cpcspm2h07glatg7ruup9o5rjjumi.apps.googleusercontent.com';
 			var API_KEY = 'AIzaSyACkKkSpxKe_KCOOR1kv_DizZafJplRQ9k';
@@ -32,7 +32,8 @@
 			/**
 			 *  On load, called to load the auth2 library and API client library.
 			 */
-			var event = require('../test.json');
+			var event = JSON.parse(data);
+
 			
 			function handleClientLoad() {
 				gapi.load('client:auth2', initClient);

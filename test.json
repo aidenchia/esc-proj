@@ -1,1 +1,1 @@
-{"summary": 50005, "location": "CC14", "start": {"dateTime": "2019-04-28T09:00:00-07:00", "timeZone": "America/Los_Angeles"}, "end": {"dateTime": "2019-04-28T09:00:00-07:00", "timeZone": "America/Los_Angeles"}}
+data = '[{"summary": 50005, "location": "CC14", "start": {"dateTime": "2019-04-28T09:00:00-07:00", "timeZone": "America/Los_Angeles"}, "end": {"dateTime": "2019-04-28T09:00:00-07:00", "timeZone": "America/Los_Angeles"}}]';
