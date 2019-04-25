@@ -58,6 +58,7 @@ def Roles(included=True, *role):
  
 ########################################## ALL USERS ##########################
 @app.route('/gcal', methods=['GET'])
+@login_required
 def gcal():
   return render_template('googleCalendar.html')
   
@@ -83,12 +84,12 @@ def logout():
   session.clear()
   return redirect(url_for('login'))
 
-@login_required
 @app.route("/home")
+@login_required
 def home():
   return render_template('home.html')
 
-
+@login_required
 @app.route("/googleCalendar")
 def googleCalendar():
   return render_template("googleCalendar.html")
@@ -97,13 +98,14 @@ def googleCalendar():
 ########################################## COURSE LEAD ##########################
 @app.route('/courseInput', methods=['GET','POST'])
 @login_required
-#@Roles(True,"student")
+@Roles(False,"student","professor")
 def courseInput():
     #flash(str(current_user.user_group))
     return render_template('index.html')
 
 @app.route("/subjectsTable", methods=['GET','POST'])
 @login_required
+@Roles(False,"student")
 def subjectsTable():
   try:
     inserted = Subjects.insert( 
@@ -118,6 +120,8 @@ def subjectsTable():
   return render_template("subjectsTable.html", allSubjects=allSubjects)
 
 @app.route("/request", methods=['GET', 'POST'])
+@login_required
+@Roles(False,"student")
 def request():
   rooms = Rooms.query.all()
   rooms_list = [(-1, 'No Preference')]
@@ -142,7 +146,7 @@ def request():
 ########################################## ADMIN ##########################
 @app.route('/register', methods=['GET', 'POST'])
 @login_required
-#@Roles(True,"admin")
+@Roles(True,"admin")
 def register():
   print("came herer from register")
   available_subjects = Subjects.query.all()
@@ -220,7 +224,8 @@ def register():
   #return render_template('register.html',form=form)
 
 @app.route("/subjects", methods=['GET', 'POST'])
-#@Roles(True,"admin", "course_lead", "pillar_head")
+@login_required
+@Roles(False,"student","professor")
 def subjects():
     available_rooms = Rooms.query.all()
     room_list = [(-1,'No Preference')]
@@ -265,12 +270,14 @@ def subjects():
     return render_template('subjects.html',form=form)
 
 @app.route("/usersTable", methods=['GET', 'POST'])
-@Roles(True,"admin", "course_lead", "pillar_head")
+@Roles(True,"admin")
 def usersTable():
   allUsers = db.session.query(Users).order_by(Users.fullname).all()
   return render_template("usersTable.html", allUsers = allUsers)
 
 @app.route("/editUsers", methods=['GET', 'POST'])
+@login_required
+@Roles(True,"admin")
 def editUsers():
   form = EditForm()
 
@@ -310,6 +317,8 @@ def deleteUser(username):
   return redirect(url_for('usersTable'))
 
 @app.route("/editStudentGroups", methods=['GET', 'POST'])
+@login_required
+@Roles(True,"admin")
 def editStudentGroups():
   print("came here in student group")
   subject_choices = [(-1,'Choose the subject')]
@@ -340,11 +349,15 @@ def editStudentGroups():
   return render_template('editStudentGroups.html',form=form)
 
 @app.route("/studentGroupTable", methods=['GET', 'POST'])
+@login_required
+@Roles(True,"admin")
 def studentGroupTable():
   studentGroupTable = studentGroup.query.all()
   return render_template('studentGroupTable.html', studentGroupTable=studentGroupTable)
 
 @app.route("/addRooms", methods=['GET','POST'])
+@login_required
+@Roles(True,"admin")
 def addRooms():
     form = RoomForm()
     if form.validate_on_submit():
@@ -358,6 +371,8 @@ def addRooms():
     return render_template('addRooms.html',form=form)
 
 @app.route("/editRooms", methods=['GET','POST'])
+@login_required
+@Roles(True,"admin")
 def editRooms():
     form = RoomForm()
     if form.validate_on_submit():
@@ -375,12 +390,16 @@ def editRooms():
     return render_template('addRooms.html',form=form)
 
 @app.route('/viewRooms', methods=['GET','POST'])
+@login_required
+@Roles(True,"admin")
 def viewRooms():
     rooms = Rooms.query.all()
     return render_template('viewRooms.html',rooms=rooms)    
 
 
 @app.route('/viewRequests', methods=['GET', 'POST'])
+@login_required
+@Roles(True,"admin")
 def viewRequests():
   from flask import request
   if request.method == "POST":
@@ -398,6 +417,8 @@ def viewRequests():
   return render_template('requestsTable.html', allRequests=allRequests)
 
 @app.route('/ping', methods=['GET', 'POST'])
+@login_required
+@Roles(True,"admin")
 def ping(subject="test", message="ping"):
   subject = subject
   sender = app.config['MAIL_USERNAME']
@@ -410,6 +431,7 @@ def ping(subject="test", message="ping"):
 
 ######################################## STUDENTS ###############################
 @login_required
+@app.route('/viewStudentSchedule', methods=['GET', 'POST'])
 def viewStudentSchedule():
     """
     A schedule contains the following information per specific class:
@@ -421,13 +443,15 @@ def viewStudentSchedule():
         professors teaching
     """
     input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
-    prof_format = {'name':'','id':0,'coursetable':{}}
-    subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
+    prof_format = {'name':'','id':0,'courseTable':{}}
+    subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'subjectId':''}
     class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
-    studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
-  
+    studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1,'id':0}
+      
     for professor in Users.getAllProfessors():
-        input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
+      input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
+    for each_professor in input_dict['professor']:
+        each_professor['coursetable'] = {str(k):ast.literal_eval(v) for k,v in each_professor['coursetable'].items()}   
     input_dict['subject'] = Subjects.getAllSubjects()
     input_dict['classroom'] = Rooms.geAllRooms()
     input_dict['studentGroup'] = studentGroup.getAllGroups()
@@ -465,23 +489,19 @@ def viewStudentSchedule():
         for subject in subjects:
             subject_cohort_dict[str(subject)] = str(user_subjects_cohort['cohort'])
         user_timetable = Timetable.find_Timetable(subject_cohort_dict)
-        all_professors = Users.getAllProfessors(for_scheduler=False)
-        subject_ids = Subjects.select()
         
         for specific_class in user_timetable['user_timetable']:
-            subject_id = ''
-            subject_name = specific_class['subject']
-            session_type = 'Lecture' if len(specific_class['session']) > 1 else 'Cohort Based Learning'
-            start_to_end = student_schedule[int(specific_class['startTime'])+1][0]
-            for subject in input_dict['subject']:
-                if subject['name'] == subject_name:
-                    subject_id = subject['courseId']
-                    for component in subject['component']:
-                        if Session[session_type] == component['sessionType']:
-                            start_to_end = start_to_end[0:6] + student_schedule[int(specific_class['startTime'])+1 + int(2 * component['duration'])][0][6:]
-                            break
+            subject_id = str(specific_class['subject'])
+            subject_name = ''
+            for each_subject in input_dict['subject']:
+                if each_subject['subjectId'] == specific_class['subject']:
+                    subject_name = each_subject['name']
                     break
-                    
+            
+            session_type = 'Lecture' if len(specific_class['session']) > 1 else 'Cohort Based Learning'
+            start_to_end = student_schedule[int(specific_class['startTime'])+1][0][0:6] +\
+                            student_schedule[int(float(specific_class['duration'])*2)+int(specific_class['startTime'])+1][0][6:]
+            
             location = specific_class['classroom']
             professors_teaching = ''
             for professor in input_dict['professor']:
@@ -496,9 +516,11 @@ def viewStudentSchedule():
                                     + professors_teaching
             student_schedule[int(specific_class['startTime'])+1][int(specific_class['weekday'])+1] = input_specific_class
     print(student_schedule)
+    redirect(url_for('/home'))
     return render_template("base.html") # for now
 
 @app.route("/chooseHASS", methods=['GET', 'POST'])
+@login_required
 def chooseHASS():
   hass_choices = Subjects.query.filter_by(pillar=0).all()
   hass_list = [("-1", 'No Preference')]
@@ -518,6 +540,7 @@ def chooseHASS():
 
 ######################################## Scheduling algorithm #################
 @app.route("/genSchedule", methods=['GET', 'POST'])
+@login_required
 def genSchedule():
   '''
   Update the input.json file in algorithm folder from the database.
@@ -570,6 +593,7 @@ def genSchedule():
   return redirect(url_for('viewMasterSchedule'))
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
+@login_required
 def viewMasterSchedule():
   #timetablePath = os.path.join(os.getcwd(), "input.json")
   timetablePath = os.path.join(os.getcwd(), "timetable.json")
