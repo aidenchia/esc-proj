@@ -38,6 +38,7 @@ table#t01 th {
         </tr>
     </thead>
     <tbody>
+    {% autoescape false %}
         {% for time in student_schedule[1:] %}
         <tr>
             <td>
@@ -50,6 +51,7 @@ table#t01 th {
             {% endfor %}
         </tr>
         {% endfor %}
+    {% endautoescape %}
     </tbody>
 </table>
 {% endblock %}

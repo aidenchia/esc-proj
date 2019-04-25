@@ -500,7 +500,7 @@ def viewStudentSchedule():
             
             session_type = 'Lecture' if len(specific_class['session']) > 1 else 'Cohort Based Learning'
             start_to_end = student_schedule[int(specific_class['startTime'])+1][0][0:6] +\
-                            student_schedule[int(float(specific_class['duration'])*2)+int(specific_class['startTime'])+1][0][6:]
+                            student_schedule[int(float(specific_class['duration'])*2)+int(specific_class['startTime'])][0][6:]
             
             location = specific_class['classroom']
             professors_teaching = ''
@@ -508,11 +508,11 @@ def viewStudentSchedule():
                 if subject_id in list(professor['coursetable'].keys()):
                     professors_teaching += professor['name'] + ","
             professors_teaching = professors_teaching[:len(professors_teaching)-1]
-            input_specific_class = subject_id + "\n"\
-                                    + subject_name + "\n"\
-                                    + session_type + "\n"\
-                                    + start_to_end + "\n"\
-                                    + location + "\n"\
+            input_specific_class = subject_id + "<br>"\
+                                    + subject_name + "<br>"\
+                                    + session_type + "<br>"\
+                                    + start_to_end + "<br>"\
+                                    + location + "<br>"\
                                     + professors_teaching
             class_info.append(int(float(specific_class['duration'])*2))
             class_info.append(input_specific_class)
