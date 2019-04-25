@@ -94,6 +94,15 @@ class Subjects(db.Model):
                                'subjectId':str(int(subject.subjectCode))})
       #all_subjects = [subject._asdict() for subject in query]
       return all_subjects
+
+  @staticmethod
+  def remove(subjectCode):
+    subject = Subjects.query.filter_by(subjectCode=subjectCode).first()
+    if subject is not None:
+      db.session.delete(subject)
+      db.session.commit()
+    return None
+
       
 
 class Users(db.Model):
