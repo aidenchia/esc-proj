@@ -19,21 +19,21 @@
           {% if current_user.is_authenticated %}
 
             {% if current_user.user_group == "student" %}
-              <li><a href="{{ url_for('logout') }}">View Schedule</a></li> 
+              <li><a href="{{ url_for('viewMasterSchedule') }}">View Schedule</a></li> 
               <li><a href="{{ url_for('chooseHASS') }}">Choose HASS</a></li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
 
             {% if current_user.user_group == "professor" %}
-              <li><a href="{{ url_for('logout') }}">View Schedule</a></li> 
+              <li><a href="{{ url_for('viewMasterSchedule') }}">View Schedule</a></li> 
               <li><a href="{{ url_for('request') }}">Bookings</a></li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
 
             {% if current_user.user_group == "subject_lead" or current_user.user_group == "pillar_head" %}
-              <li><a href="{{ url_for('logout') }}">View Schedule</a></li> 
+              <li><a href="{{ url_for('viewMasterSchedule') }}">View Schedule</a></li> 
               <li><a href="{{ url_for('request') }}">Bookings</a></li>
-              <li><a href="{{ url_for('courseInput') }}">Add Subject</a></li>
+              <li><a href="{{ url_for('subjects') }}">Add Subject</a></li>
               <li><a href="{{ url_for('logout') }}">Logout</a></li>
             {% endif %}
 
