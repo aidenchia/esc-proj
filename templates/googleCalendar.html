@@ -14,7 +14,8 @@
         <pre id="content" style="white-space: pre-wrap;"></pre>
         <iframe src="https://calendar.google.com/calendar/embed?src=sutdwtd%40gmail.com&ctz=Asia%2FSingapore" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
-		<script type="text/javascript" src="test.json"></script>
+		<!--<script type="text/javascript" src="test.json"></script>
+		 -->
 		<script type="text/javascript">
 			// Client ID and API key from the Developer Console
 			var CLIENT_ID = '1065378676798-ar3cpcspm2h07glatg7ruup9o5rjjumi.apps.googleusercontent.com';
@@ -33,7 +34,27 @@
 			/**
 			 *  On load, called to load the auth2 library and API client library.
 			 */
-			var event = JSON.parse(data);
+			//var event = JSON.parse(data);
+			const event = {
+				'summary': 'Google I/O 2015',
+				'location': '800 Howard St., San Francisco, CA 94103',
+				'description': 'A chance to hear more about Google\'s developer products.',
+				'start': {
+					'dateTime': '2019-04-24T09:00:00-07:00',
+					'timeZone': 'America/Los_Angeles'
+				},
+				'end': {
+					'dateTime': '2019-04-24T17:00:00-07:00',
+					'timeZone': 'America/Los_Angeles'
+				},
+				'reminders': {
+					'useDefault': false,
+					'overrides': [
+						{'method': 'email', 'minutes': 24 * 60},
+						{'method': 'popup', 'minutes': 10}
+					]
+				}
+			};
 
 			
 			function handleClientLoad() {
