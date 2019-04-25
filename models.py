@@ -275,7 +275,7 @@ class Timetable(db.Model):
     self.classroom = classroom
     self.duration = duration
     self.professor = professor
-    self.studentgroup = studentGroup
+    self.studentgroup = studentgroup
 
   def __repr__(self):
     return '{}, {}, {}, {}}'.format(self.subject, self.session, self.weekday, self.cohort)
