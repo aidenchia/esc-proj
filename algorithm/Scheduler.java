@@ -13,7 +13,7 @@ public class Scheduler {
 
     public static void main(String[] args) throws Exception {
 
-        JsonUtils.writeInput();
+        //JsonUtils.writeInput();
 
         importDatabase();
 
