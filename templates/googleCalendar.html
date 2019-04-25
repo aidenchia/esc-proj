@@ -1,18 +1,17 @@
+{% extends 'base.html' %}
+
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Google Calendar API Quickstart</title>
 		<meta charset="utf-8" />
 	</head>
 	<body>
-		<p>Google Calendar API Quickstart</p>
 
 		<!--Add buttons to initiate auth sequence and sign out-->
 		<button id="authorize_button" style="display: none;">Authorize</button>
 		<button id="signout_button" style="display: none;">Sign Out</button>
 
         <pre id="content" style="white-space: pre-wrap;"></pre>
-        <iframe src="https://calendar.google.com/calendar/embed?src=sutdwtd%40gmail.com&ctz=Asia%2FSingapore" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 
 		<!--<script type="text/javascript" src="test.json"></script>
 		 -->
@@ -150,20 +149,7 @@
 					'orderBy': 'startTime'
 				}).then(function(response) {
 					var events = response.result.items;
-					appendPre('Upcoming events:');
 
-					if (events.length > 0) {
-						for (i = 0; i < events.length; i++) {
-							var event = events[i];
-							var when = event.start.dateTime;
-							if (!when) {
-								when = event.start.date;
-							}
-							appendPre(event.summary + ' (' + when + ')')
-						}
-					} else {
-						appendPre('No upcoming events found.');
-					}
 				});
                 
 			}
