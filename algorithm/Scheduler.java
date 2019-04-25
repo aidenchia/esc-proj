@@ -11,9 +11,14 @@ public class Scheduler {
     private static ArrayList<StudentGroup> studentGroupSet;
     private static ArrayList<Professor> professorSet;
 
+    private static int subjectNum;
+    private static int cohortNum;
+    private static int sessionNum;
+
     public static void main(String[] args) throws Exception {
 
-        //JsonUtils.writeInput();
+//        JsonUtils.writeInput();
+        FuzzingInput.writeInput(5, 7, 0.2);
 
         importDatabase();
 
@@ -22,7 +27,7 @@ public class Scheduler {
 
         int[] score = {10, 10, 10};
         for (int i = 0; i < currentGen.length; i++) {
-            currentGen[i] = new Chromosome(4, 10, 3);
+            currentGen[i] = new Chromosome(subjectNum, cohortNum, sessionNum);
             rate(currentGen[i]);
             scoreSet[i] = currentGen[i].getScore();
         }
@@ -34,23 +39,16 @@ public class Scheduler {
         Chromosome answer = evolution(200000, currentGen);
         JsonUtils.writeToJson(answer);
 
-        printChromosome(answer, 3, 0);
-        System.out.println("---------------");
-        printChromosome(answer, 3, 1);
-        System.out.println("---------------");
-        printChromosome(answer, 3, 2);
-        System.out.println("---------------");
-
         for (SpecificClass s: answer.getLineChromosome()) {
             if (s != null && s.getSubject().getTerm() == 3) {
                 s.setClassroom(roomList.getFreshmoreRoom(s.getCohortNo().get(0)));
             }
         }
-        printChromosome(answer, 3, 0);
+        printChromosome(answer, 5, 0);
         System.out.println("---------------");
-        printChromosome(answer, 3, 1);
+        printChromosome(answer, 5, 1);
         System.out.println("---------------");
-        printChromosome(answer, 3, 2);
+        printChromosome(answer, 5, 2);
         System.out.println("---------------");
 
 //        for (StudentGroup sg: studentGroupSet) {
@@ -145,7 +143,7 @@ public class Scheduler {
                     if (r.nextDouble() > 0.6) {
 //                        currentGen[i] = new Chromosome(3, 3, 3);
                         if (r.nextDouble() > 0.6) {
-                            currentGen[i] = new Chromosome(4, 10, 3);
+                            currentGen[i] = new Chromosome(subjectNum, cohortNum, sessionNum);
                         }else {
                             currentGen[i] = Chromosome.merge(currentGen[i], tempPool[i]);
                         }
@@ -301,6 +299,20 @@ public class Scheduler {
         subjects = JsonUtils.readJsonSubject(roomList);
         studentGroupSet = JsonUtils.readJsonStudentGroup(subjects);
         professorSet = JsonUtils.readJsonProfessor(subjects, studentGroupSet);
+
+        subjectNum = subjects.size();
+        int largestCohortNum = 0;
+        int largestSessionNum = 0;
+        for (Subject s: subjects) {
+            if (s.numOfCohort > largestCohortNum) {
+                largestCohortNum = s.numOfCohort;
+            }
+            if (s.getNumOfSession() > largestSessionNum) {
+                largestSessionNum = s.getNumOfSession();
+            }
+        }
+        cohortNum = largestCohortNum;
+        sessionNum = largestSessionNum;
 
 //        for (Subject s: subjects) {
 //            System.out.println(s.getName());

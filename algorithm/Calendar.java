@@ -220,7 +220,7 @@ public class Calendar {
 //                                        input3D[i][j][k].printInfoWithoutRoom();
 ////                                        System.out.println("Fail to find suitable slot"); // 考虑换天的情况
 //                                        System.out.println();
-                                        return false;
+                                        return true;
                                     }
                                 }else {
                                     roomID = possibleRoomSelect[++possibleRoomPointer];

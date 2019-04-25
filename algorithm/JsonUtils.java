@@ -45,8 +45,8 @@ public class JsonUtils {
                 }
             }
             json.put("specific class", sClassSet);
-        }catch(JSONException ex){
-            ex.printStackTrace();
+        }catch(Exception ex){
+            System.out.println("Testing finished!");
         }
 
         String jsonStr = json.toString(); //将JSON对象转化为字符串
@@ -109,17 +109,26 @@ public class JsonUtils {
                     0, 3, 5, 10, 450, 3, component);
             subjectSet.put(subjectDW);
 
-            JSONObject subjectCSE = new JSONObject();
-            subjectCSE.put("name", "Computer System Engineering");
-            subjectCSE.put("courseId", 50005);
-            subjectCSE.put("type", 0); // 0: CORE; 1: ELECTIVE
-            subjectCSE.put("term", 5);
-            subjectCSE.put("pillar", 4); // 0: HASS; 1: ASD; 2: EPD; 3: ESD; 4: ISTD; 5: Freshman
-            subjectCSE.put("cohortNumber", 3);
-            subjectCSE.put("totalEnrollNumber", 150);
-            subjectCSE.put("sessionNumber", 3);
-
-            JSONArray CSEcompoent = new JSONArray();
+            JSONArray componentCSE = new JSONArray();
+            c = writeComponents(0, 1.5, new int[]{10, 11}, zeroCohort);
+            componentCSE.put(c);
+            c = writeComponents(0, 1.5, new int[]{10, 11}, zeroCohort);
+            componentCSE.put(c);
+            c = writeComponents(1, 2, new int[]{20}, cohorts);
+            componentCSE.put(c);
+            JSONObject subjectCSE = writeASubejct("Computer System Engineering", 50005, 0, 5, 4,
+                    3, 150, 3, componentCSE);
+            subjectSet.put(subjectCSE);
+//            subjectCSE.put("name", "Computer System Engineering");
+//            subjectCSE.put("courseId", 50005);
+//            subjectCSE.put("type", 0); // 0: CORE; 1: ELECTIVE
+//            subjectCSE.put("term", 5);
+//            subjectCSE.put("pillar", 4); // 0: HASS; 1: ASD; 2: EPD; 3: ESD; 4: ISTD; 5: Freshman
+//            subjectCSE.put("cohortNumber", 3);
+//            subjectCSE.put("totalEnrollNumber", 150);
+//            subjectCSE.put("sessionNumber", 3);
+//
+//            JSONArray CSEcompoent = new JSONArray();
             JSONObject component1 = new JSONObject();
             component1.put("sessionType", 0); // 0: cohort; 1: lecture; 2: lab
             component1.put("duration", 1.5); // value type is double
@@ -130,16 +139,16 @@ public class JsonUtils {
             component2.put("duration", 1.5); // value type is double
             component2.put("classroom", new int[]{10,11}); // every classroom has an integer id; 0 means null
             component2.put("cohorts", zeroCohort);
-            JSONObject component3 = new JSONObject();
-            component3.put("sessionType", 1); // 0: cohort; 1: lecture; 2: lab
-            component3.put("duration", 2.0); // value type is double
-            component3.put("classroom", new int[]{20}); // every classroom has an integer id; 0 means null
-            component3.put("cohorts", cohorts);
-            CSEcompoent.put(component1);
-            CSEcompoent.put(component2);
-            CSEcompoent.put(component3);
-            subjectCSE.put("component", CSEcompoent);
-            subjectSet.put(subjectCSE);
+//            JSONObject component3 = new JSONObject();
+//            component3.put("sessionType", 1); // 0: cohort; 1: lecture; 2: lab
+//            component3.put("duration", 2.0); // value type is double
+//            component3.put("classroom", new int[]{20}); // every classroom has an integer id; 0 means null
+//            component3.put("cohorts", cohorts);
+//            CSEcompoent.put(component1);
+//            CSEcompoent.put(component2);
+//            CSEcompoent.put(component3);
+//            subjectCSE.put("component", CSEcompoent);
+//            subjectSet.put(subjectCSE);
 
             JSONObject subjectESC = new JSONObject();
             subjectESC.put("name", "Elements of Software Construction");
