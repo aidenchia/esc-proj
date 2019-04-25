@@ -486,6 +486,7 @@ def viewStudentSchedule():
                 for subject in each_student_group['subjects']:
                     subject_cohort_dict[int(subject)] = str(each_student_group['cohort'])
                 break
+        print(subject_cohort_dict)
         user_timetable = Timetable.find_Timetable(subject_cohort_dict)
         
         for specific_class in user_timetable['user_timetable']:
