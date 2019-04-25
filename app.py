@@ -537,7 +537,7 @@ def genSchedule():
   for professor in Users.getAllProfessors():
     input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
   for each_professor in input_dict['professor']:
-      for k,v in each_professor['coursetable']:
+      for k,v in each_professor['coursetable'].items():
           k = str(k)
           v = ast.literal_eval(v)
   for each_subject in input_dict['subject']:
