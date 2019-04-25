@@ -529,28 +529,39 @@ def genSchedule():
   class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
   studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1,'id':0}
   
-
+  
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
   classroomlist = [i for i in range(len(input_dict['classroom']))]
   for professor in Users.getAllProfessors():
-    input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'courseTable':ast.literal_eval(professor.coursetable)})
+    input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
+  for each_professor in input_dict['professor']:
+      each_professor['coursetable'] = {str(k):ast.literal_eval(v) for k,v in each_professor['coursetable'].items()}
   for each_subject in input_dict['subject']:
       for each_component in each_subject['component']:
           each_component['classroom'] = classroomlist
     
   print(input_dict)
-  
-  from pathlib import Path
-  data_folder = Path("algorithm/")
-  file_to_open = data_folder / 'input.json'
+  file_to_open = os.path.join(os.getcwd(), "input.json")
   with open(file_to_open,'w+') as input_file:
-      json.dump(input_dict, input_file)
-  
+      print(json.dump(input_dict, input_file))
+  with open(file_to_open, 'r') as data_file:    
+      data = json.load(data_file)
+      print(data)
+  """
+  file_to_open2 = os.path.join(os.getcwd(),"algorithm/input.json")
+  with open(file_to_open2,'w') as input_file:
+      print(json.dump(input_dict, input_file))
+      input_file.close()
+  with open(file_to_open2, 'r') as data_file:    
+      data = json.load(data_file)
+      print(data)
+      data_file.close()
+  """
   runScheduler()
   
-  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  timetablePath = os.path.join(os.getcwd(), "timetable.json")
   with open(timetablePath, 'r') as data_file:    
     data = json.load(data_file)
   Timetable.replace_all(data)
@@ -559,8 +570,8 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
-  #timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
-  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  #timetablePath = os.path.join(os.getcwd(), "input.json")
+  timetablePath = os.path.join(os.getcwd(), "timetable.json")
   try:
     f = open(timetablePath, 'r')
     return f.read()

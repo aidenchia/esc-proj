@@ -96,6 +96,7 @@ class Subjects(db.Model):
       query = db.session.query(Subjects).all()
       #subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
       all_subjects = []
+      subject_type = {'Core':0,'Elective':1}
       for subject in query:
           all_subjects.append({'component':ast.literal_eval(subject.components),
                                'pillar':subject.pillar,
@@ -104,8 +105,8 @@ class Subjects(db.Model):
                                'term':subject.term,
                                'cohortNumber':subject.cohortnum,
                                'totalEnrollNumber':subject.totalenrollment,
-                               'type':subject.subjectType,
-                               'subjectId':str(int(subject.subjectCode))})
+                               'type':subject_type[subject.subjectType],
+                               'courseId':str(int(subject.subjectCode))})
       #all_subjects = [subject._asdict() for subject in query]
       return all_subjects
 
@@ -213,6 +214,7 @@ class Users(db.Model):
     if term != "": self.term = term 
     if student_id != "": self.student_id = student_id
     if student_group != "": self.student_group = student_group
+    if professor_id != "": self.professor_id = professor_id
     if coursetable != "": self.coursetable = coursetable
     db.session.commit()
 
@@ -258,14 +260,20 @@ class Timetable(db.Model):
   cohort = db.Column(db.String)
   startTime = db.Column(db.Integer)
   classroom = db.Column(db.String)
+  duration = db.Column(db.Float)
+  professor = db.Column(db.String)
+  studentgroup = db.Column(db.String)
   
-  def __init__(self, subject, session, weekday, cohort, startTime, classroom):
+  def __init__(self, subject, session, weekday, cohort, startTime, classroom,duration,professor,studentgroup):
     self.subject = subject
     self.session = session
     self.weekday = weekday
     self.cohort = cohort
     self.startTime = startTime
     self.classroom = classroom
+    self.duration = duration
+    self.professor = professor
+    self.studentgroup = studentGroup
 
   def __repr__(self):
     return '{}, {}, {}, {}}'.format(self.subject, self.session, self.weekday, self.cohort)
@@ -279,11 +287,12 @@ class Timetable(db.Model):
     return d
 
   @staticmethod
-  def insert(subject, session, weekday, cohort, startTime, classroom):
+  def insert(subject, session, weekday, cohort, startTime, classroom,duration,professor,studentgroup):
       query = Timetable.query.filter_by(subject).filter_by(session) \
-      .filter_by(weekday).filter_by(cohort).filter_by(startTime).filter_by(classroom).first()
+      .filter_by(weekday).filter_by(cohort).filter_by(startTime)\
+      .filter_by(classroom).filter_by(duration).filter_by(professor).filter_by(studentgroup).first()
       if query is None:
-          specific_class = Timetable(subject, session, weekday, cohort, startTime, classroom)
+          specific_class = Timetable(subject, session, weekday, cohort, startTime, classroom,duration,professor,studentgroup)
           db.session.add(specific_class)
           db.session.commit()
       return None
@@ -300,7 +309,10 @@ class Timetable(db.Model):
           sc_cohort = str(specific_class['cohort'])
           sc_startTime = specific_class['startTime']
           sc_classroom = specific_class['classroom']
-          specific_class = Timetable(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom)
+          sc_duration = specific_class['duration']
+          sc_professor = str(specific_class['professor'])
+          sc_studentgroup = str(specific_class['studentgroup'])
+          specific_class = Timetable(sc_subject,sc_session,sc_weekday,sc_cohort,sc_startTime,sc_classroom,sc_duration,sc_professor,sc_studentgroup)
           db.session.add(specific_class)
           db.session.commit()
       return None
