@@ -550,7 +550,7 @@ def genSchedule():
   
   runScheduler()
   
-  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  timetablePath = os.path.join(os.getcwd(), "timetable.json")
   with open(timetablePath, 'r') as data_file:    
     data = json.load(data_file)
   Timetable.replace_all(data)
@@ -560,7 +560,7 @@ def genSchedule():
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
   #timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
-  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  timetablePath = os.path.join(os.getcwd(), "timetable.json")
   try:
     f = open(timetablePath, 'r')
     return f.read()
