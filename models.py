@@ -82,6 +82,7 @@ class Subjects(db.Model):
       query = db.session.query(Subjects).all()
       #subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
       all_subjects = []
+      subject_type = {'Core':0,'Elective':1}
       for subject in query:
           all_subjects.append({'component':ast.literal_eval(subject.components),
                                'pillar':subject.pillar,
@@ -90,7 +91,7 @@ class Subjects(db.Model):
                                'term':subject.term,
                                'cohortNumber':subject.cohortnum,
                                'totalEnrollNumber':subject.totalenrollment,
-                               'type':subject.subjectType,
+                               'type':subject_type[subject.subjectType],
                                'courseId':str(int(subject.subjectCode))})
       #all_subjects = [subject._asdict() for subject in query]
       return all_subjects

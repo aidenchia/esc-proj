@@ -529,7 +529,7 @@ def genSchedule():
   class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
   studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1,'id':0}
   
-
+  
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
