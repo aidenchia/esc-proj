@@ -150,10 +150,10 @@ def register():
   for subject in available_subjects:
       subject_list.append((str(int(subject.subjectCode)),subject.subjectName))
   print(subject_list)
-  student_group_list = [(-1,'Please choose a student group')]
+  student_group_list = [('-1','Please choose a student group')]
   available_student_groups = studentGroup.query.all()
   for eachstudentGroup in available_student_groups:
-      student_group_list.append((eachstudentGroup.name,eachstudentGroup.name))
+      student_group_list.append((str(eachstudentGroup.name),eachstudentGroup.name))
   form = RegisterForm()
 
   if form.add_more_component.data:
@@ -559,8 +559,8 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
-  timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
-  #timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  #timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
+  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
   try:
     f = open(timetablePath, 'r')
     return f.read()
