@@ -1,4 +1,4 @@
-
+package algorithm;
 
 import java.util.ArrayList;
 
@@ -45,6 +45,9 @@ public class StudentGroup {
                         if (input3D[i][j][k] != null) {
                             if (input3D[i][j][k].getCohortNo().contains(this.cohort)) {
                                 sClassSet.add(input3D[i][j][k]);
+                                if (!input3D[i][j][k].getStudentGroup().contains(this)) {
+                                    input3D[i][j][k].setStudentGroup(this);
+                                }
                             }
                         }
                     }
@@ -97,5 +100,9 @@ public class StudentGroup {
 
     public ArrayList<Subject> getSubjects() {
         return subjects;
+    }
+
+    public int getId() {
+        return id;
     }
 }

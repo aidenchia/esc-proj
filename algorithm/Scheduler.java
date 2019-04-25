@@ -1,4 +1,4 @@
-
+package algorithm;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -11,55 +11,47 @@ public class Scheduler {
     private static ArrayList<StudentGroup> studentGroupSet;
     private static ArrayList<Professor> professorSet;
 
-    private static int NUM_ITER;
+    public static void main(String[] args) throws Exception {
 
-    public static void main(String[] args) {
+        JsonUtils.writeInput();
 
-        if (args.length == 0) {
-            NUM_ITER = 5000;
-        }
-
-        else {
-            NUM_ITER = Integer.valueOf(args[0]);
-        }
-        
         importDatabase();
-//        roomList = JsonUtils.readJsonRoomList();
 
         Chromosome[] currentGen = new Chromosome[25];
         int[] scoreSet = new int[25];
-        Chromosome[] tempPool = new Chromosome[6];
-        int tempPoolKey = 0;
-        int sessionConflict = 0;
-        int proConflict = 0;
-        int studentConflict = 0;
 
         int[] score = {10, 10, 10};
         for (int i = 0; i < currentGen.length; i++) {
-            do {
-                currentGen[i] = new Chromosome(3, 3, 3);
-                score = rate(currentGen[i]);
-                studentConflict = score[0];
-                sessionConflict = score[1];
-                proConflict = score[2];
-                scoreSet[i] = currentGen[i].getScore();
-            }while (sessionConflict != 0 || studentConflict >= 5 || proConflict >= 2);
+            currentGen[i] = new Chromosome(4, 10, 3);
+            rate(currentGen[i]);
+            scoreSet[i] = currentGen[i].getScore();
         }
-        /*
         for(int i: scoreSet) {
             System.out.print(i + " ");
         }
         System.out.println();
-        */
 
-        Chromosome answer = evolution(NUM_ITER, currentGen);
+        Chromosome answer = evolution(200000, currentGen);
         JsonUtils.writeToJson(answer);
-//        printChromosome(answer, 0);
-//        System.out.println("---------------");
-//        printChromosome(answer, 1);
-//        System.out.println("---------------");
-//        printChromosome(answer, 2);
-//        System.out.println("---------------");
+
+        printChromosome(answer, 3, 0);
+        System.out.println("---------------");
+        printChromosome(answer, 3, 1);
+        System.out.println("---------------");
+        printChromosome(answer, 3, 2);
+        System.out.println("---------------");
+
+        for (SpecificClass s: answer.getLineChromosome()) {
+            if (s != null && s.getSubject().getTerm() == 3) {
+                s.setClassroom(roomList.getFreshmoreRoom(s.getCohortNo().get(0)));
+            }
+        }
+        printChromosome(answer, 3, 0);
+        System.out.println("---------------");
+        printChromosome(answer, 3, 1);
+        System.out.println("---------------");
+        printChromosome(answer, 3, 2);
+        System.out.println("---------------");
 
 //        for (StudentGroup sg: studentGroupSet) {
 //            System.out.println(sg.getCohort());
@@ -78,38 +70,6 @@ public class Scheduler {
 //            }
 //            System.out.println("-------------");
 //        }
-//        JsonUtils.readJson(roomList, subjects, studentGroupSet, professorSet);
-//        int[] d = {2, 2, 2, 1, 1, 2, 1};
-//        ArrayList<Integer> s = findThreeSmallestPos(scoreSet);
-//
-//        tempPool[0] = Chromosome.merge(currentGen[s.get(0)],currentGen[s.get(1)]);
-//        System.out.println(rate(tempPool[0])[0]);
-//        tempPool[1] = Chromosome.merge(currentGen[s.get(1)],currentGen[s.get(0)]);
-//        System.out.println(rate(tempPool[1])[0]);
-//        tempPool[2] = Chromosome.merge(currentGen[s.get(1)],currentGen[s.get(2)]);
-//        System.out.println(rate(tempPool[2])[0]);
-//        tempPool[3] = Chromosome.merge(currentGen[s.get(2)],currentGen[s.get(1)]);
-//        System.out.println(rate(tempPool[3])[0]);
-//        tempPool[4] = Chromosome.merge(currentGen[s.get(0)],currentGen[s.get(2)]);
-//        System.out.println(rate(tempPool[4])[0]);
-//        tempPool[5] = Chromosome.merge(currentGen[s.get(2)],currentGen[s.get(0)]);
-//        System.out.println(rate(tempPool[5])[0]);
-//
-//        ArrayList<Integer> usedNextGen = new ArrayList<>();
-//        for (int i = 0; i < currentGen.length; i++) {
-//            for (int j = 0; j < tempPool.length; j++) {
-//                if (currentGen[i].getScore() > tempPool[j].getScore() && !usedNextGen.contains(j)) {
-//                    currentGen[i] = tempPool[j];
-//                    usedNextGen.add(j);
-//                    break;
-//                }
-//            }
-//            scoreSet[i] = currentGen[i].getScore();
-//        }
-//        for(int i: scoreSet) {
-//            System.out.print(i + " ");
-//        }
-//        System.out.println();
     }
 
     private static Chromosome evolution(int gen, Chromosome[] initGen) {
@@ -134,43 +94,43 @@ public class Scheduler {
             rate(tempPool[4]);
             tempPool[5] = Chromosome.merge(currentGen[s.get(2)],currentGen[s.get(0)]);
             rate(tempPool[5]);
-            tempPool[6] = Chromosome.merge(currentGen[s.get(2)],currentGen[r.nextInt(14)]);
+            tempPool[6] = Chromosome.merge(currentGen[s.get(0)],currentGen[s.get(1)]);
             rate(tempPool[6]);
-            tempPool[7] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[7] = Chromosome.merge(currentGen[s.get(1)],currentGen[s.get(0)]);
             rate(tempPool[7]);
-            tempPool[8] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[8] = Chromosome.merge(currentGen[s.get(0)],currentGen[s.get(2)]);
             rate(tempPool[8]);
-            tempPool[9] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[9] = Chromosome.merge(currentGen[s.get(2)],currentGen[s.get(0)]);
             rate(tempPool[9]);
-            tempPool[10] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[10] = Chromosome.merge(currentGen[s.get(2)],currentGen[s.get(1)]);
             rate(tempPool[10]);
-            tempPool[11] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[11] = Chromosome.merge(currentGen[s.get(1)],currentGen[s.get(2)]);
             rate(tempPool[11]);
-            tempPool[12] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[12] = Chromosome.merge(currentGen[s.get(1)],currentGen[s.get(2)]);
             rate(tempPool[12]);
-            tempPool[13] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[13] = Chromosome.merge(currentGen[s.get(0)],currentGen[s.get(1)]);
             rate(tempPool[13]);
-            tempPool[14] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[14] = Chromosome.merge(currentGen[s.get(0)],currentGen[s.get(1)]);
             rate(tempPool[14]);
-            tempPool[15] = Chromosome.merge(currentGen[s.get(0)],currentGen[s.get(2)]);
+            tempPool[15] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[15]);
-            tempPool[16] = Chromosome.merge(currentGen[s.get(2)],currentGen[s.get(0)]);
+            tempPool[16] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[16]);
-            tempPool[17] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[17] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[17]);
-            tempPool[18] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[18] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[18]);
-            tempPool[19] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[19] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[19]);
-            tempPool[20] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[20] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[20]);
-            tempPool[21] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[21] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[21]);
-            tempPool[22] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[22] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[22]);
-            tempPool[23] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[23] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[23]);
-            tempPool[24] = Chromosome.merge(currentGen[s.get(r.nextInt(3))],currentGen[r.nextInt(10)+4]);
+            tempPool[24] = Chromosome.merge(currentGen[r.nextInt(25)],currentGen[r.nextInt(25)]);
             rate(tempPool[24]);
 
             ArrayList<Integer> usedNextGen = new ArrayList<>();
@@ -182,8 +142,13 @@ public class Scheduler {
                     currentGen[i] = tempPool[i];
                 }else {
 //                    Random r1 = new Random();
-                    if (r.nextDouble() > 0.7) {
-                        currentGen[i] = new Chromosome(3, 3, 3);
+                    if (r.nextDouble() > 0.6) {
+//                        currentGen[i] = new Chromosome(3, 3, 3);
+                        if (r.nextDouble() > 0.6) {
+                            currentGen[i] = new Chromosome(4, 10, 3);
+                        }else {
+                            currentGen[i] = Chromosome.merge(currentGen[i], tempPool[i]);
+                        }
                         rate(currentGen[i]);
                     }
                 }
@@ -202,18 +167,17 @@ public class Scheduler {
 //                scoreSet[i] = currentGen[i].getScore();
 //            }
 
-            /*System.out.print("Generation" + g + ": ");
+            System.out.print("Generation" + g + ": ");
             for (Chromosome c: currentGen) {
                 System.out.print(c.getScore() + " ");
 //                System.out.println(rate(c)[0] + " " + rate(c)[1] + " " + rate(c)[2]);
             }
             System.out.println();
-            */
             if (currentGen[0].getScore() == 0) {
                 break;
             }
         }
-
+        System.out.println(rate(currentGen[0])[0] + " " + rate(currentGen[0])[1] + " " +rate(currentGen[0])[2]);
         return currentGen[0];
     }
 
@@ -241,17 +205,17 @@ public class Scheduler {
 
 //        ---------------------------------------\\
 //         import classrooms info
-        Classroom cohort1 = new Classroom("cohort1", "2.501", 50, ClassType.CBL, 0);
-        Classroom cohort2 = new Classroom("cohort2", "2.501", 50, ClassType.CBL, 1);
-        Classroom cohort3 = new Classroom("cohort3", "2.501", 50, ClassType.CBL, 2);
-        Classroom lecture = new Classroom("Lec", "2.501", 150, ClassType.LEC, 1);
-        Classroom lab = new Classroom("lab", "2.501", 50, ClassType.LAB, 2);
-        classrooms = new Classroom[4];
-        classrooms[0] = cohort1;
-        classrooms[1] = cohort2;
-        classrooms[2] = lecture;
-        classrooms[3] = lab;
-        roomList = new RoomList(classrooms, 2, 3);
+//        Classroom cohort1 = new Classroom("cohort1", "2.501", 50, ClassType.CBL, 0);
+//        Classroom cohort2 = new Classroom("cohort2", "2.501", 50, ClassType.CBL, 1);
+//        Classroom cohort3 = new Classroom("cohort3", "2.501", 50, ClassType.CBL, 2);
+//        Classroom lecture = new Classroom("Lec", "2.501", 150, ClassType.LEC, 1);
+//        Classroom lab = new Classroom("lab", "2.501", 50, ClassType.LAB, 2);
+//        classrooms = new Classroom[4];
+//        classrooms[0] = cohort1;
+//        classrooms[1] = cohort2;
+//        classrooms[2] = lecture;
+//        classrooms[3] = lab;
+//        roomList = new RoomList(classrooms, 2, 3);
 
 
 //        ---------------------------------------\\
@@ -333,16 +297,39 @@ public class Scheduler {
 //        sj.addSubject(prob, t5c3);
 //        professorSet.add(tq);
 
-
         roomList = JsonUtils.readJsonRoomList();
         subjects = JsonUtils.readJsonSubject(roomList);
         studentGroupSet = JsonUtils.readJsonStudentGroup(subjects);
         professorSet = JsonUtils.readJsonProfessor(subjects, studentGroupSet);
 
+//        for (Subject s: subjects) {
+//            System.out.println(s.getName());
+//            for (GenericClass g: s.getClassComponent()) {
+//                for (Classroom c: g.getPossibleRoomSet()) {
+//                    System.out.print(c.getId() + " ");
+//                }
+//                System.out.println();
+//            }
+//            System.out.println("-------");
+//        }
+
+//        for (Professor p: professorSet) {
+//            System.out.println(p.getName());
+//            for (Subject s: p.getCourseTable().keySet()) {
+//                System.out.println(s.getName() + ": " + p.getCourseTable().get(s).size());
+//            }
+//        }
+
     }
 
     //TODO: a function that input is list of subject and output is 3-d mat of SpecificClass (x:subject; y:cohort; z:session)
-    public static SpecificClass[][][] init(int MaxSessionNum, int MaxCohortNum) {
+    public static SpecificClass[][][] init(int MaxCohortNum, int MaxSessionNum) {
+        if (subjects == null) {
+            return null;
+        }
+        if (roomList == null) {
+            return null;
+        }
         GenericClass[] gClassSet;
         SpecificClass sClass;
         int cohortNum;
@@ -352,11 +339,11 @@ public class Scheduler {
         int maxCohortNum = MaxCohortNum;
 
         SpecificClass[][][] result = new SpecificClass[subjectNum][maxCohortNum][maxSessionNum];
-        //order: coh1sess1, coh2sess1, coh3sess1, ...
         for (int i = 0; i < subjectNum; i++) {
             gClassSet = subjects.get(i).getClassComponent();
             cohortNum = subjects.get(i).getNumOfCohort();
             sessionNum = gClassSet.length;
+            int term = subjects.get(i).getTerm();
             for (int j = 0; j < cohortNum; j++) {
                 for (int k = 0; k < sessionNum; k++) {
                     if (gClassSet[k].getClassType() == ClassType.LEC) {
@@ -365,7 +352,13 @@ public class Scheduler {
                             result[i][j][k] = sClass;
                         }
                     }else {
-                        sClass = new SpecificClass(gClassSet[k], k, j, subjects.get(i), null);
+                        Classroom room;
+                        if (term <= 3) {
+                            room = roomList.getFreshmoreRoom(j);
+                        }else {
+                            room = null;
+                        }
+                        sClass = new SpecificClass(gClassSet[k], k, j, subjects.get(i), room);
                         result[i][j][k] = sClass;
                     }
                 }
@@ -376,16 +369,23 @@ public class Scheduler {
 
     //TODO: function that input is sClass mat and output is randomly generated calendar
     public static Calendar randomGen(SpecificClass[][][] sClassSet) {
-        Calendar calendar;
-        while (true){
+        Calendar calendar = null;
+        int count = 5000;
+        while (count > 0){
             calendar = new Calendar(roomList, sClassSet);
             boolean s = calendar.randomInit();
             if (s == true) {
                 break;
             }
+            count--;
         }
 //        calendar.printOut();
-        return calendar;
+        if (count==0) {
+            System.out.println("null");
+            return null;
+        }else {
+            return calendar;
+        }
     }
 
     //TODO: function that input is calendar and print it out
@@ -405,7 +405,7 @@ public class Scheduler {
             }
         }
     }
-    public static void printChromosome(Chromosome c, int cohortNo) {
+    public static void printChromosome(Chromosome c, int term, int cohortNo) {
         SpecificClass[][][] chromosome = c.getChromosome();
         for (int i = 0; i < chromosome.length; i++) {
             for (int j = 0; j < chromosome[0].length; j++) {
@@ -414,7 +414,8 @@ public class Scheduler {
                         if (chromosome[i][j][k].getClassroom() == null) {
                             chromosome[i][j][k].printInfoWithoutRoom();
                         }else {
-                            if (chromosome[i][j][k].getCohortNo().contains(cohortNo)) {
+                            if (chromosome[i][j][k].getCohortNo().contains(cohortNo)
+                                    && chromosome[i][j][k].getSubject().getTerm() == term) {
                                 chromosome[i][j][k].printInfo();
                             }
                         }
@@ -439,10 +440,13 @@ public class Scheduler {
         int sessionError = 0;
         SpecificClass[][][] temp = chromosome.getChromosome();
         for (int i = 0; i < chromosome.getXdim(); i++) {
-            for (int j = 0; j < chromosome.getYdim(); j++) {
+            int cohortNumber = temp[i][0][0].getSubject().numOfCohort;
+//            for (int j = 0; j < chromosome.getYdim(); j++) {
+            for (int j = 0; j < cohortNumber; j++) {
                 for (int k = 0; k < chromosome.getZdim()-1; k++) {
                     if (temp[i][j][k] == null || temp[i][j][k+1] == null) {
                         if (temp[i][j][k] == null && temp[i][j][k+1] == null) {// Lec + Lec + Coh
+
                             if (temp[i][0][1].getWeekday() >= temp[i][j][2].getWeekday()) {
                                 sessionError++;
                             }
@@ -550,11 +554,11 @@ class Chromosome {
     }
 
     private SpecificClass[] convertToArray() {
-        SpecificClass[] result = new SpecificClass[getXdim()*getZdim()*getZdim()];
+        SpecificClass[] result = new SpecificClass[getXdim()*getYdim()*getZdim()];
         for(int i = 0; i < getXdim(); i++) {
             for (int j = 0; j < getYdim(); j++) {
                 for (int k = 0; k < getZdim(); k++) {
-                    result[i*getXdim()*getYdim() + j*getYdim() + k] = this.chromosome[i][j][k];
+                    result[i*getYdim()*getZdim() + j*getZdim() + k] = this.chromosome[i][j][k];
                 }
             }
         }
@@ -566,7 +570,7 @@ class Chromosome {
         for(int i = 0; i < getXdim(); i++) {
             for (int j = 0; j < getYdim(); j++) {
                 for (int k = 0; k < getZdim(); k++) {
-                    result[i][j][k] = this.lineChromosome[i*getXdim()*getYdim() + j*getYdim() + k];
+                    result[i][j][k] = this.lineChromosome[i*getYdim()*getZdim() + j*getZdim() + k];
                 }
             }
         }

@@ -57,6 +57,9 @@ def Roles(included=True, *role):
 
  
 ########################################## ALL USERS ##########################
+@app.route('/gcal', methods=['GET'])
+def sendToGoogle():
+  return render_template('googleCalendar.html')
 @app.route('/', methods=['GET', 'POST'])
 def login():
   if current_user.is_authenticated:
@@ -83,6 +86,11 @@ def logout():
 @app.route("/home")
 def home():
   return render_template('home.html')
+
+
+@app.route("/googleCalendar")
+def googleCalendar():
+  return render_template("googleCalendar.html")
 
 
 ########################################## COURSE LEAD ##########################
@@ -531,7 +539,7 @@ def genSchedule():
   
   from pathlib import Path
   data_folder = Path("algorithm/")
-  file_to_open = data_folder / 'input(1).json'
+  file_to_open = data_folder / 'input.json'
   with open(file_to_open,'w+') as input_file:
       json.dump(input_dict, input_file)
   
