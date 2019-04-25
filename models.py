@@ -149,16 +149,16 @@ class Users(db.Model):
     return check_password_hash(self.password_hash, password)
 
   @staticmethod
-  def insert(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable):
+  def insert(username, password, fullname, email, user_group, pillar, term, student_id, student_group, professor_id, coursetable):
     query = Users.query.filter_by(username=username).first()
     if query is None:
       user = Users(username, fullname, email, password, user_group, False)
       db.session.add(user)
       db.session.commit()
-      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, False)
+      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, student_group, professor_id, coursetable, False)
     else:
       user = query
-      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, False)
+      user.edit(username, password, fullname, email, user_group, pillar, term, student_id, student_group, professor_id, coursetable, False)
     return None
 
   @staticmethod
@@ -169,7 +169,7 @@ class Users(db.Model):
       db.session.commit()
     return None
 
-  def edit(self, username, password, fullname, email, user_group, pillar, term, student_id, professor_id, coursetable, delete):
+  def edit(self, username, password, fullname, email, user_group, pillar, term, student_id, student_group, professor_id, coursetable, delete):
     if delete:
       Users.remove(username)
       return username + " removed"
@@ -180,7 +180,8 @@ class Users(db.Model):
     if user_group != 'Please select a user group': self.user_group = user_group 
     if pillar != "": self.pillar = pillar 
     if term != "": self.term = term 
-    if student_id != "": self.student_id = student_id 
+    if student_id != "": self.student_id = student_id
+    if student_group != "": self.student_group = student_group
     if coursetable != "": self.coursetable = coursetable
     db.session.commit()
 

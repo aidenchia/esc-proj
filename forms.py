@@ -40,6 +40,7 @@ class RegisterForm(FlaskForm):
   pillar = SelectField('Pillar',choices=pillar_choices,validators=[Optional()])
   term = SelectField('Term',choices=terms, validators=[Optional()])
   student_id = IntegerField('Student ID', validators=[Optional()])
+  student_group = SelectField('Student Group',coerce=int, validators=[Optional()])
   #student_subjects = 
 
   # Professor - related, must allow it to be blank
