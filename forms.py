@@ -25,7 +25,7 @@ class classForm(Form):
   cohorts = StringField('Cohorts teaching(space seperated)',validators=[Optional()])
 
 class RegisterForm(FlaskForm):
-  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','subject_lead'),('4','professor'),('5','student')]
   pillar_choices = [('-1','Please select a pillar'),('0','HASS'),('1','ASD'),('2','EPD'),('3','ESD'),('4','ISTD'),('5','Freshmore')]
   terms = [('-1','Please select a term'),('1','1'),('2','2'),('3','3'),('4','4'),('5','5'),('6','6'),('7','7'),('8','8')]
   
@@ -49,7 +49,7 @@ class RegisterForm(FlaskForm):
   add_more_component = SubmitField("Add another Subject")
 
 class EditForm(FlaskForm):
-  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','course_lead'),('4','professor'),('5','student')]
+  user_choices = [('-1','Please select a user group'),('1','admin'),('2','pillar_head'),('3','subject_lead'),('4','professor'),('5','student')]
   username = StringField('Username', validators=[DataRequired()])
 
   password = PasswordField('Password', validators=[Optional()])
