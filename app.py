@@ -490,6 +490,7 @@ def viewStudentSchedule():
         user_timetable = Timetable.find_Timetable(subject_cohort_dict)
         
         for specific_class in user_timetable['user_timetable']:
+            class_info = []
             subject_id = str(specific_class['subject'])
             subject_name = ''
             for each_subject in input_dict['subject']:
@@ -513,10 +514,12 @@ def viewStudentSchedule():
                                     + start_to_end + "\n"\
                                     + location + "\n"\
                                     + professors_teaching
-            student_schedule[int(specific_class['startTime'])+1][int(specific_class['weekday'])+1] = input_specific_class
+            class_info.append(int(float(specific_class['duration'])*2))
+            class_info.append(input_specific_class)
+            student_schedule[int(specific_class['startTime'])+1][int(specific_class['weekday'])+1] = class_info
     print(student_schedule)
-    redirect(url_for('/home'))
-    return render_template("base.html") # for now
+    #redirect(url_for('home'))
+    return render_template("viewStudentSchedule.html",student_schedule=student_schedule)
 
 @app.route("/chooseHASS", methods=['GET', 'POST'])
 @login_required
