@@ -542,8 +542,8 @@ def genSchedule():
     
   print(input_dict)
   file_to_open = os.path.join(os.getcwd(), "input.json")
-  with open(file_to_open,'w+') as input_file:
-      json.dump(input_dict, input_file)
+  with open(file_to_open,'w') as input_file:
+      print(json.dumps(input_dict, input_file))
   
   runScheduler()
   
