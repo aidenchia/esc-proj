@@ -59,8 +59,9 @@ def Roles(included=True, *role):
 ########################################## ALL USERS ##########################
 @app.route('/gcal', methods=['GET'])
 @login_required
-def sendToGoogle():
+def gcal():
   return render_template('googleCalendar.html')
+  
 @app.route('/', methods=['GET', 'POST'])
 def login():
   if current_user.is_authenticated:
@@ -138,7 +139,7 @@ def request():
                     day=dict(form.day.choices)[form.day.data],
                     time=dict(form.time.choices)[form.time.data])
 
-    return redirect(url_for("courseInput"))
+    return redirect(url_for("home"))
 
   return render_template("request.html", form=form)
 
