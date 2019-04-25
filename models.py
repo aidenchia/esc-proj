@@ -142,7 +142,6 @@ class Users(db.Model):
   coursetable = db.Column(db.String, nullable=True) # "['50.004': [0, 1]]"
 
 
-
   def __init__(self, username, fullname, email, password, user_group, authenticated):
     self.username = username
     self.fullname = fullname
@@ -187,6 +186,7 @@ class Users(db.Model):
       user.edit(username, password, fullname, email, user_group, pillar, term, student_id, student_group, professor_id, coursetable, False)
     return None
 
+
   @staticmethod
   def remove(username):
     user = Users.query.filter_by(username=username).first()
@@ -212,13 +212,32 @@ class Users(db.Model):
     if Users.checkFullName(fullname):
       self.fullname = fullname
 
+    if Users.checkTerm(term):
+      self.term = term
+
+    if Users.checkStudentID(student_id):
+      self.student_id = student_id
+
     if password != "": self.password_hash = generate_password_hash(password) 
-    if term != "": self.term = term 
-    if student_id != "": self.student_id = student_id
     if student_group != "": self.student_group = student_group
     if professor_id != "": self.professor_id = professor_id
     if coursetable != "": self.coursetable = coursetable
     db.session.commit()
+
+  @staticmethod
+  def checkTerm(term):
+    if term not in range(1,9):
+      return False
+    else:
+      return True
+
+  @staticmethod
+  def checkStudentID(student_id):
+    if student_id < 1000000:
+      return False
+    else:
+      return True
+
 
   @staticmethod
   def checkPillar(pillar):

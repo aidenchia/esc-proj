@@ -190,6 +190,13 @@ def test_edit_user_pillar_with_number(client):
     print("\n[INFO] Trying to insert integer into pillar field: {}".format(rand_num))
     print("[INFO] Current pillar: {}".format(user.pillar))
     assert user.pillar != str(100)
+'''
+def test_edit_user_term(client):
+  with app.app_context():
+    user = Users.query.filter_by(username='aidenchia').first()
+    rand_num = random.randint(10,21)
+'''
+
 
 
 def test_remove_user(client):
