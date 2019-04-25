@@ -559,8 +559,8 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
-  #timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
-  timetablePath = os.path.join(os.getcwd(), "timetable.json")
+  timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
+  #timetablePath = os.path.join(os.getcwd(), "timetable.json")
   try:
     f = open(timetablePath, 'r')
     return f.read()
