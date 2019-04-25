@@ -444,7 +444,7 @@ def viewStudentSchedule():
     """
     input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
     prof_format = {'name':'','id':0,'courseTable':{}}
-    subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'subjectId':''}
+    subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
     class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
     studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1,'id':0}
       
@@ -493,7 +493,7 @@ def viewStudentSchedule():
             subject_id = str(specific_class['subject'])
             subject_name = ''
             for each_subject in input_dict['subject']:
-                if each_subject['subjectId'] == specific_class['subject']:
+                if each_subject['courseId'] == specific_class['subject']:
                     subject_name = each_subject['name']
                     break
             
@@ -548,7 +548,7 @@ def genSchedule():
   '''
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
   prof_format = {'name':'','id':0,'courseTable':{}}
-  subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'subjectId':''}
+  subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
   class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
   studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1,'id':0}
   
