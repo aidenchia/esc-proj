@@ -98,6 +98,8 @@ class Subjects(db.Model):
       all_subjects = []
       subject_type = {'Core':0,'Elective':1}
       for subject in query:
+          if subject.pillar == 0:
+              continue
           all_subjects.append({'component':ast.literal_eval(subject.components),
                                'pillar':subject.pillar,
                                'sessionNumber':subject.sessionnum,
