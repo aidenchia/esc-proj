@@ -504,7 +504,7 @@ def viewStudentSchedule():
             location = specific_class['classroom']
             professors_teaching = ''
             for professor in input_dict['professor']:
-                if subject_id in list(professor['coursetable'].keys):
+                if subject_id in list(professor['coursetable'].keys()):
                     professors_teaching += professor['name'] + ","
             professors_teaching = professors_teaching[:len(professors_teaching)-1]
             input_specific_class = subject_id + "\n"\
