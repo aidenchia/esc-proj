@@ -150,15 +150,21 @@ def register():
   for subject in available_subjects:
       subject_list.append((str(int(subject.subjectCode)),subject.subjectName))
   print(subject_list)
+  student_group_list = [('-1','Please choose a student group')]
+  available_student_groups = studentGroup.query.all()
+  for eachstudentGroup in available_student_groups:
+      student_group_list.append((str(eachstudentGroup.name),eachstudentGroup.name))
   form = RegisterForm()
 
   if form.add_more_component.data:
     form.class1.append_entry(u'default value')
-
+    
+  form.student_group.choices = student_group_list
   for entry in form.class1.entries:
       entry.classes.choices = subject_list
   print("came herer from register")
   print(form.class1.entries[0].classes.choices)
+  
   if form.validate_on_submit() and not form.add_more_component.data:
     user = Users.query.filter_by(username=form.username.data).first()
 
@@ -181,7 +187,7 @@ def register():
             Users.insert(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
               dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
-              form.student_id.data,form.professor_id.data,
+              form.student_id.data,form.student_group.data,form.professor_id.data,
               str(temp_course_table))
             return redirect(url_for('usersTable'))
     else:
@@ -203,7 +209,7 @@ def register():
             user.edit(form.username.data,form.password.data,
               form.fullname.data,form.email.data,dict(form.user_choices).get(form.user_group.data),
               dict(form.pillar_choices).get(form.pillar.data), temp_term_number, 
-              form.student_id.data,form.professor_id.data,
+              form.student_id.data,form.student_group.data,form.professor_id.data,
               str(temp_course_table),False)
             return redirect(url_for('usersTable'))
 
@@ -413,7 +419,18 @@ def viewStudentSchedule():
         location of session(room id)
         professors teaching
     """
-    Session = {2:'Lab',0:'Cohort Based Learning',1:'Lecture'}
+    input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
+    prof_format = {'name':'','id':0,'coursetable':{}}
+    subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
+    class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
+    studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
+  
+    for professor in Users.getAllProfessors():
+        input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
+    input_dict['subject'] = Subjects.getAllSubjects()
+    input_dict['classroom'] = Rooms.geAllRooms()
+    input_dict['studentGroup'] = studentGroup.getAllGroups()
+    Session = {'Lab':2,'Cohort Based Learning':0,'Lecture':1}
     student_schedule = [['Monday','Tuesday','Wedneday','Thursday','Friday'],
                         ['08:30-09:00',None,None,None,None,None],
                         ['09:00-09:30',None,None,None,None,None],
@@ -449,17 +466,35 @@ def viewStudentSchedule():
         user_timetable = Timetable.find_Timetable(subject_cohort_dict)
         all_professors = Users.getAllProfessors(for_scheduler=False)
         subject_ids = Subjects.select()
-        for specific_class in user_timetable[user_timetable]:
+        
+        for specific_class in user_timetable['user_timetable']:
             subject_id = ''
             subject_name = specific_class['subject']
             session_type = 'Lecture' if len(specific_class['session']) > 1 else 'Cohort Based Learning'
             start_to_end = student_schedule[int(specific_class['startTime'])+1][0]
-            location = ''
+            for subject in input_dict['subject']:
+                if subject['name'] == subject_name:
+                    subject_id = subject['courseId']
+                    for component in subject['component']:
+                        if Session[session_type] == component['sessionType']:
+                            start_to_end = start_to_end[0:6] + student_schedule[int(specific_class['startTime'])+1 + int(2 * component['duration'])][0][6:]
+                            break
+                    break
+                    
+            location = specific_class['classroom']
             professors_teaching = ''
-            #for subject in subject_ids:
-            #    if subject.subjectName
-            #class_information = subject_ids
-        
+            for professor in input_dict['professor']:
+                if subject_id in list(professor['coursetable'].keys):
+                    professors_teaching += professor['name'] + ","
+            professors_teaching = professors_teaching[:len(professors_teaching)-1]
+            input_specific_class = subject_id + "\n"\
+                                    + subject_name + "\n"\
+                                    + session_type + "\n"\
+                                    + start_to_end + "\n"\
+                                    + location + "\n"\
+                                    + professors_teaching
+            student_schedule[int(specific_class['startTime'])+1][int(specific_class['weekday'])+1] = input_specific_class
+    print(student_schedule)
     return render_template("base.html") # for now
 
 @app.route("/chooseHASS", methods=['GET', 'POST'])
@@ -489,17 +524,22 @@ def genSchedule():
   then, update the database with the new data.
   '''
   input_dict = {'professor':[],'subject':[],'classroom':[],'studentGroup':[]}
-  prof_format = {'name':'','id':0,'coursetable':{}}
-  subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'courseId':''}
+  prof_format = {'name':'','id':0,'courseTable':{}}
+  subject_format = {'component':[],'pillar':0,'sessionNumber':0,'name':'','term':1,'cohortNumber':1,'totalEnrollNumber':10,'type':0,'subjectId':''}
   class_format = {'name':'','location':'','id':1,'roomType':0,'capacity':10}
-  studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1}
+  studentGroup_format = {'pillar': 0, 'size': 0, 'subjects': [], 'name': '', 'cohort': 0, 'term': 1,'id':0}
   
-  for professor in Users.getAllProfessors():
-      input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'coursetable':ast.literal_eval(professor.coursetable)})
+
   input_dict['subject'] = Subjects.getAllSubjects()
   input_dict['classroom'] = Rooms.geAllRooms()
   input_dict['studentGroup'] = studentGroup.getAllGroups()
-  
+  classroomlist = [i for i in range(len(input_dict['classroom']))]
+  for professor in Users.getAllProfessors():
+    input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'courseTable':ast.literal_eval(professor.coursetable)})
+  for each_subject in input_dict['subject']:
+      for each_component in each_subject['component']:
+          each_component['classroom'] = classroomlist
+    
   print(input_dict)
   
   from pathlib import Path
@@ -519,7 +559,7 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
-  #timetablePath = os.path.join(os.getcwd(), "algorithm/input(1).json")
+  #timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
   timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
   try:
     f = open(timetablePath, 'r')
