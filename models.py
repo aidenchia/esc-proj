@@ -3,6 +3,7 @@ from flask_login import LoginManager
 from werkzeug.security import generate_password_hash, check_password_hash
 import time
 import ast
+import re
 
 db = SQLAlchemy()
 login_manager = LoginManager()
@@ -57,7 +58,7 @@ class Subjects(db.Model):
       db.session.commit()
       result = "Added {}: {} to database".format(str(subject.subjectCode), str(subject.subjectName))
       return result
-  
+
   @staticmethod
   def insertSubject(subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum):
       subject = db.session.query(Subjects).filter_by(subjectCode=subjectCode).first()
@@ -76,6 +77,19 @@ class Subjects(db.Model):
           db.session.add(subject)
       db.session.commit()
       return None
+
+  def edit(subjectCode, term, subjectType, subjectName, components, pillar, cohortnum, totalenrollment, sessionnum):
+    if Subjects.checkSubjectType(subjectType):
+      self.subjectType = subjectType
+      db.session.commit()  
+
+
+  @staticmethod
+  def checkSubjectType(subjectType):
+    if str(subjectType).lower() not in ['core', 'elective']:
+      return False
+    else:
+      return True
     
   @staticmethod
   def getAllSubjects():
@@ -183,16 +197,49 @@ class Users(db.Model):
       Users.remove(username)
       return username + " removed"
 
+    if Users.checkPillar(pillar):
+      self.pillar = pillar.upper()
+
+    if Users.checkEmail(email):
+      self.email = email
+
+    if Users.checkUserGroup(user_group):
+      self.user_group = user_group
+
+    if Users.checkFullName(fullname):
+      self.fullname = fullname
+
     if password != "": self.password_hash = generate_password_hash(password) 
-    if fullname != "": self.fullname = fullname 
-    if email != "": self.email = email
-    if user_group != 'Please select a user group': self.user_group = user_group 
-    if pillar != "": self.pillar = pillar 
     if term != "": self.term = term 
     if student_id != "": self.student_id = student_id
     if student_group != "": self.student_group = student_group
     if coursetable != "": self.coursetable = coursetable
     db.session.commit()
+
+  @staticmethod
+  def checkPillar(pillar):
+    if str(pillar).upper() not in ['ISTD', 'ESD', 'HASS', 'ASD', 'EPD']:
+      return False
+    else:
+      return True
+
+  @staticmethod
+  def checkUserGroup(user_group):
+    if user_group.lower() not in ['student', 'professor', 'pillar_head', 'admin', 'subject_lead']:
+      return False
+    else:
+      return True
+
+  @staticmethod
+  def checkEmail(email):
+    if "@mymail.sutd.edu.sg" not in email or not bool(re.match(r'[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+', email)):
+      return False
+    else:
+      return True
+
+  @staticmethod
+  def checkFullName(fullname):
+    return fullname.isalpha()
 
   @staticmethod
   def getAllProfessors(for_scheduler=True):
