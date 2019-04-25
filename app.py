@@ -480,14 +480,12 @@ def viewStudentSchedule():
                         ['18:30-19:00',None,None,None,None,None]]
     
     if current_user.user_group == 'student':
-        user_student_group_pillar = Users.query(Users.student_group, Users.pillar).filter_by(current_user.username).all()._asdict()
-        user_subjects_cohort = studentGroup.query(studentGroup.subjects, studentGroup.cohort)\
-                                .filter(studentGroup.name == user_student_group_pillar['student_group'],
-                                        studentGroup.pillar == user_student_group_pillar['pillar']).all()._asdict()
         subject_cohort_dict = {}
-        subjects = user_subjects_cohort['subjects']
-        for subject in subjects:
-            subject_cohort_dict[str(subject)] = str(user_subjects_cohort['cohort'])
+        for each_student_group in input_dict['studentGroup']:
+            if each_student_group['name'] == current_user.student_group:
+                for subject in each_student_group['subjects']:
+                    subject_cohort_dict[int(subject)] = str(user_subjects_cohort['cohort'])
+                break
         user_timetable = Timetable.find_Timetable(subject_cohort_dict)
         
         for specific_class in user_timetable['user_timetable']:
