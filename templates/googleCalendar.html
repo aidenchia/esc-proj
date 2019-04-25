@@ -73,7 +73,7 @@
 			};
 			*/
 
-			const event = eventSet["0"];
+			//const event = eventSet["0"];
 
 			
 			function handleClientLoad() {
@@ -153,15 +153,16 @@
                 console.log("tingting");
                 console.log(eventSet["0"]);
                 
-                for (var x in eventSet) {
+                for (i = 0; i < 9; i++) {
+                	event = eventSet[i.toString()]
                 	var request = gapi.client.calendar.events.insert({
                     'calendarId': 'primary',
-                    'resource': x
+                    'resource': event
                 });
 
 
-                request.execute(function(x) {
-                appendPre('Event created: ' + x.htmlLink);
+                request.execute(function(event) {
+                appendPre('Event created: ' + event.htmlLink);
 
 
                 });
