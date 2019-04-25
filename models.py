@@ -182,6 +182,7 @@ class Users(db.Model):
     if term != "": self.term = term 
     if student_id != "": self.student_id = student_id
     if student_group != "": self.student_group = student_group
+    if professor_id != "": self.professor_id = professor_id
     if coursetable != "": self.coursetable = coursetable
     db.session.commit()
 
