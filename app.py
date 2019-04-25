@@ -541,10 +541,7 @@ def genSchedule():
           each_component['classroom'] = classroomlist
     
   print(input_dict)
-  
-  from pathlib import Path
-  data_folder = Path("algorithm/")
-  file_to_open = data_folder / 'input.json'
+  file_to_open = 'input.json'
   with open(file_to_open,'w+') as input_file:
       json.dump(input_dict, input_file)
   
@@ -559,8 +556,8 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
-  timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
-  #timetablePath = os.path.join(os.getcwd(), "timetable.json")
+  #timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
+  timetablePath = os.path.join(os.getcwd(), "timetable.json")
   try:
     f = open(timetablePath, 'r')
     return f.read()
