@@ -535,8 +535,9 @@ def runScheduler():
   subprocess.call(['javac', '-cp', 'json-20180813.jar', 
                     'Calendar.java', 'JsonUtils.java','Scheduler.java', 'Professor.java', 
                     'StudentGroup.java', 'Classroom.java', 'Subject.java'])
-  subprocess.call(['java', '-cp', 'json-20180813.jar:.', 'Scheduler'])
   os.chdir('..')
+  subprocess.call(['java', '-cp', 'algorithm/json-20180813.jar:.', 'algorithm.Scheduler'])
+
 
 def outputToDatabase():
     return
