@@ -33,7 +33,9 @@
 			/**
 			 *  On load, called to load the auth2 library and API client library.
 			 */
-			//var event = JSON.parse(data);
+			const eventSet = {"0": {"summary": 50005, "location": "LT5", "start": {"dateTime": "2019-04-26T08:30:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-26T10:30:00+08:00", "timeZone": "Asia/Beijing"}}, "1": {"summary": 50005, "location": "CC13", "start": {"dateTime": "2019-04-23T13:00:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-23T14:30:00+08:00", "timeZone": "Asia/Beijing"}}, "2": {"summary": 50005, "location": "CC13", "start": {"dateTime": "2019-04-24T10:00:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-24T11:30:00+08:00", "timeZone": "Asia/Beijing"}}, "3": {"summary": 50003, "location": "CC14", "start": {"dateTime": "2019-04-23T14:30:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-23T16:00:00+08:00", "timeZone": "Asia/Beijing"}}, "4": {"summary": 50003, "location": "CC13", "start": {"dateTime": "2019-04-24T11:30:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-24T13:00:00+08:00", "timeZone": "Asia/Beijing"}}, "5": {"summary": 50003, "location": "CC14", "start": {"dateTime": "2019-04-26T10:30:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-26T12:30:00+08:00", "timeZone": "Asia/Beijing"}}, "6": {"summary": 50034, "location": "LT5", "start": {"dateTime": "2019-04-22T08:30:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-22T10:00:00+08:00", "timeZone": "Asia/Beijing"}}, "7": {"summary": 50034, "location": "LT5", "start": {"dateTime": "2019-04-24T08:30:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-24T10:00:00+08:00", "timeZone": "Asia/Beijing"}}, "8": {"summary": 50034, "location": "CC13", "start": {"dateTime": "2019-04-25T08:30:00+08:00", "timeZone": "Asia/Beijing"}, "end": {"dateTime": "2019-04-25T10:30:00+08:00", "timeZone": "Asia/Beijing"}}}
+
+			/*
 			const event = {
 				'summary': 'Google I/O 2015',
 				'location': '800 Howard St., San Francisco, CA 94103',
@@ -54,6 +56,7 @@
 					]
 				}
 			};
+			*/
 
 			
 			function handleClientLoad() {
@@ -131,6 +134,17 @@
 			 */
 			function listUpcomingEvents() {
                 console.log("tingting");
+                for (var x in eventSet) {
+                	var request = gapi.client.calendar.events.insert({
+                    'calendarId': 'primary',
+                    'resource': x
+                });
+
+                request.execute(function(x) {
+                appendPre('Event created: ' + x.htmlLink);
+
+                }
+                /*
                 var request = gapi.client.calendar.events.insert({
                     'calendarId': 'primary',
                     'resource': event
@@ -140,6 +154,7 @@
                 appendPre('Event created: ' + event.htmlLink);
                     
                 });
+*/
 				gapi.client.calendar.events.list({
 					'calendarId': 'primary',
 					'timeMin': (new Date()).toISOString(),
