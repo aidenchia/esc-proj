@@ -18,7 +18,7 @@ public class Scheduler {
     public static void main(String[] args) throws Exception {
 
 //        JsonUtils.writeInput();
-        FuzzingInput.writeInput(5, 7, 0.2);
+//        FuzzingInput.writeInput(5, 7, 0.2);
 
         importDatabase();
 
