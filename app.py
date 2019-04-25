@@ -535,9 +535,10 @@ def genSchedule():
   input_dict['studentGroup'] = studentGroup.getAllGroups()
   classroomlist = [i for i in range(len(input_dict['classroom']))]
   for professor in Users.getAllProfessors():
-    ct = ast.literal_eval(professor.coursetable)
-    ct['classroom'] = classroomlist
-    input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'courseTable':ct})
+    input_dict['professor'].append({'name':professor.fullname,'id':professor.professor_id,'courseTable':ast.literal_eval(professor.coursetable)})
+  for each_subject in input_dict['subject']:
+      for each_component in each_subject['component']:
+          each_component['classroom'] = classroomlist
     
   print(input_dict)
   
@@ -558,8 +559,8 @@ def genSchedule():
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 def viewMasterSchedule():
-  #timetablePath = os.path.join(os.getcwd(), "algorithm/input(1).json")
-  timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
+  timetablePath = os.path.join(os.getcwd(), "algorithm/input.json")
+  #timetablePath = os.path.join(os.getcwd(), "algorithm/timetable.json")
   try:
     f = open(timetablePath, 'r')
     return f.read()
