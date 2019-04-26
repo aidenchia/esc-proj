@@ -344,7 +344,7 @@ class Timetable(db.Model):
       for subject,cohort in subject_cohort_dict.items():
           subject_classes = Timetable.query.filter_by(subject=subject).all()
           for each_class in subject_classes:
-              if cohort in list(each_class.cohort):
+              if cohort in ast.literal_eval(each_class.cohort):
                   cohortdict = Timetable.row2dict(each_class)
                   user_timetable.get("user_timetable").append(cohortdict)
       print(user_timetable)
