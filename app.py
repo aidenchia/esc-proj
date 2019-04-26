@@ -592,7 +592,7 @@ def genSchedule():
     data = json.load(data_file)
   Timetable.replace_all(data)
   
-  return redirect(url_for('viewMasterSchedule'))
+  return redirect(url_for('home'))
 
 @app.route("/viewMasterSchedule", methods=['GET', 'POST'])
 @login_required
