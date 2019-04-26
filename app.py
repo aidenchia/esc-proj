@@ -498,7 +498,7 @@ def viewStudentSchedule():
                     subject_name = each_subject['name']
                     break
             
-            session_type = 'Lecture' if len(specific_class['session']) > 1 else 'Cohort Based Learning'
+            session_type = 'Lecture' if len(ast.literal_eval(specific_class['cohort'])) > 1 else 'Cohort Based Learning'
             start_to_end = student_schedule[int(specific_class['startTime'])+1][0][0:6] +\
                             student_schedule[int(float(specific_class['duration'])*2)+int(specific_class['startTime'])][0][6:]
             
